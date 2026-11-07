@@ -13,69 +13,48 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font:14px/1.65 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;color:var(--ink);background:var(--page);-webkit-font-smoothing:antialiased}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
-.hd{background:#fff;border-bottom:1px solid var(--line)}
-.hd-in{max-width:1400px;margin:0 auto;padding:14px 24px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
-.hd h1{font-size:17px;font-weight:600}
-.hd p{font-size:12.5px;color:var(--ink3)}
-.wrap{max-width:1400px;margin:0 auto;padding:20px 24px 48px;display:grid;grid-template-columns:270px 390px minmax(0,1fr);gap:22px;align-items:start}
-
-/* 场景列表 */
-.list{background:#fff;border:1px solid var(--line);border-radius:14px;padding:8px 0;position:sticky;top:16px;max-height:calc(100vh - 32px);overflow:auto}
-.list .tip{padding:6px 16px 10px;font-size:12.5px;color:var(--ink2);border-bottom:1px solid var(--line)}
-.grp{padding:10px 0 4px}
-.grp h4{font-size:12px;font-weight:500;color:var(--ink3);padding:0 16px 4px;display:flex;justify-content:space-between}
-.grp.bad h4{color:var(--bad)}
-.it{display:flex;align-items:center;gap:8px;width:100%;text-align:left;padding:7px 16px;font-size:13.5px}
-.it:hover{background:#f6f7fb}
-.it.on{background:var(--brand-soft);color:var(--brand-ink);font-weight:500}
-.it span{flex:1;min-width:0}
-.tag{font-style:normal;display:inline-block;font-size:11px;line-height:18px;padding:0 7px;border-radius:5px;white-space:nowrap;font-weight:400}
+.tag{font-style:normal;display:inline-block;font-size:11px;line-height:18px;padding:0 7px;border-radius:5px;white-space:nowrap}
 .t-ok{background:var(--ok-soft);color:var(--ok)}.t-info{background:var(--info-soft);color:var(--info)}.t-warn{background:var(--warn-soft);color:var(--warn)}.t-bad{background:var(--bad-soft);color:var(--bad)}
-.msel{display:none}
+.hd{text-align:center;padding:22px 16px 6px}
+.hd h1{font-size:18px;font-weight:600}
+.hd p{font-size:12.5px;color:var(--ink3);max-width:760px;margin:4px auto 0}
+.wrap{max-width:1120px;margin:0 auto;padding:14px 20px 40px;display:grid;grid-template-columns:390px minmax(0,1fr);column-gap:120px;align-items:start}
 
 /* 手机 */
-.phone{width:390px;height:800px;background:#11141b;border-radius:46px;padding:11px;position:sticky;top:16px;box-shadow:0 24px 50px -18px rgba(20,28,50,.35)}
-.scr{position:relative;width:100%;height:100%;border-radius:36px;overflow:hidden;display:flex;flex-direction:column;background:linear-gradient(180deg,#e5ebff 0%,#efeaff 170px,#f6f7fb 330px)}
+.phone{width:390px;height:800px;background:#11141b;border-radius:46px;padding:11px;position:sticky;top:14px;box-shadow:0 24px 50px -18px rgba(20,28,50,.35)}
+.scr{position:relative;width:100%;height:100%;border-radius:36px;overflow:hidden;overflow:clip;display:flex;flex-direction:column;background:linear-gradient(180deg,#e5ebff 0%,#efeaff 170px,#f6f7fb 330px)}
 .sb{height:40px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:0 28px;font-size:13px;font-weight:600}
 .nav{height:44px;flex:none;display:flex;align-items:center;justify-content:center;position:relative;font-weight:600;font-size:16.5px}
 .nav i{position:absolute;left:16px;font-style:normal;font-size:24px;font-weight:300;top:4px}
-.who{flex:none;margin:0 14px 4px;font-size:11.5px;color:var(--ink2);background:rgba(255,255,255,.6);border-radius:8px;padding:3px 9px;display:flex;gap:6px;align-items:center}
+.who{flex:none;margin:0 14px 4px;font-size:11.5px;color:var(--ink2);background:rgba(255,255,255,.6);border-radius:8px;padding:3px 9px}
 .who b{font-weight:500;color:var(--ink)}
-.chat{flex:1;overflow-y:auto;padding:6px 14px 10px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth}
+.who:empty{display:none}
+.chat{flex:1;overflow-y:auto;padding:6px 14px 10px;display:flex;flex-direction:column;gap:14px;position:relative}
 .chat>*{flex:none}
 .hello{position:relative;padding-top:6px}
 .hello h2{font-size:17px;font-weight:600;padding:6px 0 10px 4px}
 .mascot{position:absolute;right:6px;top:-6px;width:70px;height:70px;border-radius:22px;background:linear-gradient(140deg,#7b8cff,#a58bff);display:grid;place-items:center;transform:rotate(8deg)}
 .mascot::before{content:"";width:34px;height:26px;background:#fff;border-radius:12px 12px 12px 4px}
 .mascot::after{content:"";position:absolute;width:20px;height:4px;background:#7b8cff;border-radius:2px;box-shadow:0 -6px 0 #7b8cff;top:34px}
-.hello-card{background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.9);border-radius:16px;padding:12px 12px 12px}
+.hello-card{background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.9);border-radius:16px;padding:12px}
 .hello-card>p{font-size:13.5px;margin-bottom:8px}
-.guess-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.guess-h span{color:var(--brand-2);font-size:13px;font-style:italic;font-weight:500}
-.pager{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink2)}
-.pager button{width:22px;height:22px;border-radius:50%;background:#fff;border:1px solid var(--line);font-size:12px;line-height:1}
+.guess-h{color:var(--brand-2);font-size:13px;font-style:italic;font-weight:500;margin-bottom:8px}
 .pills{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.pill{background:#fff;border-radius:18px;padding:7px 10px 7px 12px;font-size:12.5px;display:flex;justify-content:space-between;gap:4px;text-align:left;color:var(--ink)}
+.pill{background:#fff;border-radius:18px;padding:7px 10px 7px 12px;font-size:12.5px;display:flex;justify-content:space-between;gap:4px;text-align:left}
 .pill::after{content:"›";color:var(--ink3)}
-.pill.no{color:var(--ink3)}
-.pill.go{color:var(--brand-ink);box-shadow:0 0 0 1.5px var(--brand) inset}
-.me{align-self:flex-end;max-width:78%;background:#dfe6ff;color:#1e3592;border-radius:14px 14px 4px 14px;padding:8px 12px;font-size:14px;white-space:pre-wrap}
+.me{align-self:flex-end;max-width:78%;background:#dfe6ff;color:#1e3592;border-radius:14px 14px 4px 14px;padding:8px 12px;font-size:14px;white-space:pre-wrap;cursor:pointer;transition:box-shadow .2s}
+.me.sel{box-shadow:0 0 0 2px var(--brand)}
+.me.isbad.sel{box-shadow:0 0 0 2px var(--bad)}
 .ai .nm{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2);margin-bottom:6px}
 .ai .nm i{width:24px;height:24px;border-radius:8px;background:linear-gradient(140deg,#7b8cff,#a58bff);display:inline-block;position:relative}
 .ai .nm i::before{content:"";position:absolute;left:6px;top:7px;width:12px;height:9px;background:#fff;border-radius:4px 4px 4px 1px}
-.ai.human .nm i{background:#ff9b45}
-.ai .bub{background:#fff;border-radius:14px;padding:11px 12px;font-size:14px;word-break:break-word;cursor:pointer;transition:box-shadow .2s}
-.ai.sel .bub{box-shadow:0 0 0 2px var(--brand)}
+.ai .bub{background:#fff;border-radius:14px;padding:11px 12px;font-size:14px;word-break:break-word;cursor:pointer}
 .ai.isbad .bub{box-shadow:0 0 0 1px #f4c4c2}
-.ai.isbad.sel .bub{box-shadow:0 0 0 2px var(--bad)}
-.acts{display:flex;justify-content:flex-end;gap:14px;margin-top:8px;font-size:11.5px;color:var(--ink3);white-space:normal}
-.acts button{display:flex;gap:3px;align-items:center}
+.acts{display:flex;justify-content:flex-end;gap:14px;margin-top:8px;font-size:11.5px;color:var(--ink3)}
 .acts button.on{color:var(--brand)}
-.badmark{font-size:11.5px;color:var(--bad);margin-top:5px;display:flex;gap:4px;align-items:center}
-.more{font-size:12.5px;color:var(--ink2)}
+.more{font-size:12.5px;color:var(--ink2);margin-top:10px}
 .more p{margin-bottom:6px}
-.more button{display:block;background:#fff;border-radius:10px;padding:7px 12px;margin-bottom:6px;text-align:left;font-size:13px;color:var(--ink)}
-.more button.go{color:var(--brand-ink);box-shadow:0 0 0 1.5px var(--brand) inset}
+.more span{display:block;background:#fff;border-radius:10px;padding:7px 12px;margin-bottom:6px;font-size:13px;color:var(--ink)}
 .sys{align-self:center;font-size:11.5px;color:var(--ink2);background:rgba(0,0,0,.05);border-radius:10px;padding:3px 10px}
 .end{align-self:stretch;text-align:center;font-size:12px;color:var(--ink2);display:flex;align-items:center;gap:8px}
 .end::before,.end::after{content:"";flex:1;height:1px;background:var(--line)}
@@ -83,7 +62,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .typing i{width:5px;height:5px;border-radius:50%;background:var(--ink3);animation:bl 1s infinite}
 .typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
 @keyframes bl{0%,100%{opacity:.25}50%{opacity:1}}
-/* 卡片 */
+
 .card{margin-top:10px;border:1px solid var(--line);border-radius:10px;overflow:hidden;white-space:normal;font-size:13px}
 .card-h{display:flex;justify-content:space-between;gap:6px;padding:7px 10px;background:#f8f9fc;color:var(--ink2);font-size:12px;border-bottom:1px solid var(--line)}
 .card-h.hl{background:linear-gradient(90deg,#eef1ff,#f6f3ff);color:var(--brand-ink)}
@@ -107,88 +86,83 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .cbtn{display:flex;gap:8px;margin-top:10px}
 .cbtn span{flex:1;text-align:center;padding:6px 0;border-radius:8px;border:1px solid var(--line);font-size:12.5px}
 .cbtn span.p{background:var(--brand);border-color:var(--brand);color:#fff}
-/* 底部输入 */
+
+
 .foot{flex:none;padding:6px 12px 16px;position:relative;z-index:3}
 .newt{display:inline-flex;align-items:center;gap:3px;background:#fff;border-radius:8px;padding:3px 10px;font-size:12px;color:var(--ink2);margin-bottom:8px}
-.inbar{display:flex;align-items:center;gap:10px;background:#fff;border-radius:14px;padding:9px 10px 9px 12px;box-shadow:0 1px 0 rgba(0,0,0,.03)}
-.inbar .mic{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--ink);display:grid;place-items:center;font-size:11px;flex:none}
-.inbar .field{flex:1;text-align:left;font-size:14px;color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;justify-content:space-between;gap:6px}
-.inbar .field.has{color:var(--ink)}
-.inbar .field::after{content:"⌃";color:var(--ink3);font-size:12px;transform:rotate(180deg);display:inline-block}
+.inbar{display:flex;align-items:center;gap:10px;background:#fff;border-radius:14px;padding:9px 10px 9px 12px;cursor:pointer}
+.inbar.hint{box-shadow:0 0 0 1.5px var(--brand) inset;animation:pulse 1.8s infinite}
+.mic{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--ink);display:grid;place-items:center;font-size:11px;flex:none}
+.field{flex:1;font-size:14px;color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.field.has{color:var(--ink)}
 .send{width:30px;height:30px;border-radius:50%;background:#d6dae6;color:#fff;font-size:16px;flex:none;display:grid;place-items:center}
-.send.on{background:var(--brand)}
-.send.pulse,.go{animation:pulse 1.8s infinite}
+.send.on{background:var(--brand);animation:pulse 1.8s infinite}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(61,99,245,.35)}50%{box-shadow:0 0 0 6px rgba(61,99,245,0)}}
-.more button.go,.pill.go{animation:none}
-.sheet{position:absolute;left:0;right:0;bottom:0;z-index:5;background:#fff;border-radius:18px 18px 0 0;box-shadow:0 -12px 30px rgba(20,28,50,.18);transform:translateY(105%);transition:transform .25s ease;max-height:72%;display:flex;flex-direction:column}
-.sheet.open{transform:none}
+.sheet{position:absolute;left:0;right:0;bottom:0;z-index:5;background:#fff;border-radius:18px 18px 0 0;box-shadow:0 -12px 30px rgba(20,28,50,.18);transform:translateY(105%);transition:transform .25s ease;max-height:78%;display:flex;flex-direction:column;visibility:hidden}
+.sheet.open{transform:none;visibility:visible}
 .mask{position:absolute;inset:0;background:rgba(15,20,35,.28);z-index:4;opacity:0;pointer-events:none;transition:opacity .25s}
 .mask.open{opacity:1;pointer-events:auto}
-.sh-h{display:flex;justify-content:space-between;align-items:center;padding:14px 16px 8px;font-weight:600}
-.sh-h button{font-size:20px;color:var(--ink3);font-weight:300;line-height:1}
-.sh-b{overflow:auto;padding:0 12px 20px}
-.sh-sec{font-size:12px;color:var(--ink3);padding:8px 4px 6px}
-.q{display:block;width:100%;text-align:left;padding:10px 12px;border-radius:10px;font-size:14px;margin-bottom:4px;background:#f6f7fb}
-.q.next{background:var(--brand-soft);color:var(--brand-ink);font-weight:500;box-shadow:0 0 0 1.5px var(--brand) inset}
-.q.next small{display:block;font-weight:400;font-size:11.5px;color:var(--brand)}
-.q.no{color:var(--ink3);background:#fafbfc;cursor:not-allowed}
-.cats{display:flex;gap:6px;overflow-x:auto;padding:2px 4px 8px}
-.cats button{flex:none;font-size:12.5px;padding:3px 11px;border-radius:14px;background:#f2f3f7;color:var(--ink2)}
-.cats button.on{background:var(--ink);color:#fff}
-.ended{text-align:center;padding:18px 10px 6px;color:var(--ink2);font-size:13.5px}
+.sh-h{display:flex;justify-content:space-between;align-items:center;padding:14px 16px 4px;font-weight:600;flex:none}
+.sh-h small{display:block;font-weight:400;font-size:12px;color:var(--ink3)}
+.sh-h button{font-size:22px;color:var(--ink3);font-weight:300;line-height:1}
+.sh-b{overflow:auto;padding:4px 12px 20px}
+.sh-sec{font-size:12px;color:var(--ink3);padding:10px 4px 6px;display:flex;justify-content:space-between}
+.sh-sec.bad{color:var(--bad)}
+.sc{display:flex;gap:8px;align-items:center;width:100%;text-align:left;padding:9px 12px;border-radius:10px;margin-bottom:6px;background:#f6f7fb}
+.sc:hover{background:#eef1fb}
+.sc div{flex:1;min-width:0}
+.sc b{display:block;font-weight:500;font-size:14px}
+.sc small{display:block;font-size:12px;color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.q{display:block;width:100%;text-align:left;padding:12px 14px;border-radius:12px;font-size:14.5px;background:var(--brand-soft);color:var(--brand-ink);font-weight:500;box-shadow:0 0 0 1.5px var(--brand) inset}
+.q small{display:block;font-weight:400;font-size:12px;color:var(--brand)}
+.lnk{display:block;margin:14px auto 0;font-size:13px;color:var(--ink2);text-decoration:underline;text-underline-offset:3px}
+.ended{text-align:center;padding:14px 6px 4px;color:var(--ink2);font-size:13.5px}
 .ended div{display:flex;gap:8px;justify-content:center;margin-top:12px}
 .ended button{padding:7px 16px;border-radius:18px;border:1px solid var(--line);font-size:13px}
 .ended button.p{background:var(--brand);color:#fff;border-color:var(--brand)}
-.toast{position:absolute;left:18px;right:18px;bottom:96px;background:rgba(20,24,34,.92);color:#fff;font-size:12.5px;border-radius:10px;padding:9px 12px;z-index:6;opacity:0;transition:opacity .2s;pointer-events:none}
-.toast.on{opacity:1}
 
-/* 解释 */
-.ex{min-width:0;display:flex;flex-direction:column;gap:14px}
-.box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px}
-.ex-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
-.ex-top h2{font-size:18px;font-weight:600;margin-right:auto}
-.play{font-size:12.5px;color:var(--brand-ink);border:1px solid #cdd7fb;border-radius:16px;padding:3px 12px;background:#fff}
-.kv{display:grid;grid-template-columns:84px 1fr;gap:6px 12px;font-size:13.5px}
-.kv dt{color:var(--ink3)}
-.kv dd b{font-weight:500}
-.pairl{margin-top:12px;font-size:13px;color:var(--ink2)}
+/* 说明 */
+.ex{position:sticky;top:14px;max-height:800px;overflow-y:auto;padding-right:4px;position:sticky}
+.intro{background:#fff;border:1px dashed #cdd4e4;border-radius:14px;padding:26px 24px;color:var(--ink2);font-size:14px}
+.intro h3{font-size:15px;color:var(--ink);margin-bottom:10px}
+.intro ol{padding-left:18px;line-height:2}
+.box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:12px}
+.ex-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.ex-top h2{font-size:17px;font-weight:600;margin-right:auto}
+.scene{font-size:13.5px;color:var(--ink2)}
+.point{margin-top:8px;font-size:13.5px;font-weight:500;color:var(--ink)}
+.pairl{margin-top:8px;font-size:12.5px;color:var(--ink3)}
 .pairl button{color:var(--brand-ink);text-decoration:underline;text-underline-offset:3px}
-.tl h3{font-size:14px;font-weight:600;margin-bottom:10px;display:flex;justify-content:space-between;align-items:baseline}
-.tl h3 small{font-weight:400;color:var(--ink3);font-size:12px}
-.turn{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px;transition:border-color .2s,box-shadow .2s;cursor:pointer}
+.turn{position:relative;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px;cursor:pointer;transition:border-color .2s,box-shadow .2s}
 .turn.cur{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-soft)}
 .turn.isbad.cur{border-color:var(--bad);box-shadow:0 0 0 3px var(--bad-soft)}
-.turn.todo{background:#fafbfc;color:var(--ink3);cursor:default}
-.turn .th{display:flex;gap:8px;align-items:baseline;margin-bottom:6px}
-.turn .th b{font-size:12px;color:var(--ink3);font-weight:500;flex:none}
-.turn .th q{font-size:13.5px;quotes:"“" "”";color:var(--ink)}
-.turn.todo .th q{color:var(--ink3)}
-.turn .l{font-size:12px;color:var(--ink3);margin-top:6px}
-.turn .v{font-size:13.5px}
-.wrong{margin-top:8px;background:var(--bad-soft);border-radius:8px;padding:8px 10px;font-size:13.5px;color:#8e1f1f}
-.right{margin-top:6px;background:var(--ok-soft);border-radius:8px;padding:8px 10px;font-size:13.5px;color:#0b5c3d}
-.wrong b,.right b{display:block;font-size:12px;font-weight:600;margin-bottom:2px}
-.fin{border-radius:12px;padding:12px 14px;font-size:13.5px}
+.turn.todo{background:transparent;border-style:dashed;color:var(--ink3);cursor:default;padding:9px 14px}
+.th{display:flex;gap:8px;align-items:baseline}
+.th b{font-size:12px;color:var(--ink3);font-weight:500;flex:none}
+.th q{font-size:13.5px;quotes:"“" "”";flex:1}
+.turn .bd{margin-top:6px;font-size:13.5px}
+.turn .bd p+p{margin-top:4px}
+.turn .bd em{font-style:normal;color:var(--ink3);font-size:12px;margin-right:6px}
+.wrong,.right{margin-top:8px;border-radius:8px;padding:7px 10px;font-size:13.5px}
+.wrong{background:var(--bad-soft);color:#8e1f1f}.right{background:var(--ok-soft);color:#0b5c3d;margin-top:6px}
+.wrong b,.right b{font-weight:600;margin-right:6px}
+.fin{border-radius:12px;padding:12px 14px;font-size:13.5px;margin-bottom:12px}
 .fin.ok{background:var(--ok-soft);color:#0b5c3d}.fin.info{background:var(--info-soft);color:#1c3f94}.fin.warn{background:var(--warn-soft);color:#6f4200}.fin.bad{background:var(--bad-soft);color:#8e1f1f}
-.fin b{font-weight:600}
-.note{font-size:12px;color:var(--ink3);line-height:1.6}
+.fin b{font-weight:600;margin-right:6px}
+#wire{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:50;overflow:visible}
 
-@media (max-width:1200px){.wrap{grid-template-columns:240px 390px minmax(0,1fr);gap:16px;padding:16px}}
 @media (max-width:980px){
-  .wrap{display:flex;flex-direction:column;align-items:stretch;padding:12px}
-  .list{display:none}
-  .msel{display:block;width:100%;font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:#fff}
-  .phone{width:100%;max-width:430px;align-self:center;height:min(760px,calc(100dvh - 120px));position:static;border-radius:28px;padding:7px}
+  .wrap{display:flex;flex-direction:column;align-items:center;gap:16px;padding:10px}
+  .phone{width:100%;max-width:430px;height:min(760px,calc(100dvh - 40px));position:static;border-radius:28px;padding:7px}
   .scr{border-radius:22px}.sb{display:none}
-  .hd-in{padding:12px}
+  .ex{position:static;max-height:none;overflow:visible;width:100%;max-width:430px}
+  #wire{display:none}
 }
 </style>
 </head>
 <body>
-<header class="hd"><div class="hd-in"><h1>商户服务助手 · AI 客服对话演示</h1><p id="disc"></p></div></header>
+<header class="hd"><h1>商户服务助手 · AI 客服对话演示</h1><p>对话为预设脚本：点输入框选一个会话场景，按预设问题一步步提问。正常场景的回复由作者实现的处理规则生成，反例为人为构造；品牌、商户与数据均为虚构。</p></header>
 <div class="wrap">
-  <nav class="list" id="list"></nav>
-  <select class="msel" id="msel" aria-label="选择会话场景"></select>
   <div class="phone"><div class="scr" id="scr">
     <div class="sb"><span>9:41</span><span>▂▄▆ ▮</span></div>
     <div class="nav"><i>‹</i>商户服务助手</div>
@@ -196,138 +170,166 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     <div class="chat" id="chat"></div>
     <div class="foot">
       <button class="newt" id="newt">＋ 新的话题</button>
-      <div class="inbar"><span class="mic">))</span><button class="field" id="field">请选择您要咨询的问题</button><button class="send" id="send" aria-label="发送">↑</button></div>
+      <div class="inbar" id="inbar"><span class="mic">))</span><span class="field" id="field"></span><button class="send" id="send" aria-label="发送">↑</button></div>
     </div>
     <div class="mask" id="mask"></div>
-    <div class="sheet" id="sheet"><div class="sh-h"><span>选择问题</span><button id="shx" aria-label="关闭">×</button></div><div class="sh-b" id="shb"></div></div>
-    <div class="toast" id="toast"></div>
+    <div class="sheet" id="sheet"><div class="sh-h" id="shh"></div><div class="sh-b" id="shb"></div></div>
   </div></div>
   <section class="ex" id="ex"></section>
 </div>
+<svg id="wire" aria-hidden="true"></svg>
 
 <script>
 const D = /*__DATA__*/null;
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const yuan = n => (+n).toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-const S = { st: null, step: 0, draft: null, busy: false, sel: null, cat: null, gp: 0, auto: false };
 const byId = id => D.stories.find(s => s.id === id);
 const OUT = k => D.outcomes[k];
+const wait = ms => new Promise(r => setTimeout(r, ms));
+// gen：每次换场景加一；异步回放中途发现 gen 变了就停，避免上一场景的回复串到新场景
+const S = { st: null, step: 0, draft: null, busy: false, sel: null, gen: 0, filter: null };
+const chat = () => $('#chat');
+const qOf = t => t.action === 'agent_accept' ? '（模拟）等待人工客服接入' : t.say;
+const GUESS = [['商户交易查询', '帮我查一下昨天的交易'], ['商户到账查询', '昨天的钱为什么还没到账？'], ['变更结算卡', '怎么更换结算卡？'], ['账户状态查询', '我的账户是不是冻结了？'], ['到账金额差异', '昨天到账为什么比交易金额少了 12 元？'], ['联系人工客服', '我要找人工']];
 
-$('#disc').textContent = '对话为预设脚本，用于演示 AI 客服在不同情况下的处理逻辑。正常场景的回复由作者实现的处理规则生成，反例为人为构造；品牌、商户与数据均为虚构，不代表任何线上系统。';
-
-// ---------- 场景列表 ----------
-function renderList() {
-  $('#list').innerHTML = `<p class="tip">选一个会话场景，在手机里按预设问题一步步提问；右边逐轮说明 AI 为什么这样答。</p>` + D.groups.map(g => {
-    const ss = D.stories.filter(s => s.group === g);
-    return `<div class="grp ${g === '反例' ? 'bad' : ''}"><h4><span>${g}</span><span>${ss.length}</span></h4>${ss.map(s => `<button class="it ${S.st?.id === s.id ? 'on' : ''}" data-id="${s.id}"><span>${esc(s.title)}</span><i class="tag t-${OUT(s.outcome).tone}">${OUT(s.outcome).label}</i></button>`).join('')}</div>`;
-  }).join('');
-  $('#list').querySelectorAll('.it').forEach(b => b.onclick = () => load(b.dataset.id));
-  $('#msel').innerHTML = D.groups.map(g => `<optgroup label="${g}">${D.stories.filter(s => s.group === g).map(s => `<option value="${s.id}" ${S.st?.id === s.id ? 'selected' : ''}>${esc(s.title)}（${OUT(s.outcome).label}）</option>`).join('')}</optgroup>`).join('');
+// ---------- 场景开始 / 重置 ----------
+function reset() {
+  S.gen++; S.st = null; S.step = 0; S.draft = null; S.busy = false; S.sel = null;
+  $('#who').innerHTML = '';
+  chat().innerHTML = `<div class="hello"><div class="mascot" aria-hidden="true"></div><h2>你好，我是商户服务助手~</h2><div class="hello-card"><p>有什么问题尽管问我吧！</p><div class="guess-h">✦ 猜你想问</div><div class="pills">${GUESS.map(([l, q]) => `<button class="pill" data-q="${esc(q)}">${esc(l)}</button>`).join('')}</div></div></div>`;
+  chat().querySelectorAll('.pill').forEach(b => b.onclick = () => { S.filter = b.dataset.q; openSheet(); });
+  refreshInput(); closeSheet(); renderEx();
 }
-$('#msel').onchange = e => load(e.target.value);
-
-// ---------- 加载场景 ----------
-function load(id) {
-  S.st = byId(id); S.step = 0; S.draft = null; S.busy = false; S.sel = null; S.human = false; S.auto = false;
+function start(id) {
+  reset();
+  S.st = byId(id);
   const a = D.accounts[S.st.persona];
   $('#who').innerHTML = `当前登录 <b>${esc(a.name)}</b> · ${esc(a.role)} · ${esc(a.merchants.length > 1 ? `授权 ${a.merchants.length} 家门店` : a.merchants[0] || '无商户数据授权')}`;
-  $('#chat').innerHTML = hello();
-  bindHello(); setDraft(null); closeSheet(); renderList(); renderEx();
+  S.draft = S.st.turns[0];
+  refreshInput(); renderEx();
   if (history.replaceState) history.replaceState(null, '', '#' + id);
 }
-const next = () => S.st.turns[S.step] || null;
-const nextLabel = t => t ? (t.action === 'agent_accept' ? '（模拟）等待人工客服接入' : t.say) : null;
+const next = () => S.st ? S.st.turns[S.step] || null : null;
+const ended = () => S.st && S.step >= S.st.turns.length;
 
-// 欢迎卡 + 猜你想问
-const GUESS = [['商户交易查询', '帮我查一下昨天的交易'], ['商户到账查询', '昨天的钱为什么还没到账？'], ['变更结算卡', '怎么更换结算卡？'], ['账户状态查询', '我的账户是不是冻结了？'], ['T+1 结算规则', 'T+1 结算是什么意思？'], ['到账金额差异', '昨天到账为什么比交易金额少了 12 元？'], ['指定商户号查询', '查商户号 860331000000101 的交易'], ['联系人工客服', '我要找人工']];
-function hello() {
-  const n = nextLabel(next());
-  if (S.step === 0) { const i = GUESS.findIndex(g => g[1] === n); if (i >= 0) S.gp = Math.floor(i / 4); }
-  const items = GUESS.slice(S.gp * 4, S.gp * 4 + 4);
-  return `<div class="hello" id="hello"><div class="mascot" aria-hidden="true"></div><h2>你好，我是商户服务助手~</h2>
-    <div class="hello-card"><p>有什么问题尽管问我吧！</p><div class="guess-h"><span>✦ 猜你想问</span><div class="pager"><button data-pg="-1">‹</button>${S.gp + 1} / 2<button data-pg="1">›</button></div></div>
-    <div class="pills">${items.map(([l, q]) => `<button class="pill ${q === n ? 'go' : ''}" data-q="${esc(q)}">${esc(l)}</button>`).join('')}</div></div></div>`;
-}
-function bindHello() {
-  const h = $('#hello'); if (!h) return;
-  h.querySelectorAll('[data-pg]').forEach(b => b.onclick = () => { S.gp = (S.gp + 2 + +b.dataset.pg) % 2; h.outerHTML = hello(); bindHello(); });
-  h.querySelectorAll('[data-q]').forEach(b => b.onclick = () => pick(b.dataset.q));
+function refreshInput() {
+  const f = $('#field');
+  f.textContent = S.draft ? qOf(S.draft) : ended() ? '本场景已结束，点这里换一个会话场景' : !S.st ? '点这里，选择一个会话场景' : '点这里，选择下一个问题';
+  f.classList.toggle('has', !!S.draft);
+  $('#send').classList.toggle('on', !!S.draft);
+  $('#inbar').classList.toggle('hint', !S.draft && !S.busy);
 }
 
-// ---------- 输入：下拉选择 → 填入输入框 → 发送 ----------
-function setDraft(t) {
-  S.draft = t;
-  const f = $('#field'); f.textContent = t ? nextLabel(t) : (S.step >= S.st.turns.length ? '本场景对话已结束' : '请选择您要咨询的问题'); f.classList.toggle('has', !!t);
-  $('#send').classList.toggle('on', !!t); $('#send').classList.toggle('pulse', !!t);
-}
-function pick(text) {
-  if (S.busy) return;
-  const n = next();
-  if (n && nextLabel(n) === text) { setDraft(n); closeSheet(); return; }
-  toast(n ? `这个场景的下一句是「${nextLabel(n)}」。演示只回放预设对话，想看其他问题可以换一个场景。` : '本场景对话已结束，可以换一个场景。');
-}
+// ---------- 下拉面板 ----------
 function openSheet() {
   if (S.busy) return;
-  const n = next(), body = $('#shb');
-  if (!n) {
-    const i = D.stories.indexOf(S.st), nx = D.stories[(i + 1) % D.stories.length];
-    body.innerHTML = `<div class="ended">本场景对话已结束，没有后续问题了。<div><button id="again">重新开始</button><button class="p" id="nxs">下一个场景：${esc(nx.title)}</button></div></div>`;
-    body.querySelector('#again').onclick = () => load(S.st.id); body.querySelector('#nxs').onclick = () => load(nx.id);
+  const h = $('#shh'), b = $('#shb');
+  if (!S.st || ended()) {
+    const list = S.filter ? D.stories.filter(s => s.turns[0].say === S.filter) : D.stories;
+    h.innerHTML = `<span>选择会话场景<small>${S.filter ? `「${esc(S.filter)}」在不同情况下的 ${list.length} 种对话` : `共 ${D.stories.length} 个，选一个开始；问题和回复都是预设好的`}</small></span><button id="shx" aria-label="关闭">×</button>`;
+    let html = ended() ? `<div class="ended">这个会话已结束，没有后续问题了。<div><button id="again">再看一遍</button></div></div>` : '';
+    for (const g of D.groups) {
+      const ss = list.filter(s => s.group === g); if (!ss.length) continue;
+      html += `<div class="sh-sec ${g === '反例' ? 'bad' : ''}"><span>${g}</span><span>${ss.length}</span></div>` +
+        ss.map(s => `<button class="sc" data-id="${s.id}"><div><b>${esc(s.title)}</b><small>${esc(s.turns.filter(t => t.say).map(t => t.say).join(' → '))}</small></div><i class="tag t-${OUT(s.outcome).tone}">${OUT(s.outcome).label}</i></button>`).join('');
+    }
+    if (S.filter) html += `<button class="lnk" id="all">查看全部会话场景</button>`;
+    b.innerHTML = html;
+    b.querySelectorAll('[data-id]').forEach(x => x.onclick = () => { S.filter = null; start(x.dataset.id); });
+    const al = b.querySelector('#all'); if (al) al.onclick = () => { S.filter = null; openSheet(); };
+    const ag = b.querySelector('#again'); if (ag) ag.onclick = () => start(S.st.id);
   } else {
-    const lbl = nextLabel(n), cats = Object.keys(D.library);
-    if (!S.cat || !cats.includes(S.cat)) S.cat = cats.find(c => D.library[c].includes(lbl)) || cats[0];
-    body.innerHTML = `<div class="sh-sec">接下来</div><button class="q next" data-q="${esc(lbl)}"><small>${S.step === 0 ? '这个场景从这句话开始' : `第 ${S.step + 1} 轮 · 按预设继续`}</small>${esc(lbl)}</button>
-      <div class="sh-sec">全部问题（按类别）</div><div class="cats">${cats.map(c => `<button class="${c === S.cat ? 'on' : ''}" data-c="${esc(c)}">${esc(c)}</button>`).join('')}</div>
-      <div id="qs">${D.library[S.cat].map(q => `<button class="q ${q === lbl ? '' : 'no'}" data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>`;
-    body.querySelectorAll('[data-c]').forEach(b => b.onclick = () => { S.cat = b.dataset.c; openSheet(); });
-    body.querySelectorAll('[data-q]').forEach(b => b.onclick = () => pick(b.dataset.q));
+    const n = next();
+    h.innerHTML = `<span>下一个问题<small>${esc(S.st.title)} · 第 ${S.step + 1} / ${S.st.turns.length} 轮</small></span><button id="shx" aria-label="关闭">×</button>`;
+    b.innerHTML = `<button class="q" id="pickq"><small>${n.action ? '商户这一步不用说话' : '按预设继续提问'}</small>${esc(qOf(n))}</button><button class="lnk" id="chg">换一个会话场景</button>`;
+    b.querySelector('#pickq').onclick = () => { S.draft = n; refreshInput(); closeSheet(); };
+    b.querySelector('#chg').onclick = () => { reset(); openSheet(); };
   }
+  h.querySelector('#shx').onclick = closeSheet;
+  b.scrollTop = 0;
   $('#sheet').classList.add('open'); $('#mask').classList.add('open');
 }
 function closeSheet() { $('#sheet').classList.remove('open'); $('#mask').classList.remove('open'); }
-$('#field').onclick = openSheet; $('#mask').onclick = closeSheet; $('#shx').onclick = closeSheet;
-$('#send').onclick = () => { if (S.draft) send(); else openSheet(); };
-$('#newt').onclick = () => load(S.st.id);
-let tt; function toast(m) { const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('on'), 3200); }
+$('#mask').onclick = closeSheet;
+$('#inbar').onclick = e => { if (e.target.closest('#send')) return; openSheet(); };
+$('#send').onclick = () => S.draft ? send() : openSheet();
+$('#newt').onclick = () => { S.filter = null; reset(); openSheet(); };
 
 // ---------- 发送与回放 ----------
-const chat = () => $('#chat');
-const end = () => requestAnimationFrame(() => chat().scrollTop = chat().scrollHeight);
-function add(html) { const d = document.createElement('div'); d.innerHTML = html; const el = d.firstElementChild; chat().append(el); end(); return el; }
+function add(html) { const d = document.createElement('div'); d.innerHTML = html; const el = d.firstElementChild; chat().append(el); chat().scrollTop = chat().scrollHeight; return el; }
 async function send() {
   const t = S.draft; if (!t || S.busy) return;
-  const i = S.step; S.busy = true; setDraft(null);
-  chat().querySelectorAll('.go').forEach(x => x.classList.remove('go'));
-  if (t.say) add(`<div class="me">${esc(t.say)}</div>`);
-  if (t.action === 'agent_accept') { await wait(700); add(`<div class="sys">${esc(t.system || '人工客服已接入')}</div>`); S.human = true; }
+  const g = S.gen, i = S.step;
+  S.busy = true; S.draft = null; refreshInput();
+  if (t.say) add(`<div class="me ${t.bad ? 'isbad' : ''}" data-i="${i}">${esc(t.say)}</div>`);
+  if (t.action === 'agent_accept') { await wait(700); if (g !== S.gen) return; add(`<div class="sys" data-i="${i}">${esc(t.system || '人工客服已接入')}</div>`); }
   else if (t.reply) {
     const ty = add(`<div class="ai"><div class="nm"><i></i>助手</div><div class="bub"><span class="typing"><i></i><i></i><i></i>${t.reply.card ? '正在查询' : '正在输入'}</span></div></div>`);
-    await wait(t.reply.card ? 1100 : 750); ty.remove();
-    const el = add(aiHTML(t, i)); bindAI(el, i);
+    await wait(t.reply.card ? 1000 : 700); if (g !== S.gen) return;
+    ty.remove(); add(aiHTML(t, i));
   }
-  S.step++; S.sel = null; S.busy = false;
-  if (S.step >= S.st.turns.length) add(`<div class="end">会话结束 · 结局：${OUT(S.st.outcome).label}</div>`);
-  else if (i === 0) { const h = $('#hello'); if (h) { h.outerHTML = hello(); bindHello(); } }
-  renderEx(); highlight(-1);
-  if (S.auto) autoNext();
+  S.step++; S.busy = false; S.sel = i;
+  if (ended()) add(`<div class="end">会话结束 · ${OUT(S.st.outcome).label}</div>`);
+  bindChat(); refreshInput(); renderEx(); focusTurn(i, 'ex');
 }
-const wait = ms => new Promise(r => setTimeout(r, ms));
 function aiHTML(t, i) {
-  const r = t.reply, n = S.st.turns[i + 1];
+  const r = t.reply;
   const more = (r.chips || []).filter(c => !['确认', '取消', '重试', '去验证', '去上传材料'].includes(c) && !/^第.笔$/.test(c) && r.card?.type !== 'choice');
-  const solvedBar = !['handoff', 'notice', 'confirm'].includes(r.card?.type);
-  return `<div class="ai ${t.bad ? 'isbad' : ''}" data-i="${i}"><div class="nm"><i></i>助手</div><div class="bub"><span style="white-space:pre-wrap">${esc(r.text)}</span>${r.card ? card(r.card.type === 'choice' ? { ...r.card, says: r.chips } : r.card, n) : ''}
-    ${solvedBar ? `<div class="acts"><button>⧉ 复制</button><button data-fb>👍 已解决</button><button data-fb>👎 未解决</button></div>` : ''}</div>
-    ${t.bad ? `<div class="badmark">● 反例：错在哪见右侧说明</div>` : ''}
-    ${more.length ? `<div class="more" style="margin-top:10px"><p>你可能还想问：</p>${more.map(c => `<button class="${n && n.say === c ? 'go' : ''}" data-q="${esc(c)}">${esc(c)}</button>`).join('')}</div>` : ''}</div>`;
+  const bar = !['handoff', 'notice', 'confirm'].includes(r.card?.type);
+  return `<div class="ai ${t.bad ? 'isbad' : ''}" data-i="${i}"><div class="nm"><i></i>助手</div><div class="bub"><span style="white-space:pre-wrap">${esc(r.text)}</span>${r.card ? card(r.card.type === 'choice' ? { ...r.card, says: r.chips } : r.card, null) : ''}
+    ${bar ? `<div class="acts"><button data-fb>⧉ 复制</button><button data-fb>👍 已解决</button><button data-fb>👎 未解决</button></div>` : ''}</div>
+    ${more.length ? `<div class="more"><p>你可能还想问：</p>${more.map(c => `<span>${esc(c)}</span>`).join('')}</div>` : ''}</div>`;
 }
-function bindAI(el, i) {
-  el.querySelector('.bub').onclick = e => { if (e.target.closest('[data-fb],[data-q],[data-say]')) return; S.sel = i; highlight(i); renderEx(); };
-  el.querySelectorAll('[data-fb]').forEach(b => b.onclick = () => { el.querySelectorAll('[data-fb]').forEach(x => x.classList.remove('on')); b.classList.add('on'); });
-  el.querySelectorAll('[data-q],[data-say]').forEach(b => b.onclick = () => pick(b.dataset.q || b.dataset.say));
+function bindChat() {
+  chat().querySelectorAll('[data-i]').forEach(el => el.onclick = e => { if (e.target.closest('[data-fb]')) { e.target.closest('[data-fb]').classList.toggle('on'); return; } S.sel = +el.dataset.i; renderEx(); focusTurn(S.sel, 'ex'); });
 }
-function highlight(i) { chat().querySelectorAll('.ai').forEach(x => x.classList.toggle('sel', +x.dataset.i === i)); }
+
+// ---------- 右侧说明 ----------
+function renderEx() {
+  const ex = $('#ex');
+  if (!S.st) {
+    ex.innerHTML = `<div class="intro"><h3>怎么看</h3><ol><li>点手机底部的输入框，选一个会话场景</li><li>点发送，AI 客服按预设回复</li><li>再点输入框，选下一个问题，直到这段对话结束</li><li>点对话里的任意一句，这里会连线显示它的解释</li></ol><p style="margin-top:12px;color:var(--ink3);font-size:12.5px">共 ${D.stories.length} 个会话场景：正常办理、先问清楚、系统异常、越界拦截、转人工，以及和正常场景对照的反例。</p></div>`;
+    return;
+  }
+  const st = S.st, o = OUT(st.outcome), pair = st.pair && byId(st.pair);
+  let h = `<div class="box"><div class="ex-top"><i class="tag ${st.group === '反例' ? 't-bad' : 't-info'}">${esc(st.group)}</i><h2>${esc(st.title)}</h2><i class="tag t-${o.tone}">${o.label}</i></div>
+    <p class="scene">${esc(st.summary.scene)}</p><p class="point">要点：${esc(st.summary.point)}</p>
+    ${pair ? `<p class="pairl">对照：<button data-pair="${pair.id}">${esc(pair.title)}</button>（${OUT(pair.outcome).label}）</p>` : ''}</div>`;
+  st.turns.forEach((t, i) => {
+    if (i >= S.step) { h += `<div class="turn todo"><div class="th"><b>第 ${i + 1} 轮</b><q>${esc(qOf(t))}</q></div></div>`; return; }
+    h += `<div class="turn ${t.bad ? 'isbad' : ''} ${S.sel === i ? 'cur' : ''}" data-t="${i}"><div class="th"><b>第 ${i + 1} 轮</b><q>${esc(qOf(t))}</q>${t.bad ? '<i class="tag t-bad">答错了</i>' : ''}</div>
+      <div class="bd"><p><em>AI 做了什么</em>${esc(t.explain.did)}</p>${t.explain.why ? `<p><em>为什么</em>${esc(t.explain.why)}</p>` : ''}</div>
+      ${t.bad ? `<div class="wrong"><b>错在哪</b>${esc(t.bad.wrong)}</div><div class="right"><b>正确的应该是</b>${esc(t.bad.right)}</div>` : ''}</div>`;
+  });
+  if (ended()) h += `<div class="fin ${o.tone}"><b>会话结束 · ${o.label}</b>${esc(st.summary.result)}</div>`;
+  ex.innerHTML = h;
+  ex.querySelectorAll('[data-pair]').forEach(b => b.onclick = () => start(b.dataset.pair));
+  ex.querySelectorAll('[data-t]').forEach(b => b.onclick = () => { S.sel = +b.dataset.t; renderEx(); focusTurn(S.sel, 'chat'); });
+  chat().querySelectorAll('.me').forEach(m => m.classList.toggle('sel', +m.dataset.i === S.sel));
+}
+// 只滚动对应的容器，不用 scrollIntoView（它会连带滚动手机外框）
+function focusTurn(i, where) {
+  if (where === 'ex') { const c = $(`#ex .turn[data-t="${i}"]`), ex = $('#ex'); if (c && ex.scrollHeight > ex.clientHeight) ex.scrollTo({ top: Math.max(0, c.offsetTop - ex.offsetTop - 120), behavior: 'smooth' }); }
+  else { const m = chat().querySelector(`.me[data-i="${i}"]`) || chat().querySelector(`.ai[data-i="${i}"]`); if (m) chat().scrollTo({ top: Math.max(0, m.offsetTop - 80), behavior: 'smooth' }); }
+}
+
+// ---------- 连线：对话里选中的那一句 → 右侧对应的说明 ----------
+function drawWire() {
+  const svg = $('#wire');
+  if (S.sel == null || !S.st || innerWidth <= 980) { svg.innerHTML = ''; return requestAnimationFrame(drawWire); }
+  const src = chat().querySelector(`.me[data-i="${S.sel}"]`) || chat().querySelector(`.sys[data-i="${S.sel}"]`) || chat().querySelector(`.ai[data-i="${S.sel}"] .bub`);
+  const dst = $(`#ex .turn[data-t="${S.sel}"]`);
+  if (!src || !dst) { svg.innerHTML = ''; return requestAnimationFrame(drawWire); }
+  const a = src.getBoundingClientRect(), b = dst.getBoundingClientRect(), c = chat().getBoundingClientRect(), e = $('#ex').getBoundingClientRect();
+  let y1 = a.top + Math.min(a.height / 2, 18), y2 = b.top + 22;
+  const off1 = y1 < c.top || y1 > c.bottom, off2 = y2 < e.top || y2 > e.bottom;
+  y1 = Math.min(Math.max(y1, c.top + 6), c.bottom - 6); y2 = Math.min(Math.max(y2, e.top + 6), e.bottom - 6);
+  const x1 = Math.max(a.right, a.left) + 6, x2 = b.left - 6, col = S.st.turns[S.sel]?.bad ? '#cf3434' : '#3d63f5';
+  const dx = Math.max(40, (x2 - x1) / 2);
+  svg.innerHTML = `<path d="M${x1},${y1} C${x1 + dx},${y1} ${x2 - dx},${y2} ${x2},${y2}" fill="none" stroke="${col}" stroke-width="2" ${off1 || off2 ? 'stroke-dasharray="5 5"' : ''} opacity=".85"/><circle cx="${x1}" cy="${y1}" r="4" fill="${col}"/><circle cx="${x2}" cy="${y2}" r="4" fill="#fff" stroke="${col}" stroke-width="2"/>`;
+  requestAnimationFrame(drawWire);
+}
 
 function card(c, n) {
   switch (c.type) {
@@ -350,37 +352,10 @@ function card(c, n) {
   return '';
 }
 
-// ---------- 右侧说明 ----------
-function renderEx() {
-  const st = S.st, o = OUT(st.outcome), sm = st.summary, pair = st.pair && byId(st.pair);
-  const turns = st.turns.map((t, i) => {
-    const done = i < S.step, q = t.say || '（等待人工客服接入）';
-    if (!done) return `<div class="turn todo"><div class="th"><b>第 ${i + 1} 轮</b><q>${esc(q)}</q></div><div class="note">还没进行到这一步</div></div>`;
-    return `<div class="turn ${t.bad ? 'isbad' : ''} ${S.sel === i ? 'cur' : ''}" data-t="${i}"><div class="th"><b>第 ${i + 1} 轮</b><q>${esc(q)}</q>${t.bad ? '<i class="tag t-bad">答错了</i>' : ''}</div>
-      <div class="l">AI 做了什么</div><div class="v">${esc(t.explain.did)}</div>
-      ${t.explain.why ? `<div class="l">为什么</div><div class="v">${esc(t.explain.why)}</div>` : ''}
-      ${t.bad ? `<div class="wrong"><b>错在哪</b>${esc(t.bad.wrong)}</div><div class="right"><b>正确的应该是</b>${esc(t.bad.right)}</div>` : ''}</div>`;
-  }).join('');
-  const ended = S.step >= st.turns.length;
-  $('#ex').innerHTML = `<div class="box"><div class="ex-top"><i class="tag ${st.group === '反例' ? 't-bad' : 't-info'}">${esc(st.group)}</i><h2>${esc(st.title)}</h2><i class="tag t-${o.tone}">${o.label}</i>${ended ? '' : `<button class="play" id="play">▶ 自动播放</button>`}</div>
-      <dl class="kv"><dt>情况</dt><dd>${esc(sm.scene)}</dd><dt>商户想要</dt><dd>${esc(sm.want)}</dd><dt>结局</dt><dd>${esc(sm.result)}</dd><dt>要点</dt><dd><b>${esc(sm.point)}</b></dd></dl>
-      ${pair ? `<p class="pairl">对照场景：<button data-pair="${pair.id}">${esc(pair.title)}</button>（${OUT(pair.outcome).label}）</p>` : ''}</div>
-    <div class="box tl"><h3>逐轮说明<small>${Math.min(S.step, st.turns.length)} / ${st.turns.length} 轮 · 点手机里的回复可定位</small></h3>${turns}
-      ${ended ? `<div class="fin ${o.tone}"><b>会话结束 · ${o.label}</b>　${esc(sm.result)}</div>` : ''}</div>
-    <p class="note">这是一个演示：每个场景的提问顺序和回复都是预设好的，你只需按顺序选择问题。正常场景的回复由一套可运行的处理规则生成（身份与权限检查、查询结果的四种情况、答复前检查、转人工条件），反例是故意构造的错误回答，用来和正常场景对照。</p>`;
-  const p = $('#play'); if (p) p.onclick = () => { S.auto = true; autoNext(); };
-  $('#ex').querySelectorAll('[data-pair]').forEach(b => b.onclick = () => load(b.dataset.pair));
-  $('#ex').querySelectorAll('[data-t]').forEach(b => b.onclick = () => { S.sel = +b.dataset.t; highlight(S.sel); renderEx(); const m = chat().querySelector(`.ai[data-i="${S.sel}"]`); if (m) m.scrollIntoView({ block: 'center', behavior: 'smooth' }); });
-}
-async function autoNext() {
-  if (!S.auto || S.busy) return;
-  const n = next(); if (!n) { S.auto = false; return; }
-  await wait(S.step === 0 ? 300 : 1300); if (!S.auto) return;
-  setDraft(n); await wait(500); send();
-}
 
-renderList();
-const h = location.hash.slice(1); load(byId(h) ? h : 'N1');
+reset();
+const h0 = location.hash.slice(1); if (byId(h0)) start(h0);
+requestAnimationFrame(drawWire);
 </script>
 </body>
 </html>

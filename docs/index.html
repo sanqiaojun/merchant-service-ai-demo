@@ -13,69 +13,48 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font:14px/1.65 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;color:var(--ink);background:var(--page);-webkit-font-smoothing:antialiased}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
-.hd{background:#fff;border-bottom:1px solid var(--line)}
-.hd-in{max-width:1400px;margin:0 auto;padding:14px 24px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
-.hd h1{font-size:17px;font-weight:600}
-.hd p{font-size:12.5px;color:var(--ink3)}
-.wrap{max-width:1400px;margin:0 auto;padding:20px 24px 48px;display:grid;grid-template-columns:270px 390px minmax(0,1fr);gap:22px;align-items:start}
-
-/* 场景列表 */
-.list{background:#fff;border:1px solid var(--line);border-radius:14px;padding:8px 0;position:sticky;top:16px;max-height:calc(100vh - 32px);overflow:auto}
-.list .tip{padding:6px 16px 10px;font-size:12.5px;color:var(--ink2);border-bottom:1px solid var(--line)}
-.grp{padding:10px 0 4px}
-.grp h4{font-size:12px;font-weight:500;color:var(--ink3);padding:0 16px 4px;display:flex;justify-content:space-between}
-.grp.bad h4{color:var(--bad)}
-.it{display:flex;align-items:center;gap:8px;width:100%;text-align:left;padding:7px 16px;font-size:13.5px}
-.it:hover{background:#f6f7fb}
-.it.on{background:var(--brand-soft);color:var(--brand-ink);font-weight:500}
-.it span{flex:1;min-width:0}
-.tag{font-style:normal;display:inline-block;font-size:11px;line-height:18px;padding:0 7px;border-radius:5px;white-space:nowrap;font-weight:400}
+.tag{font-style:normal;display:inline-block;font-size:11px;line-height:18px;padding:0 7px;border-radius:5px;white-space:nowrap}
 .t-ok{background:var(--ok-soft);color:var(--ok)}.t-info{background:var(--info-soft);color:var(--info)}.t-warn{background:var(--warn-soft);color:var(--warn)}.t-bad{background:var(--bad-soft);color:var(--bad)}
-.msel{display:none}
+.hd{text-align:center;padding:22px 16px 6px}
+.hd h1{font-size:18px;font-weight:600}
+.hd p{font-size:12.5px;color:var(--ink3);max-width:760px;margin:4px auto 0}
+.wrap{max-width:1120px;margin:0 auto;padding:14px 20px 40px;display:grid;grid-template-columns:390px minmax(0,1fr);column-gap:120px;align-items:start}
 
 /* 手机 */
-.phone{width:390px;height:800px;background:#11141b;border-radius:46px;padding:11px;position:sticky;top:16px;box-shadow:0 24px 50px -18px rgba(20,28,50,.35)}
-.scr{position:relative;width:100%;height:100%;border-radius:36px;overflow:hidden;display:flex;flex-direction:column;background:linear-gradient(180deg,#e5ebff 0%,#efeaff 170px,#f6f7fb 330px)}
+.phone{width:390px;height:800px;background:#11141b;border-radius:46px;padding:11px;position:sticky;top:14px;box-shadow:0 24px 50px -18px rgba(20,28,50,.35)}
+.scr{position:relative;width:100%;height:100%;border-radius:36px;overflow:hidden;overflow:clip;display:flex;flex-direction:column;background:linear-gradient(180deg,#e5ebff 0%,#efeaff 170px,#f6f7fb 330px)}
 .sb{height:40px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:0 28px;font-size:13px;font-weight:600}
 .nav{height:44px;flex:none;display:flex;align-items:center;justify-content:center;position:relative;font-weight:600;font-size:16.5px}
 .nav i{position:absolute;left:16px;font-style:normal;font-size:24px;font-weight:300;top:4px}
-.who{flex:none;margin:0 14px 4px;font-size:11.5px;color:var(--ink2);background:rgba(255,255,255,.6);border-radius:8px;padding:3px 9px;display:flex;gap:6px;align-items:center}
+.who{flex:none;margin:0 14px 4px;font-size:11.5px;color:var(--ink2);background:rgba(255,255,255,.6);border-radius:8px;padding:3px 9px}
 .who b{font-weight:500;color:var(--ink)}
-.chat{flex:1;overflow-y:auto;padding:6px 14px 10px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth}
+.who:empty{display:none}
+.chat{flex:1;overflow-y:auto;padding:6px 14px 10px;display:flex;flex-direction:column;gap:14px;position:relative}
 .chat>*{flex:none}
 .hello{position:relative;padding-top:6px}
 .hello h2{font-size:17px;font-weight:600;padding:6px 0 10px 4px}
 .mascot{position:absolute;right:6px;top:-6px;width:70px;height:70px;border-radius:22px;background:linear-gradient(140deg,#7b8cff,#a58bff);display:grid;place-items:center;transform:rotate(8deg)}
 .mascot::before{content:"";width:34px;height:26px;background:#fff;border-radius:12px 12px 12px 4px}
 .mascot::after{content:"";position:absolute;width:20px;height:4px;background:#7b8cff;border-radius:2px;box-shadow:0 -6px 0 #7b8cff;top:34px}
-.hello-card{background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.9);border-radius:16px;padding:12px 12px 12px}
+.hello-card{background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.9);border-radius:16px;padding:12px}
 .hello-card>p{font-size:13.5px;margin-bottom:8px}
-.guess-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.guess-h span{color:var(--brand-2);font-size:13px;font-style:italic;font-weight:500}
-.pager{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink2)}
-.pager button{width:22px;height:22px;border-radius:50%;background:#fff;border:1px solid var(--line);font-size:12px;line-height:1}
+.guess-h{color:var(--brand-2);font-size:13px;font-style:italic;font-weight:500;margin-bottom:8px}
 .pills{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.pill{background:#fff;border-radius:18px;padding:7px 10px 7px 12px;font-size:12.5px;display:flex;justify-content:space-between;gap:4px;text-align:left;color:var(--ink)}
+.pill{background:#fff;border-radius:18px;padding:7px 10px 7px 12px;font-size:12.5px;display:flex;justify-content:space-between;gap:4px;text-align:left}
 .pill::after{content:"›";color:var(--ink3)}
-.pill.no{color:var(--ink3)}
-.pill.go{color:var(--brand-ink);box-shadow:0 0 0 1.5px var(--brand) inset}
-.me{align-self:flex-end;max-width:78%;background:#dfe6ff;color:#1e3592;border-radius:14px 14px 4px 14px;padding:8px 12px;font-size:14px;white-space:pre-wrap}
+.me{align-self:flex-end;max-width:78%;background:#dfe6ff;color:#1e3592;border-radius:14px 14px 4px 14px;padding:8px 12px;font-size:14px;white-space:pre-wrap;cursor:pointer;transition:box-shadow .2s}
+.me.sel{box-shadow:0 0 0 2px var(--brand)}
+.me.isbad.sel{box-shadow:0 0 0 2px var(--bad)}
 .ai .nm{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2);margin-bottom:6px}
 .ai .nm i{width:24px;height:24px;border-radius:8px;background:linear-gradient(140deg,#7b8cff,#a58bff);display:inline-block;position:relative}
 .ai .nm i::before{content:"";position:absolute;left:6px;top:7px;width:12px;height:9px;background:#fff;border-radius:4px 4px 4px 1px}
-.ai.human .nm i{background:#ff9b45}
-.ai .bub{background:#fff;border-radius:14px;padding:11px 12px;font-size:14px;word-break:break-word;cursor:pointer;transition:box-shadow .2s}
-.ai.sel .bub{box-shadow:0 0 0 2px var(--brand)}
+.ai .bub{background:#fff;border-radius:14px;padding:11px 12px;font-size:14px;word-break:break-word;cursor:pointer}
 .ai.isbad .bub{box-shadow:0 0 0 1px #f4c4c2}
-.ai.isbad.sel .bub{box-shadow:0 0 0 2px var(--bad)}
-.acts{display:flex;justify-content:flex-end;gap:14px;margin-top:8px;font-size:11.5px;color:var(--ink3);white-space:normal}
-.acts button{display:flex;gap:3px;align-items:center}
+.acts{display:flex;justify-content:flex-end;gap:14px;margin-top:8px;font-size:11.5px;color:var(--ink3)}
 .acts button.on{color:var(--brand)}
-.badmark{font-size:11.5px;color:var(--bad);margin-top:5px;display:flex;gap:4px;align-items:center}
-.more{font-size:12.5px;color:var(--ink2)}
+.more{font-size:12.5px;color:var(--ink2);margin-top:10px}
 .more p{margin-bottom:6px}
-.more button{display:block;background:#fff;border-radius:10px;padding:7px 12px;margin-bottom:6px;text-align:left;font-size:13px;color:var(--ink)}
-.more button.go{color:var(--brand-ink);box-shadow:0 0 0 1.5px var(--brand) inset}
+.more span{display:block;background:#fff;border-radius:10px;padding:7px 12px;margin-bottom:6px;font-size:13px;color:var(--ink)}
 .sys{align-self:center;font-size:11.5px;color:var(--ink2);background:rgba(0,0,0,.05);border-radius:10px;padding:3px 10px}
 .end{align-self:stretch;text-align:center;font-size:12px;color:var(--ink2);display:flex;align-items:center;gap:8px}
 .end::before,.end::after{content:"";flex:1;height:1px;background:var(--line)}
@@ -83,7 +62,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .typing i{width:5px;height:5px;border-radius:50%;background:var(--ink3);animation:bl 1s infinite}
 .typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
 @keyframes bl{0%,100%{opacity:.25}50%{opacity:1}}
-/* 卡片 */
+
 .card{margin-top:10px;border:1px solid var(--line);border-radius:10px;overflow:hidden;white-space:normal;font-size:13px}
 .card-h{display:flex;justify-content:space-between;gap:6px;padding:7px 10px;background:#f8f9fc;color:var(--ink2);font-size:12px;border-bottom:1px solid var(--line)}
 .card-h.hl{background:linear-gradient(90deg,#eef1ff,#f6f3ff);color:var(--brand-ink)}
@@ -107,88 +86,83 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .cbtn{display:flex;gap:8px;margin-top:10px}
 .cbtn span{flex:1;text-align:center;padding:6px 0;border-radius:8px;border:1px solid var(--line);font-size:12.5px}
 .cbtn span.p{background:var(--brand);border-color:var(--brand);color:#fff}
-/* 底部输入 */
+
+
 .foot{flex:none;padding:6px 12px 16px;position:relative;z-index:3}
 .newt{display:inline-flex;align-items:center;gap:3px;background:#fff;border-radius:8px;padding:3px 10px;font-size:12px;color:var(--ink2);margin-bottom:8px}
-.inbar{display:flex;align-items:center;gap:10px;background:#fff;border-radius:14px;padding:9px 10px 9px 12px;box-shadow:0 1px 0 rgba(0,0,0,.03)}
-.inbar .mic{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--ink);display:grid;place-items:center;font-size:11px;flex:none}
-.inbar .field{flex:1;text-align:left;font-size:14px;color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;justify-content:space-between;gap:6px}
-.inbar .field.has{color:var(--ink)}
-.inbar .field::after{content:"⌃";color:var(--ink3);font-size:12px;transform:rotate(180deg);display:inline-block}
+.inbar{display:flex;align-items:center;gap:10px;background:#fff;border-radius:14px;padding:9px 10px 9px 12px;cursor:pointer}
+.inbar.hint{box-shadow:0 0 0 1.5px var(--brand) inset;animation:pulse 1.8s infinite}
+.mic{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--ink);display:grid;place-items:center;font-size:11px;flex:none}
+.field{flex:1;font-size:14px;color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.field.has{color:var(--ink)}
 .send{width:30px;height:30px;border-radius:50%;background:#d6dae6;color:#fff;font-size:16px;flex:none;display:grid;place-items:center}
-.send.on{background:var(--brand)}
-.send.pulse,.go{animation:pulse 1.8s infinite}
+.send.on{background:var(--brand);animation:pulse 1.8s infinite}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(61,99,245,.35)}50%{box-shadow:0 0 0 6px rgba(61,99,245,0)}}
-.more button.go,.pill.go{animation:none}
-.sheet{position:absolute;left:0;right:0;bottom:0;z-index:5;background:#fff;border-radius:18px 18px 0 0;box-shadow:0 -12px 30px rgba(20,28,50,.18);transform:translateY(105%);transition:transform .25s ease;max-height:72%;display:flex;flex-direction:column}
-.sheet.open{transform:none}
+.sheet{position:absolute;left:0;right:0;bottom:0;z-index:5;background:#fff;border-radius:18px 18px 0 0;box-shadow:0 -12px 30px rgba(20,28,50,.18);transform:translateY(105%);transition:transform .25s ease;max-height:78%;display:flex;flex-direction:column;visibility:hidden}
+.sheet.open{transform:none;visibility:visible}
 .mask{position:absolute;inset:0;background:rgba(15,20,35,.28);z-index:4;opacity:0;pointer-events:none;transition:opacity .25s}
 .mask.open{opacity:1;pointer-events:auto}
-.sh-h{display:flex;justify-content:space-between;align-items:center;padding:14px 16px 8px;font-weight:600}
-.sh-h button{font-size:20px;color:var(--ink3);font-weight:300;line-height:1}
-.sh-b{overflow:auto;padding:0 12px 20px}
-.sh-sec{font-size:12px;color:var(--ink3);padding:8px 4px 6px}
-.q{display:block;width:100%;text-align:left;padding:10px 12px;border-radius:10px;font-size:14px;margin-bottom:4px;background:#f6f7fb}
-.q.next{background:var(--brand-soft);color:var(--brand-ink);font-weight:500;box-shadow:0 0 0 1.5px var(--brand) inset}
-.q.next small{display:block;font-weight:400;font-size:11.5px;color:var(--brand)}
-.q.no{color:var(--ink3);background:#fafbfc;cursor:not-allowed}
-.cats{display:flex;gap:6px;overflow-x:auto;padding:2px 4px 8px}
-.cats button{flex:none;font-size:12.5px;padding:3px 11px;border-radius:14px;background:#f2f3f7;color:var(--ink2)}
-.cats button.on{background:var(--ink);color:#fff}
-.ended{text-align:center;padding:18px 10px 6px;color:var(--ink2);font-size:13.5px}
+.sh-h{display:flex;justify-content:space-between;align-items:center;padding:14px 16px 4px;font-weight:600;flex:none}
+.sh-h small{display:block;font-weight:400;font-size:12px;color:var(--ink3)}
+.sh-h button{font-size:22px;color:var(--ink3);font-weight:300;line-height:1}
+.sh-b{overflow:auto;padding:4px 12px 20px}
+.sh-sec{font-size:12px;color:var(--ink3);padding:10px 4px 6px;display:flex;justify-content:space-between}
+.sh-sec.bad{color:var(--bad)}
+.sc{display:flex;gap:8px;align-items:center;width:100%;text-align:left;padding:9px 12px;border-radius:10px;margin-bottom:6px;background:#f6f7fb}
+.sc:hover{background:#eef1fb}
+.sc div{flex:1;min-width:0}
+.sc b{display:block;font-weight:500;font-size:14px}
+.sc small{display:block;font-size:12px;color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.q{display:block;width:100%;text-align:left;padding:12px 14px;border-radius:12px;font-size:14.5px;background:var(--brand-soft);color:var(--brand-ink);font-weight:500;box-shadow:0 0 0 1.5px var(--brand) inset}
+.q small{display:block;font-weight:400;font-size:12px;color:var(--brand)}
+.lnk{display:block;margin:14px auto 0;font-size:13px;color:var(--ink2);text-decoration:underline;text-underline-offset:3px}
+.ended{text-align:center;padding:14px 6px 4px;color:var(--ink2);font-size:13.5px}
 .ended div{display:flex;gap:8px;justify-content:center;margin-top:12px}
 .ended button{padding:7px 16px;border-radius:18px;border:1px solid var(--line);font-size:13px}
 .ended button.p{background:var(--brand);color:#fff;border-color:var(--brand)}
-.toast{position:absolute;left:18px;right:18px;bottom:96px;background:rgba(20,24,34,.92);color:#fff;font-size:12.5px;border-radius:10px;padding:9px 12px;z-index:6;opacity:0;transition:opacity .2s;pointer-events:none}
-.toast.on{opacity:1}
 
-/* 解释 */
-.ex{min-width:0;display:flex;flex-direction:column;gap:14px}
-.box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px}
-.ex-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
-.ex-top h2{font-size:18px;font-weight:600;margin-right:auto}
-.play{font-size:12.5px;color:var(--brand-ink);border:1px solid #cdd7fb;border-radius:16px;padding:3px 12px;background:#fff}
-.kv{display:grid;grid-template-columns:84px 1fr;gap:6px 12px;font-size:13.5px}
-.kv dt{color:var(--ink3)}
-.kv dd b{font-weight:500}
-.pairl{margin-top:12px;font-size:13px;color:var(--ink2)}
+/* 说明 */
+.ex{position:sticky;top:14px;max-height:800px;overflow-y:auto;padding-right:4px;position:sticky}
+.intro{background:#fff;border:1px dashed #cdd4e4;border-radius:14px;padding:26px 24px;color:var(--ink2);font-size:14px}
+.intro h3{font-size:15px;color:var(--ink);margin-bottom:10px}
+.intro ol{padding-left:18px;line-height:2}
+.box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:12px}
+.ex-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.ex-top h2{font-size:17px;font-weight:600;margin-right:auto}
+.scene{font-size:13.5px;color:var(--ink2)}
+.point{margin-top:8px;font-size:13.5px;font-weight:500;color:var(--ink)}
+.pairl{margin-top:8px;font-size:12.5px;color:var(--ink3)}
 .pairl button{color:var(--brand-ink);text-decoration:underline;text-underline-offset:3px}
-.tl h3{font-size:14px;font-weight:600;margin-bottom:10px;display:flex;justify-content:space-between;align-items:baseline}
-.tl h3 small{font-weight:400;color:var(--ink3);font-size:12px}
-.turn{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px;transition:border-color .2s,box-shadow .2s;cursor:pointer}
+.turn{position:relative;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px;cursor:pointer;transition:border-color .2s,box-shadow .2s}
 .turn.cur{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-soft)}
 .turn.isbad.cur{border-color:var(--bad);box-shadow:0 0 0 3px var(--bad-soft)}
-.turn.todo{background:#fafbfc;color:var(--ink3);cursor:default}
-.turn .th{display:flex;gap:8px;align-items:baseline;margin-bottom:6px}
-.turn .th b{font-size:12px;color:var(--ink3);font-weight:500;flex:none}
-.turn .th q{font-size:13.5px;quotes:"“" "”";color:var(--ink)}
-.turn.todo .th q{color:var(--ink3)}
-.turn .l{font-size:12px;color:var(--ink3);margin-top:6px}
-.turn .v{font-size:13.5px}
-.wrong{margin-top:8px;background:var(--bad-soft);border-radius:8px;padding:8px 10px;font-size:13.5px;color:#8e1f1f}
-.right{margin-top:6px;background:var(--ok-soft);border-radius:8px;padding:8px 10px;font-size:13.5px;color:#0b5c3d}
-.wrong b,.right b{display:block;font-size:12px;font-weight:600;margin-bottom:2px}
-.fin{border-radius:12px;padding:12px 14px;font-size:13.5px}
+.turn.todo{background:transparent;border-style:dashed;color:var(--ink3);cursor:default;padding:9px 14px}
+.th{display:flex;gap:8px;align-items:baseline}
+.th b{font-size:12px;color:var(--ink3);font-weight:500;flex:none}
+.th q{font-size:13.5px;quotes:"“" "”";flex:1}
+.turn .bd{margin-top:6px;font-size:13.5px}
+.turn .bd p+p{margin-top:4px}
+.turn .bd em{font-style:normal;color:var(--ink3);font-size:12px;margin-right:6px}
+.wrong,.right{margin-top:8px;border-radius:8px;padding:7px 10px;font-size:13.5px}
+.wrong{background:var(--bad-soft);color:#8e1f1f}.right{background:var(--ok-soft);color:#0b5c3d;margin-top:6px}
+.wrong b,.right b{font-weight:600;margin-right:6px}
+.fin{border-radius:12px;padding:12px 14px;font-size:13.5px;margin-bottom:12px}
 .fin.ok{background:var(--ok-soft);color:#0b5c3d}.fin.info{background:var(--info-soft);color:#1c3f94}.fin.warn{background:var(--warn-soft);color:#6f4200}.fin.bad{background:var(--bad-soft);color:#8e1f1f}
-.fin b{font-weight:600}
-.note{font-size:12px;color:var(--ink3);line-height:1.6}
+.fin b{font-weight:600;margin-right:6px}
+#wire{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:50;overflow:visible}
 
-@media (max-width:1200px){.wrap{grid-template-columns:240px 390px minmax(0,1fr);gap:16px;padding:16px}}
 @media (max-width:980px){
-  .wrap{display:flex;flex-direction:column;align-items:stretch;padding:12px}
-  .list{display:none}
-  .msel{display:block;width:100%;font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:#fff}
-  .phone{width:100%;max-width:430px;align-self:center;height:min(760px,calc(100dvh - 120px));position:static;border-radius:28px;padding:7px}
+  .wrap{display:flex;flex-direction:column;align-items:center;gap:16px;padding:10px}
+  .phone{width:100%;max-width:430px;height:min(760px,calc(100dvh - 40px));position:static;border-radius:28px;padding:7px}
   .scr{border-radius:22px}.sb{display:none}
-  .hd-in{padding:12px}
+  .ex{position:static;max-height:none;overflow:visible;width:100%;max-width:430px}
+  #wire{display:none}
 }
 </style>
 </head>
 <body>
-<header class="hd"><div class="hd-in"><h1>商户服务助手 · AI 客服对话演示</h1><p id="disc"></p></div></header>
+<header class="hd"><h1>商户服务助手 · AI 客服对话演示</h1><p>对话为预设脚本：点输入框选一个会话场景，按预设问题一步步提问。正常场景的回复由作者实现的处理规则生成，反例为人为构造；品牌、商户与数据均为虚构。</p></header>
 <div class="wrap">
-  <nav class="list" id="list"></nav>
-  <select class="msel" id="msel" aria-label="选择会话场景"></select>
   <div class="phone"><div class="scr" id="scr">
     <div class="sb"><span>9:41</span><span>▂▄▆ ▮</span></div>
     <div class="nav"><i>‹</i>商户服务助手</div>
@@ -196,138 +170,166 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     <div class="chat" id="chat"></div>
     <div class="foot">
       <button class="newt" id="newt">＋ 新的话题</button>
-      <div class="inbar"><span class="mic">))</span><button class="field" id="field">请选择您要咨询的问题</button><button class="send" id="send" aria-label="发送">↑</button></div>
+      <div class="inbar" id="inbar"><span class="mic">))</span><span class="field" id="field"></span><button class="send" id="send" aria-label="发送">↑</button></div>
     </div>
     <div class="mask" id="mask"></div>
-    <div class="sheet" id="sheet"><div class="sh-h"><span>选择问题</span><button id="shx" aria-label="关闭">×</button></div><div class="sh-b" id="shb"></div></div>
-    <div class="toast" id="toast"></div>
+    <div class="sheet" id="sheet"><div class="sh-h" id="shh"></div><div class="sh-b" id="shb"></div></div>
   </div></div>
   <section class="ex" id="ex"></section>
 </div>
+<svg id="wire" aria-hidden="true"></svg>
 
 <script>
 const D = {"brand":"演示支付","groups":["正常办理","先问清楚","系统异常","越界拦截","转人工","反例"],"outcomes":{"resolved":{"label":"已解决","tone":"ok"},"honest":{"label":"如实说明","tone":"info"},"blocked":{"label":"已拦截","tone":"info"},"handoff":{"label":"转人工","tone":"warn"},"handoffFail":{"label":"转人工未成功","tone":"warn"},"bad":{"label":"反例：答错","tone":"bad"}},"stories":[{"id":"N1","group":"正常办理","title":"查昨天的交易，再问其中一笔","persona":"owner","outcome":"resolved","pair":"B1","summary":{"scene":"单店店主想看昨天生意怎么样，接着想确认其中一笔 1,280 元的交易。","want":"昨天的真实数字，以及那一笔到底成没成功。","result":"两个问题都查清楚了。","point":"数字来自交易系统，AI 只负责把它说清楚；查到两笔时先问是哪一笔，不替商户猜。"},"turns":[{"say":"帮我查一下昨天的交易","action":null,"reply":{"text":"查到老街面馆昨天（11-05）的交易汇总：","card":{"type":"summary","merchant":"老街面馆","date":"2026-11-05","amount":3560,"fee":13.53,"refund":45,"count":42},"chips":[]},"system":null,"explain":{"did":"按登录账号确定是老街面馆，去交易系统查昨天的汇总，用卡片展示交易金额、手续费、退款和笔数。","why":"交易数据属于\"事实查询\"，只能查系统，不能靠知识库或模型回答。查哪家店由登录身份决定，不由对话内容决定。"},"bad":null,"outcome":"直答"},{"say":"那笔 1280 的交易是什么状态？","action":null,"reply":{"text":"昨天有 2 笔 1,280.00 元的交易，你问的是哪一笔？","card":{"type":"txn","rows":[{"id":"T0105-01","time":"11:42","amount":1280,"status":"交易成功"},{"id":"T0105-02","time":"19:08","amount":1280,"status":"交易成功"}],"merchant":"老街面馆","choose":true},"chips":["第1笔","第2笔"]},"system":null,"explain":{"did":"按金额查明细，发现 1,280 元的交易有两笔，列出来请商户选。","why":"结果不唯一时随便挑一笔，有一半可能答错。多问一句的成本，远低于答错的成本。"},"bad":null,"outcome":"补问补查"},{"say":"第2笔","action":null,"reply":{"text":"这笔 1,280.00 元的交易（19:08）状态是：交易成功。","card":{"type":"txn","rows":[{"id":"T0105-02","time":"19:08","amount":1280,"status":"交易成功"}],"merchant":"老街面馆"},"chips":[]},"system":null,"explain":{"did":"按商户选的第 2 笔（19:08）给出状态：交易成功。","why":"商户选定后接着原问题回答，不用商户再问一遍。"},"bad":null,"outcome":"直答"}]},{"id":"N2","group":"正常办理","title":"先问规则，再问\"我的钱\"","persona":"owner","outcome":"honest","summary":{"scene":"商户先问 T+1 是什么意思，紧接着问自己昨天的钱今天能不能到。","want":"第二句才是真正想知道的：我那笔钱现在怎么样了。","result":"讲清了规则，也查到这笔钱正在结算处理中；不承诺具体到账时刻。","point":"同一个话题，前一句问\"规则\"，后一句问\"我的事\"，处理方式完全不同。"},"turns":[{"say":"T+1 结算是什么意思？","action":null,"reply":{"text":"T+1 指交易日（T）的下一个工作日完成结算；遇法定节假日顺延到下一个工作日。具体某一笔何时到账，以结算记录为准。\n如果想知道你某一笔什么时候到，我可以帮你查结算记录。","card":{"type":"knowledge","title":"T+1 结算的含义","version":"v2"},"chips":["那我昨天的钱今天能到吗"]},"system":null,"explain":{"did":"从已发布的知识里取出 T+1 的说明。","why":"这是一般规则，不涉及任何人的账户，所以不需要身份，也不对某一笔做承诺。"},"bad":null,"outcome":"直答"},{"say":"那我昨天的钱今天能到吗","action":null,"reply":{"text":"老街面馆 11-05 的交易（1,200.00 元）目前在结算处理中：清算已完成，等待出款。这笔没有失败。具体到账时间以结算记录为准，我没法给你一个确定的时刻。","card":{"type":"settle","merchant":"老街面馆","steps":[["交易成功","完成"],["清算完成","完成"],["等待出款","当前"],["银行入账","未开始"]]},"chips":[]},"system":null,"explain":{"did":"改为去结算系统查这位商户昨天那批钱，告诉他现在走到哪一步：清算完成，等待出款。","why":"\"我的钱今天能到吗\"不能再用规则回答——规则说 T+1，但这一笔可能延迟，也可能被退回。系统里没有确定的到账时刻，所以不说\"今天能到\"。"},"bad":null,"outcome":"直答"}]},{"id":"N3","group":"正常办理","title":"换结算卡，再改联系电话","persona":"owner","outcome":"resolved","summary":{"scene":"商户问怎么换结算卡，接着让 AI 直接帮他换，最后改一个联系电话。","want":"把资料改掉。","result":"换卡给了办理入口；联系电话已提交修改，审核中。","point":"能引导的引导，能办的才办；\"已提交\"不等于\"已生效\"。"},"turns":[{"say":"怎么更换结算卡？","action":null,"reply":{"text":"更换结算卡需要：①新卡户名与商户开户名一致；②准备新卡照片和法人身份证；③在 App「我的 - 结算信息 - 更换结算卡」提交，完成人脸验证。审核通过后生效，以页面显示的状态为准。\n办理时不要在对话里发送完整卡号、密码或验证码。","card":{"type":"guide","title":"更换结算卡","entry":"我的 - 结算信息 - 更换结算卡"},"chips":[]},"system":null,"explain":{"did":"给出换卡的条件、材料和入口，并提醒不要在对话里发卡号、密码、验证码。","why":"这是\"办理引导\"：告诉商户怎么办、去哪办。"},"bad":null,"outcome":"直答"},{"say":"你现在就帮我把结算卡换了","action":null,"reply":{"text":"换卡需要在正式办理页面完成，我不能在对话里替你更换。请在「我的 - 结算信息 - 更换结算卡」提交，完成人脸验证后等待审核。\n办理时不要在对话里发送完整卡号、密码或验证码。","card":{"type":"guide","title":"更换结算卡","entry":"我的 - 结算信息 - 更换结算卡"},"chips":["我要找人工"]},"system":null,"explain":{"did":"说明不能在对话里替他换卡，指回正式办理入口。","why":"换卡决定钱打到哪里，必须在有人脸验证的正式页面完成。AI 没有换卡能力，也不该有；绝不能说\"已帮您更换\"。"},"bad":null,"outcome":"部分答复"},{"say":"那帮我把联系电话改成 13912345678","action":null,"reply":{"text":"请确认：把老街面馆的联系电话改为 139****5678。确认后提交，审核通过才算修改成功。","card":{"type":"confirm","field":"联系电话","from":"138****0000","to":"139****5678"},"chips":["确认","取消"]},"system":null,"explain":{"did":"识别出要改联系电话，先把新号码复述给商户确认（中间打码）。","why":"联系电话属于低风险资料，可以在对话里办，但必须先确认再提交，防止号码听错、写错。"},"bad":null,"outcome":"待确认"},{"say":"确认","action":null,"reply":{"text":"已提交修改申请（CHG-20261106-0017），当前状态：审核中。审核通过后才算修改成功。","card":{"type":"change","id":"CHG-20261106-0017","state":"审核中"},"chips":[]},"system":null,"explain":{"did":"商户确认后提交申请，告诉他当前状态是\"审核中\"。","why":"提交成功只代表申请发出去了，审核通过才算改好。两件事要分开说。"},"bad":null,"outcome":"直答"}]},{"id":"C1","group":"先问清楚","title":"一个账号管三家店","persona":"finance","outcome":"resolved","summary":{"scene":"连锁烘焙店的财务，一个账号管 3 家门店，问\"昨天的交易\"。","want":"其中某一家店昨天的交易。","result":"问清是滨江店后查出汇总。","point":"对象不明确时先问清楚，补齐后回到原问题继续。"},"turns":[{"say":"帮我查一下昨天的交易","action":null,"reply":{"text":"你的账号授权了 3 家门店，要查哪一家？","card":{"type":"choice","options":["禾木烘焙·人民路店","禾木烘焙·滨江店","禾木烘焙·大学城店"]},"chips":["人民路店","滨江店","大学城店"]},"system":null,"explain":{"did":"发现这个账号授权了 3 家店，商户没说查哪家，先问。","why":"把 3 家加起来，或者默认查第一家，都可能不是商户要的。"},"bad":null,"outcome":"补问补查"},{"say":"滨江店","action":null,"reply":{"text":"查到禾木烘焙·滨江店昨天（11-05）的交易汇总：","card":{"type":"summary","merchant":"禾木烘焙·滨江店","date":"2026-11-05","amount":5320,"fee":15.96,"refund":66,"count":51},"chips":[]},"system":null,"explain":{"did":"商户选了滨江店，接着原问题查出滨江店昨天的汇总。","why":"补齐信息后直接回到原问题，不用商户再说一遍\"帮我查交易\"。"},"bad":null,"outcome":"直答"}]},{"id":"E1","group":"系统异常","title":"查询没查到记录","persona":"owner","outcome":"handoff","pair":"B2","summary":{"scene":"商户查昨天的交易，系统按条件没查到记录。","want":"知道昨天的交易情况。","result":"如实说\"暂未找到\"，商户要人工后转接。","point":"\"暂未找到\"和\"没有交易\"是两回事。"},"turns":[{"say":"帮我查一下昨天的交易","action":null,"reply":{"text":"按当前条件（老街面馆，2026-11-05）暂未找到交易记录。可以换个日期再查；暂未找到不代表没有发生过交易。","card":null,"chips":[]},"system":null,"explain":{"did":"如实说\"按当前条件暂未找到\"，提示可以换个日期再查。","why":"查不到可能是条件不对，也可能是数据还没同步。不能直接说成\"你昨天没有交易\"——对商户来说，这是完全不同的结论。"},"bad":null,"outcome":"部分答复"},{"say":"我要找人工","action":null,"reply":{"text":"已为你转接人工客服，当前排队第 2 位。之前的对话和查到的信息会一起交给客服，不用再说一遍。","card":{"type":"handoff","ticket":"GD-20261106-0031","queue":2},"chips":[]},"system":null,"explain":{"did":"直接转人工，已经查过的情况一起交给客服。","why":"商户明确要人工时不绕弯子，也不让他把问题再说一遍。"},"bad":null,"outcome":"交人工"}]},{"id":"E2","group":"系统异常","title":"交易系统没有响应","persona":"owner","outcome":"honest","pair":"B1","summary":{"scene":"商户查交易时，交易系统超时没有返回。","want":"昨天的交易数字。","result":"如实说明这次没查成，给出重试和转人工。","point":"查询失败就说失败，不能拿一句通用话术顶上。"},"turns":[{"say":"帮我查一下昨天的交易","action":null,"reply":{"text":"这次查询没有完成（交易系统暂时没有响应），我现在无法核实具体状态。你可以稍后重试，或者转人工处理。","card":null,"chips":["重试","我要找人工"]},"system":null,"explain":{"did":"告诉商户这次没查成、现在无法核实，给出重试和转人工两条路。","why":"可以对照反例「查交易回了一句套话」：那里查询同样失败了，却回了一句看起来像答案的话，商户和后台都以为已经答了。"},"bad":null,"outcome":"部分答复"}]},{"id":"E3","group":"系统异常","title":"两处记录对不上","persona":"owner","outcome":"handoff","summary":{"scene":"商户问昨天的钱为什么没到，系统里一处显示已出款，一处显示处理中。","want":"钱到底在哪。","result":"不下结论，直接转人工核实。","point":"证据互相矛盾时，AI 不选边。"},"turns":[{"say":"昨天的钱为什么还没到账？","action":null,"reply":{"text":"系统里这笔的状态记录不一致，一处显示已出款，一处显示处理中。为避免给你错误信息，我先不下结论。\n已为你转接人工客服，当前排队第 2 位。之前的对话和查到的信息会一起交给客服，不用再说一遍。","card":{"type":"handoff","ticket":"GD-20261106-0031","queue":2},"chips":[]},"system":null,"explain":{"did":"说明记录不一致、先不下结论，转人工，并把两条记录写进交接信息。","why":"随便挑一个说，有一半可能是错的：说\"已出款\"会让商户去银行白跑一趟，说\"处理中\"可能掩盖了真实问题。这需要有权限的人去核实。"},"bad":null,"outcome":"交人工"}]},{"id":"E4","group":"系统异常","title":"到账少了 12 元","persona":"owner","outcome":"handoff","summary":{"scene":"商户发现昨天到账比交易金额少了 12 元。","want":"少的钱去哪了。","result":"解释了其中 8 元，剩下 4 元转人工核查。","point":"能解释多少说多少，剩下的不编。"},"turns":[{"say":"昨天到账为什么比交易金额少了 12 元？","action":null,"reply":{"text":"差额 12.00 元里，已核实 8.00 元；剩下的 4.00 元暂时没有找到对应记录，我不推测原因，可以转人工帮你核查。","card":{"type":"breakdown","date":"2026-11-05","txnAmount":1200,"arrived":1188,"items":[{"name":"手续费（费率 0.38%）","amount":4.56},{"name":"交易冲正","amount":3.44}],"explained":8,"diff":12},"chips":["我要找人工"]},"system":null,"explain":{"did":"从结算系统取出差额构成：手续费 4.56 元、交易冲正 3.44 元，共 8 元有记录；剩下 4 元说明暂时没找到对应记录。","why":"金额全部来自系统记录，不是模型算的。剩下的 4 元如果为了\"答完整\"编一个原因，就是误答。"},"bad":null,"outcome":"部分答复"},{"say":"我要找人工","action":null,"reply":{"text":"已为你转接人工客服，当前排队第 2 位。之前的对话和查到的信息会一起交给客服，不用再说一遍。","card":{"type":"handoff","ticket":"GD-20261106-0031","queue":2},"chips":[]},"system":null,"explain":{"did":"转人工核查剩下的 4 元，已核实的 8 元一起交过去。","why":"客服接手时不用从头查。"},"bad":null,"outcome":"交人工"}]},{"id":"X1","group":"越界拦截","title":"报了别人的商户号","persona":"finance","outcome":"blocked","pair":"B4","summary":{"scene":"连锁店财务在对话里报了一个商户号，这家店不在他的授权范围内。","want":"看那家店的交易。","result":"拒绝查询。","point":"对话里说出来的商户号不是授权。"},"turns":[{"say":"查商户号 860331000000101 的交易","action":null,"reply":{"text":"我只能查询你当前账号授权范围内的商户。对话里提供的商户号只能用来定位，不能作为查询授权；转人工也不能绕过这个限制。","card":null,"chips":[]},"system":null,"explain":{"did":"拒绝查询，说明只能查当前账号授权的商户。","why":"能查哪家店，以登录账号的授权为准。如果报个商户号就能查，任何人都能看别人的流水。转人工也不能绕过这一条。"},"bad":null,"outcome":"拒绝"}]},{"id":"X2","group":"越界拦截","title":"服务商替商户来问","persona":"channel","outcome":"blocked","summary":{"scene":"服务商的一线人员替自己的商户来查交易，接着问了一个规则问题。","want":"帮商户看数据。","result":"数据不给查；规则问题正常回答。","point":"服务商协助不等于商户授权。"},"turns":[{"say":"帮我查一下商户 860331000001102 昨天的交易","action":null,"reply":{"text":"你当前登录的是服务商账号，没有这家商户的数据授权。我可以说明规则和办理路径；具体数据需要商户本人或授权账号查询。","card":null,"chips":["T+1 结算是什么意思？","怎么更换结算卡？"]},"system":null,"explain":{"did":"说明服务商账号没有这家商户的数据授权，可以讲规则和办理路径。","why":"服务商是在帮忙，但数据属于商户本人。权限跟着账号走，不跟着\"我是来帮他的\"走。"},"bad":null,"outcome":"拒绝"},{"say":"T+1 结算是什么意思？","action":null,"reply":{"text":"T+1 指交易日（T）的下一个工作日完成结算；遇法定节假日顺延到下一个工作日。具体某一笔何时到账，以结算记录为准。\n如果想知道你某一笔什么时候到，我可以帮你查结算记录。","card":{"type":"knowledge","title":"T+1 结算的含义","version":"v2"},"chips":["那我昨天的钱今天能到吗"]},"system":null,"explain":{"did":"正常回答 T+1 规则。","why":"一般规则不涉及任何商户的数据，谁问都可以答。"},"bad":null,"outcome":"直答"}]},{"id":"H1","group":"转人工","title":"钱没到，要求赔偿","persona":"owner","outcome":"handoff","summary":{"scene":"商户的钱没到账，情绪上来了，要求赔偿损失。","want":"赔偿。","result":"查清结算状态后，带着事实转人工。","point":"赔不赔是裁定，AI 不给结论。"},"turns":[{"say":"昨天的钱为什么还没到账？","action":null,"reply":{"text":"老街面馆 11-05 的交易（1,200.00 元）目前在结算处理中：清算已完成，等待出款。这笔没有失败。具体到账时间以结算记录为准，我没法给你一个确定的时刻。","card":{"type":"settle","merchant":"老街面馆","steps":[["交易成功","完成"],["清算完成","完成"],["等待出款","当前"],["银行入账","未开始"]]},"chips":[]},"system":null,"explain":{"did":"查结算状态：处理中，没有失败；不承诺到账时刻。","why":"先把事实查清楚。"},"bad":null,"outcome":"直答"},{"say":"那你赔我损失","action":null,"reply":{"text":"赔付和责任需要由人工按正式流程认定，我不能给结论，也不能做承诺。我已经把查到的情况整理好，一起交给客服。\n已为你转接人工客服，当前排队第 2 位。之前的对话和查到的信息会一起交给客服，不用再说一遍。","card":{"type":"handoff","ticket":"GD-20261106-0031","queue":2},"chips":[]},"system":null,"explain":{"did":"说明赔付需要人工按正式流程认定，不给结论、不做承诺，带着已查到的结算状态转人工。","why":"说\"可以赔\"是越权承诺，说\"不能赔\"同样越权。AI 能做的是把事实整理好，交给有权限的人。"},"bad":null,"outcome":"交人工"}]},{"id":"H2","group":"转人工","title":"账户冻结，连问四句","persona":"frozen","outcome":"handoff","pair":"B3","summary":{"scene":"商户账户被冻结，连着问是不是、为什么、什么时候解冻，最后找人工。","want":"尽快解冻。","result":"能说的都说清楚，不承诺解冻时间；转人工后客服接入。","point":"同一件事问法不同，能答的范围也不同。"},"turns":[{"say":"我的账户是不是冻结了？","action":null,"reply":{"text":"查到鲜果铺账户目前处于冻结状态（自 11-04 起）。","card":{"type":"account","status":"冻结中","since":"2026-11-04"},"chips":["我的账户为什么被冻结？","什么时候能解冻？"]},"system":null,"explain":{"did":"查账户状态，只回答：是，从 11-04 起冻结中。","why":"问的是状态，就答状态。"},"bad":null,"outcome":"直答"},{"say":"我的账户为什么被冻结？","action":null,"reply":{"text":"冻结原因是风险审核，目前需要补充经营材料：营业执照、近期进货凭证。这不等于已经认定违规，结果以审核结论为准。","card":{"type":"account","status":"冻结中","since":"2026-11-04","reason":"风险审核","required":"补充经营材料：营业执照、近期进货凭证","upload":true},"chips":[]},"system":null,"explain":{"did":"给出系统允许展示的原因和需要补的材料，并说明这不等于认定违规。","why":"原因只说系统里写明、允许展示的部分，不自己推测，也不替审核下结论。"},"bad":null,"outcome":"直答"},{"say":"什么时候能解冻？","action":null,"reply":{"text":"系统里目前没有正式的解冻安排，所以我没法承诺解冻时间。一般规则是：材料齐全后，风险审核一般在 3-5 个工作日内完成，以审核结论为准。需要的话，我帮你转人工确认进度。","card":null,"chips":["去上传材料","我要找人工"]},"system":null,"explain":{"did":"说明系统里没有正式的解冻安排，所以不承诺时间，只给一般审核时长。","why":"可以对照反例「冻结后承诺明天解冻」：没有依据的时间，商户会照着安排资金，落空后果更严重。"},"bad":null,"outcome":"部分答复"},{"say":"我要找人工","action":null,"reply":{"text":"已为你转接人工客服，当前排队第 2 位。之前的对话和查到的信息会一起交给客服，不用再说一遍。","card":{"type":"handoff","ticket":"GD-20261106-0031","queue":2},"chips":[]},"system":null,"explain":{"did":"转人工，对话和查到的状态一起交过去。","why":"商户要人工就转。"},"bad":null,"outcome":"交人工"},{"say":null,"action":"agent_accept","reply":null,"system":"人工客服 07 已接入，接下来由客服为你处理。","explain":{"did":"客服确认接入后，AI 停止自动回复。","why":"接入以客服点确认为准，不是\"发出转接\"就算接入。接入后 AI 再插话，会和客服的说法打架。"},"bad":null,"outcome":"人工已接入"}]},{"id":"H3","group":"转人工","title":"要人工，但没有客服在线","persona":"owner","outcome":"handoffFail","summary":{"scene":"商户问钱怎么还没到，听完解释后要找人工，但这时没有客服在线。","want":"找个人确认。","result":"转接没成功，如实告知，会话保留。","point":"没转成就说没转成。"},"turns":[{"say":"昨天的钱为什么还没到账？","action":null,"reply":{"text":"平台已于 11-06 09:30 出款。银行那边是否已经入账，我这边无法核实，以你的银行到账通知为准。","card":{"type":"settle","merchant":"老街面馆","steps":[["交易成功","完成"],["清算完成","完成"],["平台出款","完成"],["银行入账","无法核实"]]},"chips":[]},"system":null,"explain":{"did":"查到平台已经出款，但银行是否入账无法核实，如实说明能确认到哪一步。","why":"只确认自己系统里能确认的部分。\"银行已到账\"不是平台能看到的。"},"bad":null,"outcome":"部分答复"},{"say":"我要找人工","action":null,"reply":{"text":"现在没有客服在线，转接没有成功。你的问题和对话已经保留，可以稍后再试，或在工作时间拨打服务热线。","card":{"type":"notice","tone":"warn","title":"转接未成功","lines":["会话已保留","未分配客服，未生成工单"]},"chips":[]},"system":null,"explain":{"did":"转接失败，如实告诉商户，说明会话已保留，并给出其他联系方式。","why":"假装\"已为你转接\"，商户会一直等一个不会来的人。"},"bad":null,"outcome":"交人工（未成功）"}]},{"id":"B1","group":"反例","title":"查交易，回了一句套话","persona":"owner","outcome":"bad","pair":"N1","summary":{"scene":"和「查昨天的交易」同一个问题。这次系统查询时没带上商户身份，查询失败了。","want":"昨天的交易数字。","result":"商户三次都没得到答案，交给人工的信息也是错的。","point":"最隐蔽的错误：看起来像答了。"},"turns":[{"say":"帮我查一下昨天的交易","action":null,"reply":{"text":"交易到账时间可能受到结算周期、银行处理时间等因素影响，请耐心等待。","card":null,"chips":[]},"system":null,"explain":{"did":"查询因为缺少商户身份失败，AI 没发现，回了一句关于到账的通用话术。"},"bad":{"wrong":"答非所问：商户问交易，AI 说到账；查询明明失败了却没说。后台还会把这条记成\"已答复\"。","right":"查询前先确认商户身份已带上；查不到就如实说\"暂时查不到\"，给出重试或转人工（见「交易系统没有响应」）。"},"outcome":"直答（错误）"},{"say":"我问的是昨天的交易，不是到账","reply":{"text":"您好，交易数据可在 App 首页「交易查询」中查看，如有疑问请联系客服。"},"explain":{"did":"商户指出答非所问，AI 仍没意识到查询失败，把商户推回 App 自己查。"},"bad":{"wrong":"商户已经明确纠正，AI 还在给模板答复。商户来问，就是因为不想自己翻。","right":"承认没答到点上，说明这次查询没成功，重新查或转人工。"}},{"say":"我要找人工","reply":{"text":"已为你转接人工客服，当前排队第 2 位。之前的对话和查到的信息会一起交给客服，不用再说一遍。","card":{"type":"handoff","ticket":"GD-20261106-0042","queue":2,"note":"诉求：咨询到账时间（已答复）"}},"explain":{"did":"转人工，但交接信息写的是\"咨询到账时间，已答复\"。"},"bad":{"wrong":"前面的错误被带进了交接：客服看到的诉求是错的，还以为已经答过了，商户得从头再讲一遍。","right":"交接时写清：商户要查昨天的交易；查询因身份缺失失败；尚未给出数据。"}}]},{"id":"B2","group":"反例","title":"把\"没查到\"说成\"没有交易\"","persona":"owner","outcome":"bad","pair":"E1","summary":{"scene":"和「查询没查到记录」同一种情况：系统按条件没查到记录。","want":"知道昨天的交易情况。","result":"商户被告知\"没有交易、0 元\"，提出异议后仍被坚持。","point":"把\"暂未找到\"当成\"确定没有\"，还补了一个没查出来的数字。"},"turns":[{"say":"帮我查一下昨天的交易","reply":{"text":"您昨天没有交易记录，收款金额为 0 元。"},"explain":{"did":"系统按条件没查到，AI 直接下结论\"没有交易\"。"},"bad":{"wrong":"系统只是没查到，AI 说成\"没有\"；\"0 元\"这个数字也不是查出来的，是 AI 自己补的。","right":"说\"按当前条件暂未找到\"，提示核对日期或转人工（见「查询没查到记录」）。"}},{"say":"不可能，我昨天收了好几笔","reply":{"text":"系统显示您昨天确实没有交易，请您再核实一下。"},"explain":{"did":"商户提出异议，AI 坚持原来的结论。"},"bad":{"wrong":"结论本来就没有依据，商户反驳后还在坚持，并把核实的责任推回给商户。","right":"承认可能是查询条件或数据同步的问题，转人工核查。"}}]},{"id":"B3","group":"反例","title":"冻结后，承诺明天解冻","persona":"frozen","outcome":"bad","pair":"H2","summary":{"scene":"和「账户冻结，连问四句」同一位商户。","want":"尽快解冻。","result":"AI 给了一个没有依据的解冻时间，商户准备拿这笔钱付货款。","point":"编出来的时间，比\"不确定\"伤害更大。"},"turns":[{"say":"我的账户是不是冻结了？","action":null,"reply":{"text":"查到鲜果铺账户目前处于冻结状态（自 11-04 起）。","card":{"type":"account","status":"冻结中","since":"2026-11-04"},"chips":["我的账户为什么被冻结？","什么时候能解冻？"]},"system":null,"explain":{"did":"查状态，答状态。这一步是对的。","why":"错误往往不在第一句，而在后面的追问。"},"bad":null,"outcome":"直答"},{"say":"什么时候能解冻？","reply":{"text":"您放心，提交材料后一般明天就能解冻。"},"explain":{"did":"AI 给了一个\"明天\"。"},"bad":{"wrong":"系统里没有任何解冻安排，\"明天\"是编的。商户会按这个时间安排资金，落空后投诉的是\"你们答应过我\"。","right":"说明系统里没有正式安排，不承诺时间，只给一般审核时长，可以转人工确认进度（见「账户冻结，连问四句」）。"}},{"say":"那就好，我明天的货款就靠这笔钱了","reply":{"text":"好的，祝您生意兴隆！"},"explain":{"did":"AI 顺着话结束了对话。"},"bad":{"wrong":"商户已经明确说要用这笔钱付货款，风险很具体了，AI 还在顺着错误的承诺往下走。","right":"马上纠正：解冻时间不确定，建议不要按明天安排资金，并转人工确认进度。"}}]},{"id":"B4","group":"反例","title":"报个商户号，就查出别人的流水","persona":"finance","outcome":"bad","pair":"X1","summary":{"scene":"和「报了别人的商户号」同一句话：这家店不在当前账号的授权范围内。","want":"看那家店的交易。","result":"AI 直接查出了别人家的交易数据。","point":"把对话里的商户号当成了授权，是数据泄露。"},"turns":[{"say":"查商户号 860331000000101 的交易","reply":{"text":"查到老街面馆昨天（11-05）的交易汇总：","card":{"type":"summary","merchant":"老街面馆","date":"2026-11-05","amount":3560,"fee":13.53,"refund":45,"count":42}},"explain":{"did":"AI 用对话里报的商户号去查，查出了老街面馆的交易。"},"bad":{"wrong":"老街面馆不在这个账号的授权范围内。看起来答得又快又准，实际是把别人的流水给了不该看的人。","right":"商户号只能用来定位，能不能查以登录账号的授权为准（见「报了别人的商户号」）。"}}]}],"accounts":{"owner":{"name":"张老板","role":"店主","desc":"单店店主","session":"valid","merchants":["老街面馆"]},"finance":{"name":"王会计","role":"财务","desc":"连锁店财务，授权 3 家门店","session":"valid","merchants":["禾木烘焙·人民路店","禾木烘焙·滨江店","禾木烘焙·大学城店"]},"cashier":{"name":"小周","role":"收银员","desc":"滨江店收银员子账号","session":"valid","merchants":["禾木烘焙·滨江店"]},"frozen":{"name":"李老板","role":"店主","desc":"账户风险审核中","session":"valid","merchants":["鲜果铺"]},"expired":{"name":"陈老板","role":"店主","desc":"登录已失效","session":"expired","merchants":["诚信五金"]},"channel":{"name":"刘经理","role":"服务商一线","desc":"服务商人员，无商户数据授权","session":"valid","merchants":[]}},"library":{"人工服务":["我要找人工"],"账户状态":["我的账户是不是冻结了？","我的账户为什么被冻结？","什么时候能解冻？"],"规则咨询":["T+1 结算是什么意思？"],"结算卡与资料":["怎么更换结算卡？","你现在就帮我把结算卡换了","那帮我把联系电话改成 13912345678"],"到账结算":["那我昨天的钱今天能到吗","昨天的钱为什么还没到账？","昨天到账为什么比交易金额少了 12 元？","那你赔我损失","我问的是昨天的交易，不是到账","那就好，我明天的货款就靠这笔钱了"],"交易查询":["帮我查一下昨天的交易","那笔 1280 的交易是什么状态？","查商户号 860331000000101 的交易","帮我查一下商户 860331000001102 昨天的交易","不可能，我昨天收了好几笔"],"回复助手":["第2笔","确认","滨江店"]}};
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const yuan = n => (+n).toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-const S = { st: null, step: 0, draft: null, busy: false, sel: null, cat: null, gp: 0, auto: false };
 const byId = id => D.stories.find(s => s.id === id);
 const OUT = k => D.outcomes[k];
+const wait = ms => new Promise(r => setTimeout(r, ms));
+// gen：每次换场景加一；异步回放中途发现 gen 变了就停，避免上一场景的回复串到新场景
+const S = { st: null, step: 0, draft: null, busy: false, sel: null, gen: 0, filter: null };
+const chat = () => $('#chat');
+const qOf = t => t.action === 'agent_accept' ? '（模拟）等待人工客服接入' : t.say;
+const GUESS = [['商户交易查询', '帮我查一下昨天的交易'], ['商户到账查询', '昨天的钱为什么还没到账？'], ['变更结算卡', '怎么更换结算卡？'], ['账户状态查询', '我的账户是不是冻结了？'], ['到账金额差异', '昨天到账为什么比交易金额少了 12 元？'], ['联系人工客服', '我要找人工']];
 
-$('#disc').textContent = '对话为预设脚本，用于演示 AI 客服在不同情况下的处理逻辑。正常场景的回复由作者实现的处理规则生成，反例为人为构造；品牌、商户与数据均为虚构，不代表任何线上系统。';
-
-// ---------- 场景列表 ----------
-function renderList() {
-  $('#list').innerHTML = `<p class="tip">选一个会话场景，在手机里按预设问题一步步提问；右边逐轮说明 AI 为什么这样答。</p>` + D.groups.map(g => {
-    const ss = D.stories.filter(s => s.group === g);
-    return `<div class="grp ${g === '反例' ? 'bad' : ''}"><h4><span>${g}</span><span>${ss.length}</span></h4>${ss.map(s => `<button class="it ${S.st?.id === s.id ? 'on' : ''}" data-id="${s.id}"><span>${esc(s.title)}</span><i class="tag t-${OUT(s.outcome).tone}">${OUT(s.outcome).label}</i></button>`).join('')}</div>`;
-  }).join('');
-  $('#list').querySelectorAll('.it').forEach(b => b.onclick = () => load(b.dataset.id));
-  $('#msel').innerHTML = D.groups.map(g => `<optgroup label="${g}">${D.stories.filter(s => s.group === g).map(s => `<option value="${s.id}" ${S.st?.id === s.id ? 'selected' : ''}>${esc(s.title)}（${OUT(s.outcome).label}）</option>`).join('')}</optgroup>`).join('');
+// ---------- 场景开始 / 重置 ----------
+function reset() {
+  S.gen++; S.st = null; S.step = 0; S.draft = null; S.busy = false; S.sel = null;
+  $('#who').innerHTML = '';
+  chat().innerHTML = `<div class="hello"><div class="mascot" aria-hidden="true"></div><h2>你好，我是商户服务助手~</h2><div class="hello-card"><p>有什么问题尽管问我吧！</p><div class="guess-h">✦ 猜你想问</div><div class="pills">${GUESS.map(([l, q]) => `<button class="pill" data-q="${esc(q)}">${esc(l)}</button>`).join('')}</div></div></div>`;
+  chat().querySelectorAll('.pill').forEach(b => b.onclick = () => { S.filter = b.dataset.q; openSheet(); });
+  refreshInput(); closeSheet(); renderEx();
 }
-$('#msel').onchange = e => load(e.target.value);
-
-// ---------- 加载场景 ----------
-function load(id) {
-  S.st = byId(id); S.step = 0; S.draft = null; S.busy = false; S.sel = null; S.human = false; S.auto = false;
+function start(id) {
+  reset();
+  S.st = byId(id);
   const a = D.accounts[S.st.persona];
   $('#who').innerHTML = `当前登录 <b>${esc(a.name)}</b> · ${esc(a.role)} · ${esc(a.merchants.length > 1 ? `授权 ${a.merchants.length} 家门店` : a.merchants[0] || '无商户数据授权')}`;
-  $('#chat').innerHTML = hello();
-  bindHello(); setDraft(null); closeSheet(); renderList(); renderEx();
+  S.draft = S.st.turns[0];
+  refreshInput(); renderEx();
   if (history.replaceState) history.replaceState(null, '', '#' + id);
 }
-const next = () => S.st.turns[S.step] || null;
-const nextLabel = t => t ? (t.action === 'agent_accept' ? '（模拟）等待人工客服接入' : t.say) : null;
+const next = () => S.st ? S.st.turns[S.step] || null : null;
+const ended = () => S.st && S.step >= S.st.turns.length;
 
-// 欢迎卡 + 猜你想问
-const GUESS = [['商户交易查询', '帮我查一下昨天的交易'], ['商户到账查询', '昨天的钱为什么还没到账？'], ['变更结算卡', '怎么更换结算卡？'], ['账户状态查询', '我的账户是不是冻结了？'], ['T+1 结算规则', 'T+1 结算是什么意思？'], ['到账金额差异', '昨天到账为什么比交易金额少了 12 元？'], ['指定商户号查询', '查商户号 860331000000101 的交易'], ['联系人工客服', '我要找人工']];
-function hello() {
-  const n = nextLabel(next());
-  if (S.step === 0) { const i = GUESS.findIndex(g => g[1] === n); if (i >= 0) S.gp = Math.floor(i / 4); }
-  const items = GUESS.slice(S.gp * 4, S.gp * 4 + 4);
-  return `<div class="hello" id="hello"><div class="mascot" aria-hidden="true"></div><h2>你好，我是商户服务助手~</h2>
-    <div class="hello-card"><p>有什么问题尽管问我吧！</p><div class="guess-h"><span>✦ 猜你想问</span><div class="pager"><button data-pg="-1">‹</button>${S.gp + 1} / 2<button data-pg="1">›</button></div></div>
-    <div class="pills">${items.map(([l, q]) => `<button class="pill ${q === n ? 'go' : ''}" data-q="${esc(q)}">${esc(l)}</button>`).join('')}</div></div></div>`;
-}
-function bindHello() {
-  const h = $('#hello'); if (!h) return;
-  h.querySelectorAll('[data-pg]').forEach(b => b.onclick = () => { S.gp = (S.gp + 2 + +b.dataset.pg) % 2; h.outerHTML = hello(); bindHello(); });
-  h.querySelectorAll('[data-q]').forEach(b => b.onclick = () => pick(b.dataset.q));
+function refreshInput() {
+  const f = $('#field');
+  f.textContent = S.draft ? qOf(S.draft) : ended() ? '本场景已结束，点这里换一个会话场景' : !S.st ? '点这里，选择一个会话场景' : '点这里，选择下一个问题';
+  f.classList.toggle('has', !!S.draft);
+  $('#send').classList.toggle('on', !!S.draft);
+  $('#inbar').classList.toggle('hint', !S.draft && !S.busy);
 }
 
-// ---------- 输入：下拉选择 → 填入输入框 → 发送 ----------
-function setDraft(t) {
-  S.draft = t;
-  const f = $('#field'); f.textContent = t ? nextLabel(t) : (S.step >= S.st.turns.length ? '本场景对话已结束' : '请选择您要咨询的问题'); f.classList.toggle('has', !!t);
-  $('#send').classList.toggle('on', !!t); $('#send').classList.toggle('pulse', !!t);
-}
-function pick(text) {
-  if (S.busy) return;
-  const n = next();
-  if (n && nextLabel(n) === text) { setDraft(n); closeSheet(); return; }
-  toast(n ? `这个场景的下一句是「${nextLabel(n)}」。演示只回放预设对话，想看其他问题可以换一个场景。` : '本场景对话已结束，可以换一个场景。');
-}
+// ---------- 下拉面板 ----------
 function openSheet() {
   if (S.busy) return;
-  const n = next(), body = $('#shb');
-  if (!n) {
-    const i = D.stories.indexOf(S.st), nx = D.stories[(i + 1) % D.stories.length];
-    body.innerHTML = `<div class="ended">本场景对话已结束，没有后续问题了。<div><button id="again">重新开始</button><button class="p" id="nxs">下一个场景：${esc(nx.title)}</button></div></div>`;
-    body.querySelector('#again').onclick = () => load(S.st.id); body.querySelector('#nxs').onclick = () => load(nx.id);
+  const h = $('#shh'), b = $('#shb');
+  if (!S.st || ended()) {
+    const list = S.filter ? D.stories.filter(s => s.turns[0].say === S.filter) : D.stories;
+    h.innerHTML = `<span>选择会话场景<small>${S.filter ? `「${esc(S.filter)}」在不同情况下的 ${list.length} 种对话` : `共 ${D.stories.length} 个，选一个开始；问题和回复都是预设好的`}</small></span><button id="shx" aria-label="关闭">×</button>`;
+    let html = ended() ? `<div class="ended">这个会话已结束，没有后续问题了。<div><button id="again">再看一遍</button></div></div>` : '';
+    for (const g of D.groups) {
+      const ss = list.filter(s => s.group === g); if (!ss.length) continue;
+      html += `<div class="sh-sec ${g === '反例' ? 'bad' : ''}"><span>${g}</span><span>${ss.length}</span></div>` +
+        ss.map(s => `<button class="sc" data-id="${s.id}"><div><b>${esc(s.title)}</b><small>${esc(s.turns.filter(t => t.say).map(t => t.say).join(' → '))}</small></div><i class="tag t-${OUT(s.outcome).tone}">${OUT(s.outcome).label}</i></button>`).join('');
+    }
+    if (S.filter) html += `<button class="lnk" id="all">查看全部会话场景</button>`;
+    b.innerHTML = html;
+    b.querySelectorAll('[data-id]').forEach(x => x.onclick = () => { S.filter = null; start(x.dataset.id); });
+    const al = b.querySelector('#all'); if (al) al.onclick = () => { S.filter = null; openSheet(); };
+    const ag = b.querySelector('#again'); if (ag) ag.onclick = () => start(S.st.id);
   } else {
-    const lbl = nextLabel(n), cats = Object.keys(D.library);
-    if (!S.cat || !cats.includes(S.cat)) S.cat = cats.find(c => D.library[c].includes(lbl)) || cats[0];
-    body.innerHTML = `<div class="sh-sec">接下来</div><button class="q next" data-q="${esc(lbl)}"><small>${S.step === 0 ? '这个场景从这句话开始' : `第 ${S.step + 1} 轮 · 按预设继续`}</small>${esc(lbl)}</button>
-      <div class="sh-sec">全部问题（按类别）</div><div class="cats">${cats.map(c => `<button class="${c === S.cat ? 'on' : ''}" data-c="${esc(c)}">${esc(c)}</button>`).join('')}</div>
-      <div id="qs">${D.library[S.cat].map(q => `<button class="q ${q === lbl ? '' : 'no'}" data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>`;
-    body.querySelectorAll('[data-c]').forEach(b => b.onclick = () => { S.cat = b.dataset.c; openSheet(); });
-    body.querySelectorAll('[data-q]').forEach(b => b.onclick = () => pick(b.dataset.q));
+    const n = next();
+    h.innerHTML = `<span>下一个问题<small>${esc(S.st.title)} · 第 ${S.step + 1} / ${S.st.turns.length} 轮</small></span><button id="shx" aria-label="关闭">×</button>`;
+    b.innerHTML = `<button class="q" id="pickq"><small>${n.action ? '商户这一步不用说话' : '按预设继续提问'}</small>${esc(qOf(n))}</button><button class="lnk" id="chg">换一个会话场景</button>`;
+    b.querySelector('#pickq').onclick = () => { S.draft = n; refreshInput(); closeSheet(); };
+    b.querySelector('#chg').onclick = () => { reset(); openSheet(); };
   }
+  h.querySelector('#shx').onclick = closeSheet;
+  b.scrollTop = 0;
   $('#sheet').classList.add('open'); $('#mask').classList.add('open');
 }
 function closeSheet() { $('#sheet').classList.remove('open'); $('#mask').classList.remove('open'); }
-$('#field').onclick = openSheet; $('#mask').onclick = closeSheet; $('#shx').onclick = closeSheet;
-$('#send').onclick = () => { if (S.draft) send(); else openSheet(); };
-$('#newt').onclick = () => load(S.st.id);
-let tt; function toast(m) { const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('on'), 3200); }
+$('#mask').onclick = closeSheet;
+$('#inbar').onclick = e => { if (e.target.closest('#send')) return; openSheet(); };
+$('#send').onclick = () => S.draft ? send() : openSheet();
+$('#newt').onclick = () => { S.filter = null; reset(); openSheet(); };
 
 // ---------- 发送与回放 ----------
-const chat = () => $('#chat');
-const end = () => requestAnimationFrame(() => chat().scrollTop = chat().scrollHeight);
-function add(html) { const d = document.createElement('div'); d.innerHTML = html; const el = d.firstElementChild; chat().append(el); end(); return el; }
+function add(html) { const d = document.createElement('div'); d.innerHTML = html; const el = d.firstElementChild; chat().append(el); chat().scrollTop = chat().scrollHeight; return el; }
 async function send() {
   const t = S.draft; if (!t || S.busy) return;
-  const i = S.step; S.busy = true; setDraft(null);
-  chat().querySelectorAll('.go').forEach(x => x.classList.remove('go'));
-  if (t.say) add(`<div class="me">${esc(t.say)}</div>`);
-  if (t.action === 'agent_accept') { await wait(700); add(`<div class="sys">${esc(t.system || '人工客服已接入')}</div>`); S.human = true; }
+  const g = S.gen, i = S.step;
+  S.busy = true; S.draft = null; refreshInput();
+  if (t.say) add(`<div class="me ${t.bad ? 'isbad' : ''}" data-i="${i}">${esc(t.say)}</div>`);
+  if (t.action === 'agent_accept') { await wait(700); if (g !== S.gen) return; add(`<div class="sys" data-i="${i}">${esc(t.system || '人工客服已接入')}</div>`); }
   else if (t.reply) {
     const ty = add(`<div class="ai"><div class="nm"><i></i>助手</div><div class="bub"><span class="typing"><i></i><i></i><i></i>${t.reply.card ? '正在查询' : '正在输入'}</span></div></div>`);
-    await wait(t.reply.card ? 1100 : 750); ty.remove();
-    const el = add(aiHTML(t, i)); bindAI(el, i);
+    await wait(t.reply.card ? 1000 : 700); if (g !== S.gen) return;
+    ty.remove(); add(aiHTML(t, i));
   }
-  S.step++; S.sel = null; S.busy = false;
-  if (S.step >= S.st.turns.length) add(`<div class="end">会话结束 · 结局：${OUT(S.st.outcome).label}</div>`);
-  else if (i === 0) { const h = $('#hello'); if (h) { h.outerHTML = hello(); bindHello(); } }
-  renderEx(); highlight(-1);
-  if (S.auto) autoNext();
+  S.step++; S.busy = false; S.sel = i;
+  if (ended()) add(`<div class="end">会话结束 · ${OUT(S.st.outcome).label}</div>`);
+  bindChat(); refreshInput(); renderEx(); focusTurn(i, 'ex');
 }
-const wait = ms => new Promise(r => setTimeout(r, ms));
 function aiHTML(t, i) {
-  const r = t.reply, n = S.st.turns[i + 1];
+  const r = t.reply;
   const more = (r.chips || []).filter(c => !['确认', '取消', '重试', '去验证', '去上传材料'].includes(c) && !/^第.笔$/.test(c) && r.card?.type !== 'choice');
-  const solvedBar = !['handoff', 'notice', 'confirm'].includes(r.card?.type);
-  return `<div class="ai ${t.bad ? 'isbad' : ''}" data-i="${i}"><div class="nm"><i></i>助手</div><div class="bub"><span style="white-space:pre-wrap">${esc(r.text)}</span>${r.card ? card(r.card.type === 'choice' ? { ...r.card, says: r.chips } : r.card, n) : ''}
-    ${solvedBar ? `<div class="acts"><button>⧉ 复制</button><button data-fb>👍 已解决</button><button data-fb>👎 未解决</button></div>` : ''}</div>
-    ${t.bad ? `<div class="badmark">● 反例：错在哪见右侧说明</div>` : ''}
-    ${more.length ? `<div class="more" style="margin-top:10px"><p>你可能还想问：</p>${more.map(c => `<button class="${n && n.say === c ? 'go' : ''}" data-q="${esc(c)}">${esc(c)}</button>`).join('')}</div>` : ''}</div>`;
+  const bar = !['handoff', 'notice', 'confirm'].includes(r.card?.type);
+  return `<div class="ai ${t.bad ? 'isbad' : ''}" data-i="${i}"><div class="nm"><i></i>助手</div><div class="bub"><span style="white-space:pre-wrap">${esc(r.text)}</span>${r.card ? card(r.card.type === 'choice' ? { ...r.card, says: r.chips } : r.card, null) : ''}
+    ${bar ? `<div class="acts"><button data-fb>⧉ 复制</button><button data-fb>👍 已解决</button><button data-fb>👎 未解决</button></div>` : ''}</div>
+    ${more.length ? `<div class="more"><p>你可能还想问：</p>${more.map(c => `<span>${esc(c)}</span>`).join('')}</div>` : ''}</div>`;
 }
-function bindAI(el, i) {
-  el.querySelector('.bub').onclick = e => { if (e.target.closest('[data-fb],[data-q],[data-say]')) return; S.sel = i; highlight(i); renderEx(); };
-  el.querySelectorAll('[data-fb]').forEach(b => b.onclick = () => { el.querySelectorAll('[data-fb]').forEach(x => x.classList.remove('on')); b.classList.add('on'); });
-  el.querySelectorAll('[data-q],[data-say]').forEach(b => b.onclick = () => pick(b.dataset.q || b.dataset.say));
+function bindChat() {
+  chat().querySelectorAll('[data-i]').forEach(el => el.onclick = e => { if (e.target.closest('[data-fb]')) { e.target.closest('[data-fb]').classList.toggle('on'); return; } S.sel = +el.dataset.i; renderEx(); focusTurn(S.sel, 'ex'); });
 }
-function highlight(i) { chat().querySelectorAll('.ai').forEach(x => x.classList.toggle('sel', +x.dataset.i === i)); }
+
+// ---------- 右侧说明 ----------
+function renderEx() {
+  const ex = $('#ex');
+  if (!S.st) {
+    ex.innerHTML = `<div class="intro"><h3>怎么看</h3><ol><li>点手机底部的输入框，选一个会话场景</li><li>点发送，AI 客服按预设回复</li><li>再点输入框，选下一个问题，直到这段对话结束</li><li>点对话里的任意一句，这里会连线显示它的解释</li></ol><p style="margin-top:12px;color:var(--ink3);font-size:12.5px">共 ${D.stories.length} 个会话场景：正常办理、先问清楚、系统异常、越界拦截、转人工，以及和正常场景对照的反例。</p></div>`;
+    return;
+  }
+  const st = S.st, o = OUT(st.outcome), pair = st.pair && byId(st.pair);
+  let h = `<div class="box"><div class="ex-top"><i class="tag ${st.group === '反例' ? 't-bad' : 't-info'}">${esc(st.group)}</i><h2>${esc(st.title)}</h2><i class="tag t-${o.tone}">${o.label}</i></div>
+    <p class="scene">${esc(st.summary.scene)}</p><p class="point">要点：${esc(st.summary.point)}</p>
+    ${pair ? `<p class="pairl">对照：<button data-pair="${pair.id}">${esc(pair.title)}</button>（${OUT(pair.outcome).label}）</p>` : ''}</div>`;
+  st.turns.forEach((t, i) => {
+    if (i >= S.step) { h += `<div class="turn todo"><div class="th"><b>第 ${i + 1} 轮</b><q>${esc(qOf(t))}</q></div></div>`; return; }
+    h += `<div class="turn ${t.bad ? 'isbad' : ''} ${S.sel === i ? 'cur' : ''}" data-t="${i}"><div class="th"><b>第 ${i + 1} 轮</b><q>${esc(qOf(t))}</q>${t.bad ? '<i class="tag t-bad">答错了</i>' : ''}</div>
+      <div class="bd"><p><em>AI 做了什么</em>${esc(t.explain.did)}</p>${t.explain.why ? `<p><em>为什么</em>${esc(t.explain.why)}</p>` : ''}</div>
+      ${t.bad ? `<div class="wrong"><b>错在哪</b>${esc(t.bad.wrong)}</div><div class="right"><b>正确的应该是</b>${esc(t.bad.right)}</div>` : ''}</div>`;
+  });
+  if (ended()) h += `<div class="fin ${o.tone}"><b>会话结束 · ${o.label}</b>${esc(st.summary.result)}</div>`;
+  ex.innerHTML = h;
+  ex.querySelectorAll('[data-pair]').forEach(b => b.onclick = () => start(b.dataset.pair));
+  ex.querySelectorAll('[data-t]').forEach(b => b.onclick = () => { S.sel = +b.dataset.t; renderEx(); focusTurn(S.sel, 'chat'); });
+  chat().querySelectorAll('.me').forEach(m => m.classList.toggle('sel', +m.dataset.i === S.sel));
+}
+// 只滚动对应的容器，不用 scrollIntoView（它会连带滚动手机外框）
+function focusTurn(i, where) {
+  if (where === 'ex') { const c = $(`#ex .turn[data-t="${i}"]`), ex = $('#ex'); if (c && ex.scrollHeight > ex.clientHeight) ex.scrollTo({ top: Math.max(0, c.offsetTop - ex.offsetTop - 120), behavior: 'smooth' }); }
+  else { const m = chat().querySelector(`.me[data-i="${i}"]`) || chat().querySelector(`.ai[data-i="${i}"]`); if (m) chat().scrollTo({ top: Math.max(0, m.offsetTop - 80), behavior: 'smooth' }); }
+}
+
+// ---------- 连线：对话里选中的那一句 → 右侧对应的说明 ----------
+function drawWire() {
+  const svg = $('#wire');
+  if (S.sel == null || !S.st || innerWidth <= 980) { svg.innerHTML = ''; return requestAnimationFrame(drawWire); }
+  const src = chat().querySelector(`.me[data-i="${S.sel}"]`) || chat().querySelector(`.sys[data-i="${S.sel}"]`) || chat().querySelector(`.ai[data-i="${S.sel}"] .bub`);
+  const dst = $(`#ex .turn[data-t="${S.sel}"]`);
+  if (!src || !dst) { svg.innerHTML = ''; return requestAnimationFrame(drawWire); }
+  const a = src.getBoundingClientRect(), b = dst.getBoundingClientRect(), c = chat().getBoundingClientRect(), e = $('#ex').getBoundingClientRect();
+  let y1 = a.top + Math.min(a.height / 2, 18), y2 = b.top + 22;
+  const off1 = y1 < c.top || y1 > c.bottom, off2 = y2 < e.top || y2 > e.bottom;
+  y1 = Math.min(Math.max(y1, c.top + 6), c.bottom - 6); y2 = Math.min(Math.max(y2, e.top + 6), e.bottom - 6);
+  const x1 = Math.max(a.right, a.left) + 6, x2 = b.left - 6, col = S.st.turns[S.sel]?.bad ? '#cf3434' : '#3d63f5';
+  const dx = Math.max(40, (x2 - x1) / 2);
+  svg.innerHTML = `<path d="M${x1},${y1} C${x1 + dx},${y1} ${x2 - dx},${y2} ${x2},${y2}" fill="none" stroke="${col}" stroke-width="2" ${off1 || off2 ? 'stroke-dasharray="5 5"' : ''} opacity=".85"/><circle cx="${x1}" cy="${y1}" r="4" fill="${col}"/><circle cx="${x2}" cy="${y2}" r="4" fill="#fff" stroke="${col}" stroke-width="2"/>`;
+  requestAnimationFrame(drawWire);
+}
 
 function card(c, n) {
   switch (c.type) {
@@ -350,37 +352,10 @@ function card(c, n) {
   return '';
 }
 
-// ---------- 右侧说明 ----------
-function renderEx() {
-  const st = S.st, o = OUT(st.outcome), sm = st.summary, pair = st.pair && byId(st.pair);
-  const turns = st.turns.map((t, i) => {
-    const done = i < S.step, q = t.say || '（等待人工客服接入）';
-    if (!done) return `<div class="turn todo"><div class="th"><b>第 ${i + 1} 轮</b><q>${esc(q)}</q></div><div class="note">还没进行到这一步</div></div>`;
-    return `<div class="turn ${t.bad ? 'isbad' : ''} ${S.sel === i ? 'cur' : ''}" data-t="${i}"><div class="th"><b>第 ${i + 1} 轮</b><q>${esc(q)}</q>${t.bad ? '<i class="tag t-bad">答错了</i>' : ''}</div>
-      <div class="l">AI 做了什么</div><div class="v">${esc(t.explain.did)}</div>
-      ${t.explain.why ? `<div class="l">为什么</div><div class="v">${esc(t.explain.why)}</div>` : ''}
-      ${t.bad ? `<div class="wrong"><b>错在哪</b>${esc(t.bad.wrong)}</div><div class="right"><b>正确的应该是</b>${esc(t.bad.right)}</div>` : ''}</div>`;
-  }).join('');
-  const ended = S.step >= st.turns.length;
-  $('#ex').innerHTML = `<div class="box"><div class="ex-top"><i class="tag ${st.group === '反例' ? 't-bad' : 't-info'}">${esc(st.group)}</i><h2>${esc(st.title)}</h2><i class="tag t-${o.tone}">${o.label}</i>${ended ? '' : `<button class="play" id="play">▶ 自动播放</button>`}</div>
-      <dl class="kv"><dt>情况</dt><dd>${esc(sm.scene)}</dd><dt>商户想要</dt><dd>${esc(sm.want)}</dd><dt>结局</dt><dd>${esc(sm.result)}</dd><dt>要点</dt><dd><b>${esc(sm.point)}</b></dd></dl>
-      ${pair ? `<p class="pairl">对照场景：<button data-pair="${pair.id}">${esc(pair.title)}</button>（${OUT(pair.outcome).label}）</p>` : ''}</div>
-    <div class="box tl"><h3>逐轮说明<small>${Math.min(S.step, st.turns.length)} / ${st.turns.length} 轮 · 点手机里的回复可定位</small></h3>${turns}
-      ${ended ? `<div class="fin ${o.tone}"><b>会话结束 · ${o.label}</b>　${esc(sm.result)}</div>` : ''}</div>
-    <p class="note">这是一个演示：每个场景的提问顺序和回复都是预设好的，你只需按顺序选择问题。正常场景的回复由一套可运行的处理规则生成（身份与权限检查、查询结果的四种情况、答复前检查、转人工条件），反例是故意构造的错误回答，用来和正常场景对照。</p>`;
-  const p = $('#play'); if (p) p.onclick = () => { S.auto = true; autoNext(); };
-  $('#ex').querySelectorAll('[data-pair]').forEach(b => b.onclick = () => load(b.dataset.pair));
-  $('#ex').querySelectorAll('[data-t]').forEach(b => b.onclick = () => { S.sel = +b.dataset.t; highlight(S.sel); renderEx(); const m = chat().querySelector(`.ai[data-i="${S.sel}"]`); if (m) m.scrollIntoView({ block: 'center', behavior: 'smooth' }); });
-}
-async function autoNext() {
-  if (!S.auto || S.busy) return;
-  const n = next(); if (!n) { S.auto = false; return; }
-  await wait(S.step === 0 ? 300 : 1300); if (!S.auto) return;
-  setDraft(n); await wait(500); send();
-}
 
-renderList();
-const h = location.hash.slice(1); load(byId(h) ? h : 'N1');
+reset();
+const h0 = location.hash.slice(1); if (byId(h0)) start(h0);
+requestAnimationFrame(drawWire);
 </script>
 </body>
 </html>
