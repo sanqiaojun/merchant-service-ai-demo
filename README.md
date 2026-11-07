@@ -57,7 +57,6 @@
 ```bash
 node scripts/test.mjs      # 规则模式全量回归，36 个场景
 node scripts/build.mjs     # 生成会话场景演示 docs/index.html
-node scripts/build-legacy.mjs  # 生成技术附录页 docs/legacy/agent-trace.html（每轮决策轨迹）
 ```
 
 可选：用真实大模型录制（当前演示不需要）：
