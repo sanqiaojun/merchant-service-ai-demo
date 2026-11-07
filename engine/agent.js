@@ -127,8 +127,8 @@ async function route(s, u, trace, t0, llm) {
     }
     const r = tb.call('search_knowledge', { query: '结算卡' }); const k = r.data[0];
     ac('引导不等于已办理', '通过', '结果以正式办理页面为准');
-    const lead = task === 'execute' ? '换卡需要在正式办理页面完成，我不能在对话里替你更换。\n' : '';
-    return out({ outcome: task === 'execute' ? '部分答复' : '直答', evidence: '知识库', reply: { text: `${lead}${k.answer}\n办理时不要在对话里发送完整卡号、密码或验证码。`, keep: ['不要'], card: { type: 'guide', title: k.title, entry: k.entry }, chips: task === 'execute' ? ['我要找人工'] : [] } });
+    if (task === 'execute') return out({ outcome: '部分答复', evidence: '知识库', reply: { text: `换卡需要在正式办理页面完成，我不能在对话里替你更换。请在「${k.entry}」提交，完成人脸验证后等待审核。\n办理时不要在对话里发送完整卡号、密码或验证码。`, keep: ['不能', '不要'], card: { type: 'guide', title: k.title, entry: k.entry }, chips: ['我要找人工'] } });
+    return out({ outcome: '直答', evidence: '知识库', reply: { text: `${k.answer}\n办理时不要在对话里发送完整卡号、密码或验证码。`, keep: ['不要'], card: { type: 'guide', title: k.title, entry: k.entry } } });
   }
 
   // 以下都需要商户身份：②事实查询、③诊断解释、⑤修改商户信息、⑥争议
