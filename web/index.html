@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>商户服务助手 · AI 客服演示</title>
+<style>
+:root{
+  --brand:#1d5cff; --brand-ink:#0f3cc9; --brand-soft:#eaf0ff;
+  --ink:#141a26; --ink2:#4a5468; --ink3:#8a93a6; --line:#e6e9f0; --bg:#f3f5f9; --card:#fff;
+  --ok:#0f9d6b; --ok-soft:#e6f6ef; --warn:#c77700; --warn-soft:#fff4e0; --bad:#d6383a; --bad-soft:#fdeceb; --grey-soft:#f0f2f6;
+  --r:12px; --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font:14px/1.6 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+.top{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line)}
+.top-in{display:flex;align-items:center;gap:20px;height:56px;padding:0 24px;max-width:1440px;margin:0 auto}
+.logo{display:flex;align-items:center;gap:10px;font-weight:600;white-space:nowrap}
+.logo i{width:28px;height:28px;border-radius:8px;background:var(--brand);display:grid;place-items:center;color:#fff;font-style:normal;font-size:15px}
+.logo small{font-weight:400;color:var(--ink3);margin-left:4px}
+.tabs{display:flex;gap:4px;background:var(--grey-soft);padding:3px;border-radius:9px}
+.tabs button{padding:5px 14px;border-radius:7px;color:var(--ink2)}
+.tabs button.on{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08);font-weight:500}
+.sp{flex:1}
+.mode{display:flex;align-items:center;gap:8px;color:var(--ink2);font-size:13px}
+.mode select{font:inherit;border:1px solid var(--line);border-radius:7px;padding:4px 8px;background:#fff}
+.disclose{background:#fffbea;border-bottom:1px solid #f3e7b6;color:#6b5a1d;font-size:12.5px}
+.disclose div{max-width:1440px;margin:0 auto;padding:7px 24px}
+.view{display:none}.view.on{display:block}
+
+/* ---------- 商户 App 视图 ---------- */
+.stage{max-width:1440px;margin:0 auto;padding:20px 24px 40px;display:grid;grid-template-columns:300px 400px 1fr;gap:24px;align-items:start}
+.panel{background:#fff;border:1px solid var(--line);border-radius:var(--r)}
+.panel h3{font-size:13px;font-weight:600;padding:14px 16px 10px;color:var(--ink2);display:flex;align-items:center;gap:8px}
+.panel h3 em{font-style:normal;font-weight:400;color:var(--ink3);font-size:12px}
+.scen{position:sticky;top:96px;max-height:calc(100vh - 116px);overflow:auto}
+.qgroup{border-top:1px solid var(--line)}
+.qhead{width:100%;text-align:left;padding:10px 16px;display:flex;gap:8px;align-items:flex-start}
+.qhead b{font-family:var(--mono);font-size:11px;color:var(--ink3);font-weight:500;padding-top:2px}
+.qhead span{flex:1;font-weight:500}
+.qhead small{display:block;color:var(--ink3);font-size:11.5px;font-weight:400}
+.qlist{padding:0 8px 8px}
+.cellbtn{width:100%;text-align:left;display:flex;gap:8px;align-items:center;padding:7px 8px;border-radius:8px;font-size:13px;color:var(--ink2)}
+.cellbtn:hover{background:var(--grey-soft)}
+.cellbtn.on{background:var(--brand-soft);color:var(--brand-ink)}
+.cellbtn code{font-family:var(--mono);font-size:11px;color:var(--ink3);width:22px}
+.cellbtn .who{margin-left:auto;font-size:11px;color:var(--ink3);white-space:nowrap}
+.dot{width:7px;height:7px;border-radius:50%;flex:none;background:var(--ok)}
+.dot.f{background:var(--bad)}
+
+.phone{width:400px;height:800px;border-radius:44px;background:#0d1117;padding:12px;box-shadow:0 30px 60px -20px rgba(16,24,40,.35);position:sticky;top:84px}
+.screen{width:100%;height:100%;border-radius:34px;overflow:hidden;background:var(--bg);display:flex;flex-direction:column;position:relative}
+.status{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px 0 30px;font-size:13px;font-weight:600;background:#fff}
+.apphd{background:#fff;padding:4px 14px 10px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line)}
+.apphd .back{font-size:22px;color:var(--ink2);width:20px}
+.apphd .t{flex:1;text-align:center;font-weight:600;font-size:16px}
+.apphd .t small{display:block;font-weight:400;font-size:11px;color:var(--ink3);line-height:1.3}
+.apphd .more{width:20px;color:var(--ink3);letter-spacing:1px}
+.chat{flex:1;overflow:auto;padding:14px 12px 8px;display:flex;flex-direction:column;gap:12px;scroll-behavior:smooth}
+.msg{display:flex;gap:8px;align-items:flex-start;max-width:100%}
+.msg.u{justify-content:flex-end}
+.av{width:32px;height:32px;border-radius:50%;flex:none;background:var(--brand);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:600}
+.av.h{background:#ff8a1f}
+.bub{background:#fff;border-radius:4px 14px 14px 14px;padding:10px 12px;max-width:290px;white-space:pre-wrap;word-break:break-word;box-shadow:0 1px 1px rgba(16,24,40,.04)}
+.msg.u .bub{background:var(--brand);color:#fff;border-radius:14px 4px 14px 14px}
+.bub .card{margin-top:10px}
+.sys{align-self:center;font-size:12px;color:var(--ink3);background:#e9ecf2;padding:3px 10px;border-radius:10px}
+.card{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;white-space:normal}
+.card-h{padding:8px 10px;font-size:12px;color:var(--ink2);background:#f8f9fc;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:6px}
+.card-b{padding:10px}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kpi small{display:block;color:var(--ink3);font-size:11.5px}
+.kpi b{font-size:17px;font-weight:600;font-variant-numeric:tabular-nums}
+.kpi b.big{font-size:20px;color:var(--ink)}
+.card-f{padding:6px 10px;font-size:11px;color:var(--ink3);border-top:1px dashed var(--line)}
+.row{display:flex;justify-content:space-between;gap:8px;padding:5px 0;font-size:13px;font-variant-numeric:tabular-nums}
+.row+.row{border-top:1px solid #f1f2f6}
+.row .k{color:var(--ink2)}
+.row.em{font-weight:600}
+.row.warn .v{color:var(--warn)}
+.row.bad .v{color:var(--bad)}
+.tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:5px;background:var(--grey-soft);color:var(--ink2);white-space:nowrap}
+.tag.ok{background:var(--ok-soft);color:var(--ok)}.tag.warn{background:var(--warn-soft);color:var(--warn)}.tag.bad{background:var(--bad-soft);color:var(--bad)}.tag.b{background:var(--brand-soft);color:var(--brand-ink)}
+.steps{display:flex;flex-direction:column;gap:0}
+.step{display:flex;gap:10px;align-items:flex-start;font-size:13px;position:relative;padding-bottom:10px}
+.step:last-child{padding-bottom:0}
+.step i{width:10px;height:10px;border-radius:50%;margin-top:6px;flex:none;background:#cfd5e1;position:relative;z-index:1}
+.step:not(:last-child)::before{content:"";position:absolute;left:4.5px;top:14px;bottom:-2px;width:1px;background:var(--line)}
+.step.done i{background:var(--ok)}.step.cur i{background:var(--brand);box-shadow:0 0 0 3px var(--brand-soft)}.step.unk i{background:#fff;border:1.5px dashed var(--warn)}.step.bad i{background:var(--bad)}
+.step span{flex:1}.step em{font-style:normal;font-size:12px;color:var(--ink3)}
+.step.unk em{color:var(--warn)}.step.bad em{color:var(--bad)}.step.cur em{color:var(--brand)}
+.btnline{display:flex;gap:8px;margin-top:10px}
+.btn{flex:1;padding:7px 0;border-radius:8px;border:1px solid var(--line);font-size:13px;text-align:center;background:#fff}
+.btn.p{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.fb{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink3);margin:6px 0 0 40px}
+.fb button{border:1px solid var(--line);background:#fff;border-radius:14px;padding:2px 10px;font-size:12px;color:var(--ink2)}
+.fb button.on{border-color:var(--ok);color:var(--ok);background:var(--ok-soft)}
+.fb button.nx{border-color:var(--brand);color:var(--brand);animation:pulse 1.6s infinite}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-left:40px}
+.chip{border:1px solid #cbd6f5;background:#fff;color:var(--brand-ink);border-radius:15px;padding:4px 11px;font-size:12.5px}
+.chip.nx{background:var(--brand);color:#fff;border-color:var(--brand);animation:pulse 1.6s infinite}
+.chip.sim,.chip.sim.nx{border-style:dashed;border-color:#ff8a1f;color:#b85c00;background:#fff7ef}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(29,92,255,.35)}50%{box-shadow:0 0 0 5px rgba(29,92,255,0)}}
+.chat>*{flex:none}
+.guess{background:#fff;border-radius:12px;overflow:hidden;margin-left:40px;max-width:290px}
+.guess-h{display:flex;justify-content:space-between;align-items:center;padding:10px 12px 6px;font-weight:600;font-size:13px}
+.guess-h button{font-size:12px;color:var(--ink3);font-weight:400}
+.guess-i{display:flex;align-items:center;gap:8px;width:100%;text-align:left;padding:9px 12px;border-top:1px solid #f1f2f6;font-size:13.5px}
+.guess-i::after{content:"›";margin-left:auto;color:var(--ink3)}
+.guess-i.nx{color:var(--brand);font-weight:500}
+.guess-i.nx::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--brand);animation:pulse 1.6s infinite}
+.typing{display:inline-flex;gap:4px;align-items:center;font-size:12px;color:var(--ink3)}
+.typing i{width:5px;height:5px;border-radius:50%;background:var(--ink3);animation:blink 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes blink{0%,100%{opacity:.25}50%{opacity:1}}
+.inbar{background:#fff;border-top:1px solid var(--line);padding:8px 10px 22px;display:flex;gap:8px;align-items:center}
+.inbar .fake{flex:1;background:var(--grey-soft);border-radius:18px;padding:8px 12px;font-size:12.5px;color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.inbar button{border:1px solid var(--line);border-radius:16px;padding:5px 10px;font-size:12.5px;color:var(--ink2);background:#fff}
+.toast{position:absolute;left:16px;right:16px;bottom:80px;background:rgba(20,26,38,.92);color:#fff;border-radius:10px;padding:10px 12px;font-size:12.5px;display:none;z-index:5}
+.toast button{color:#9fc0ff;margin-left:6px;text-decoration:underline}
+.persona{background:#fff;padding:8px 14px;font-size:12px;color:var(--ink2);display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line)}
+.persona b{color:var(--ink);font-weight:500}
+
+/* trace */
+.trace{min-height:400px}
+.tr-empty{padding:40px 20px;text-align:center;color:var(--ink3)}
+.tr-sec{padding:12px 16px;border-top:1px solid var(--line)}
+.tr-sec>label{display:block;font-size:12px;color:var(--ink3);margin-bottom:6px}
+.tr-big{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tr-big b{font-size:16px}
+.chk{display:flex;gap:8px;font-size:13px;padding:3px 0;align-items:baseline}
+.chk i{font-style:normal;width:16px;text-align:center;font-weight:700;flex:none}
+.chk i.y{color:var(--ok)}.chk i.n{color:var(--bad)}.chk i.p{color:var(--warn)}.chk i.na{color:var(--ink3)}
+.chk span{flex:none;min-width:120px;color:var(--ink)}
+.chk em{font-style:normal;color:var(--ink2);font-size:12.5px}
+.tool{border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:12.5px;margin-bottom:6px}
+.tool-h{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.tool-h code{font-family:var(--mono);font-size:12px;font-weight:600}
+.tool dl{display:grid;grid-template-columns:72px 1fr;gap:2px 8px;color:var(--ink2)}
+.tool dt{color:var(--ink3)}
+.tool dd code{font-family:var(--mono);font-size:11.5px;background:var(--grey-soft);padding:0 4px;border-radius:4px}
+.alert{border-radius:8px;padding:8px 10px;font-size:12.5px}
+.alert.bad{background:var(--bad-soft);color:#8f1f20}.alert.ok{background:var(--ok-soft);color:#075c3e}.alert.info{background:var(--brand-soft);color:var(--brand-ink)}.alert.warn{background:var(--warn-soft);color:#7a4800}
+.kv{display:grid;grid-template-columns:84px 1fr;gap:3px 10px;font-size:12.5px}
+.kv dt{color:var(--ink3)}.kv dd{color:var(--ink)}
+.diff{font-size:12.5px;display:grid;gap:6px}
+.diff div{border-radius:6px;padding:6px 8px;background:var(--grey-soft);white-space:pre-wrap}
+.diff div small{display:block;color:var(--ink3);font-size:11px}
+.point{font-size:13px;color:var(--ink);background:#f8f9fc;border-left:3px solid var(--brand);padding:8px 10px;border-radius:0 6px 6px 0}
+
+/* ---------- 运营后台 ---------- */
+.admin{max-width:1440px;margin:0 auto;display:grid;grid-template-columns:200px 1fr;min-height:calc(100vh - 90px)}
+.side{background:#fff;border-right:1px solid var(--line);padding:16px 10px}
+.side button{display:flex;width:100%;text-align:left;padding:8px 12px;border-radius:8px;color:var(--ink2);gap:8px;align-items:center}
+.side button.on{background:var(--brand-soft);color:var(--brand-ink);font-weight:500}
+.side button span{margin-left:auto;font-size:11px;color:var(--ink3)}
+.side small{display:block;padding:14px 12px 6px;font-size:11px;color:var(--ink3)}
+.main{padding:20px 24px 40px;min-width:0}
+.main h2{font-size:18px;font-weight:600;margin-bottom:4px}
+.main .sub{color:var(--ink3);font-size:13px;margin-bottom:16px}
+table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;font-size:13px}
+th{text-align:left;font-weight:500;color:var(--ink3);font-size:12px;background:#f8f9fc;padding:9px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid #f1f2f6;vertical-align:top}
+tr.click{cursor:pointer}tr.click:hover td{background:#fafbfe}
+td code{font-family:var(--mono);font-size:12px;color:var(--ink2)}
+.filters{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.filters button{border:1px solid var(--line);background:#fff;border-radius:16px;padding:3px 12px;font-size:12.5px;color:var(--ink2)}
+.filters button.on{border-color:var(--brand);color:var(--brand-ink);background:var(--brand-soft)}
+.detail{display:grid;grid-template-columns:380px 1fr;gap:20px;align-items:start}
+.transcript{background:#f6f7fa;border:1px solid var(--line);border-radius:var(--r);padding:14px 10px;display:flex;flex-direction:column;gap:10px;position:sticky;top:96px;max-height:calc(100vh - 120px);overflow:auto}
+.turnsel{cursor:pointer}
+.turnsel .bub{transition:box-shadow .15s}
+.turnsel.on .bub,.sys.turnsel.on{box-shadow:0 0 0 2px var(--brand)}
+.backlink{color:var(--brand);font-size:13px;margin-bottom:10px;display:inline-block}
+.grid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.box{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+.box h4{font-size:14px;font-weight:600;margin-bottom:6px;display:flex;gap:8px;align-items:center}
+.box p{font-size:13px;color:var(--ink2)}
+.box ul{padding-left:18px;font-size:13px;color:var(--ink2)}
+.flow{display:flex;gap:0;margin:4px 0 16px;flex-wrap:wrap}
+.flow div{background:#fff;border:1px solid var(--line);padding:8px 16px;font-size:13px;position:relative}
+.flow div+div{margin-left:-1px}
+.flow div:first-child{border-radius:8px 0 0 8px}.flow div:last-child{border-radius:0 8px 8px 0}
+.flow div b{display:block;font-weight:600}.flow div small{color:var(--ink3);font-size:11.5px}
+.matrix{display:grid;grid-template-columns:200px repeat(8,1fr);gap:6px;align-items:stretch}
+.matrix .qh{font-size:12.5px;padding:8px 8px;background:#fff;border:1px solid var(--line);border-radius:8px}
+.matrix .qh small{display:block;color:var(--ink3);font-size:11px}
+.mc{border-radius:8px;padding:6px 8px;font-size:11.5px;background:var(--ok-soft);color:#075c3e;border:1px solid #c7ebd9;text-align:left;line-height:1.35}
+.mc.f{background:var(--bad-soft);color:#8f1f20;border-color:#f4c9c8}
+.mc.sim{background:#fff7ef;color:#8a4a00;border-color:#f5d6b5}
+.mc code{font-family:var(--mono);font-weight:600;display:block}
+.mc .pk{letter-spacing:1px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+.stat small{color:var(--ink3);font-size:12px}.stat b{display:block;font-size:24px;font-weight:600;font-variant-numeric:tabular-nums}.stat em{font-style:normal;font-size:12px;color:var(--ink3)}
+.bars{display:grid;gap:8px}
+.bar{display:grid;grid-template-columns:110px 1fr 36px;gap:10px;align-items:center;font-size:13px}
+.bar div{height:10px;border-radius:5px;background:var(--grey-soft);overflow:hidden}
+.bar div i{display:block;height:100%;background:var(--brand);border-radius:5px}
+.bar b{font-weight:500;text-align:right;font-variant-numeric:tabular-nums}
+.note{font-size:12px;color:var(--ink3);margin-top:10px}
+
+/* ---------- 移动端：页面本身就是 App ---------- */
+.mfab{display:none}
+@media (max-width:1180px){.stage{grid-template-columns:280px 400px}.trace-col{grid-column:1 / -1}}
+@media (max-width:760px){
+  .top-in{padding:0 10px;gap:8px;height:50px}.logo small,.logo span,.mode label{display:none}
+  .tabs button{white-space:nowrap;padding:5px 10px}.mode select{max-width:118px;font-size:12px}
+  .disclose div{padding:5px 12px;font-size:11px;line-height:1.45;max-height:2.9em;overflow:hidden;cursor:pointer}
+  .disclose div.open{max-height:none}
+  .chat{padding-bottom:56px}
+  .stage{display:block;padding:0}
+  .scen,.trace-col{display:none}
+  .scen.sheet,.trace-col.sheet{display:block;position:fixed;inset:auto 0 0 0;max-height:78vh;z-index:40;border-radius:16px 16px 0 0;overflow:auto;top:auto;box-shadow:0 -10px 30px rgba(0,0,0,.2)}
+  .phone{width:100%;height:calc(100dvh - 82px);border-radius:0;padding:0;box-shadow:none;position:static}
+  .screen{border-radius:0}.status{display:none}
+  .mfab{display:flex;position:fixed;right:10px;bottom:72px;gap:6px;z-index:30}
+  .mfab button{background:rgba(20,26,38,.88);color:#fff;border-radius:16px;padding:5px 11px;font-size:12px;box-shadow:0 4px 12px rgba(0,0,0,.18)}
+  .mask{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:35;display:none}.mask.on{display:block}
+  .admin{display:block}.side{display:flex;overflow:auto;padding:8px;border-right:0;border-bottom:1px solid var(--line);gap:4px}.side button{white-space:nowrap;width:auto}.side small{display:none}
+  .main{padding:14px 12px}.detail{display:block}.transcript{position:static;max-height:none;margin-bottom:14px}
+  .matrix{grid-template-columns:repeat(4,1fr)}.matrix .qh{grid-column:1 / -1}.stats{grid-template-columns:1fr 1fr}
+  table{font-size:12px;display:block;overflow:auto}
+}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in">
+  <div class="logo"><i>演</i><span id="brand"></span><small>AI 客服演示</small></div>
+  <nav class="tabs"><button data-v="app" class="on">商户 App</button><button data-v="admin">运营后台</button></nav>
+  <div class="sp"></div>
+  <div class="mode"><label>运行录制</label><select id="mode"></select></div>
+</div></header>
+<div class="disclose"><div id="disclose"></div></div>
+
+<section class="view on" id="v-app">
+  <div class="stage">
+    <aside class="panel scen" id="scen"><h3>场景 <em>同一个问题，不同的情况</em></h3><p style="padding:0 16px 12px;font-size:12.5px;color:var(--ink2)">怎么看：在这里选一种情况 → 在手机里点闪烁的问题 → 右边看 Agent 这一轮查了什么、拦了什么、为什么这样答。</p><div id="qgroups"></div></aside>
+    <div class="phone"><div class="screen">
+      <div class="status"><span>9:41</span><span>●●● ▮</span></div>
+      <div class="apphd"><span class="back">‹</span><div class="t">商户服务助手<small>智能客服 · 7×24 小时</small></div><span class="more">···</span></div>
+      <div class="persona" id="persona"></div>
+      <div class="chat" id="chat"></div>
+      <div class="inbar"><div class="fake">演示版：请从「猜你想问」或建议中选择</div><button id="btn-human">人工</button></div>
+      <div class="toast" id="toast"></div>
+    </div></div>
+    <aside class="panel trace trace-col" id="tracecol"><h3>本轮处理 <em>后台视角：这一轮 Agent 做了什么</em></h3><div id="trace"><div class="tr-empty">在手机里点一个问题，这里会显示这一轮的完整处理过程。</div></div></aside>
+  </div>
+  <div class="mfab"><button id="m-scen">切换场景</button><button id="m-trace">看后台处理</button></div>
+  <div class="mask" id="mask"></div>
+</section>
+
+<section class="view" id="v-admin">
+  <div class="admin">
+    <nav class="side" id="side"></nav>
+    <main class="main" id="main"></main>
+  </div>
+</section>
+
+<script>
+const D = /*__DATA__*/null;
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const yuan = n => (+n).toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const S = { mode: null, cell: null, step: 0, view: 'app', page: 'sessions', detail: null, detailTurn: 0, filter: '全部', guessPage: 0, fb: {} };
+const cellById = id => D.scenarios.find(c => c.id === id);
+const rec = () => D.recordings[S.mode];
+const recCell = id => rec().cells[id] || D.recordings.rules.cells[id];
+const OUTCOME_TONE = o => /错误/.test(o) ? 'bad' : /拒绝/.test(o) ? 'bad' : /交人工|人工/.test(o) ? 'warn' : /部分|补问|待确认/.test(o) ? 'b' : /直答/.test(o) ? 'ok' : '';
+
+// ---------- 模式与说明 ----------
+function initMode() {
+  const keys = Object.keys(D.recordings);
+  const llmKeys = keys.filter(k => k !== 'rules');
+  S.mode = llmKeys[0] || 'rules';
+  $('#mode').innerHTML = [...llmKeys, 'rules'].map(k => `<option value="${k}">${k === 'rules' ? '规则模式（离线）' : '大模型 · ' + esc(D.recordings[k].meta.model)}</option>`).join('');
+  $('#mode').value = S.mode;
+  $('#mode').onchange = e => { S.mode = e.target.value; disclose(); loadCell(S.cell.id); renderAdmin(); };
+  disclose();
+}
+function disclose() {
+  const m = rec().meta;
+  const llmTxt = m.mode === 'llm'
+    ? `Agent 为真实大模型（${esc(m.model)}）运行录制，录制于 ${m.recordedAt.slice(0, 10)}，原样回放；`
+    : 'Agent 当前为规则模式运行录制（诉求理解与答复措辞由规则完成，策略与大模型模式相同）；';
+  $('#disclose').innerHTML = `${llmTxt}业务系统与数据均为模拟；问题分类与处理流程为作者的业务拆解，不代表任何线上系统的实现。`;
+}
+
+// ---------- 场景面板 ----------
+function renderScen() {
+  $('#qgroups').innerHTML = D.questions.map(q => {
+    const cells = D.scenarios.filter(c => c.q === q.id);
+    return `<div class="qgroup"><div class="qhead"><b>${q.id}</b><span>${esc(q.text)}<small>${esc(q.type)} · ${cells.length} 种情况</small></span></div>
+      <div class="qlist">${cells.map(c => { const ok = (recCell(c.id).checks || []).length === 0;
+        return `<button class="cellbtn ${S.cell?.id === c.id ? 'on' : ''}" data-cell="${c.id}"><span class="dot ${ok ? '' : 'f'}" title="${ok ? '判定通过' : '判定未通过'}"></span><code>${c.id}</code>${esc(c.title)}<span class="who">${esc(D.accounts[c.persona].role)}</span></button>`; }).join('')}</div></div>`;
+  }).join('');
+  document.querySelectorAll('.cellbtn').forEach(b => b.onclick = () => { loadCell(b.dataset.cell); closeSheets(); });
+}
+
+// ---------- 手机端 ----------
+const chat = () => $('#chat');
+function loadCell(id) {
+  S.cell = cellById(id); S.step = 0; S.fb = {}; S.handoffAccepted = false; S.busy = false;
+  const a = D.accounts[S.cell.persona];
+  $('#persona').innerHTML = `当前登录 <b>${esc(a.name)}</b> · ${esc(a.role)}${a.merchants.length ? ' · ' + esc(a.merchantNames.length > 1 ? `授权 ${a.merchantNames.length} 家门店` : a.merchantNames[0]) : ''}${a.session !== 'valid' ? ' · <span class="tag warn">登录已失效</span>' : ''}`;
+  chat().innerHTML = '';
+  addAI({ text: `你好，${a.name}。我是${D.brand}的商户服务助手，交易、结算、账户问题都可以问我。` }, null, true);
+  renderGuess();
+  renderScen();
+  $('#trace').innerHTML = `<div class="tr-empty"><div class="point" style="text-align:left;margin-bottom:12px"><b>${S.cell.id} ${esc(S.cell.title)}</b><br>${esc(S.cell.point)}</div>在手机里点闪烁的问题开始。</div>`;
+  renderNext(null);
+}
+function nextInput() { return S.cell.turns[S.step]; }
+function nextText() { const n = nextInput(); return typeof n === 'string' ? n : null; }
+function renderGuess() {
+  const qs = D.questions, per = 4, pages = Math.ceil(qs.length / per);
+  const nx = nextText();
+  // 让当前场景的首问出现在当前页
+  if (S.step === 0) { const i = qs.findIndex(q => q.text === nx); if (i >= 0) S.guessPage = Math.floor(i / per); }
+  const list = qs.slice(S.guessPage * per, S.guessPage * per + per);
+  const old = document.getElementById('guess'); if (old) old.remove();
+  const el = document.createElement('div'); el.className = 'guess'; el.id = 'guess';
+  el.innerHTML = `<div class="guess-h">猜你想问<button id="g-more">换一批 ⟳</button></div>` + list.map(q => `<button class="guess-i ${q.text === nx ? 'nx' : ''}" data-t="${esc(q.text)}">${esc(q.text)}</button>`).join('');
+  const first = chat().children[0]; first.after(el);
+  el.querySelector('#g-more').onclick = () => { S.guessPage = (S.guessPage + 1) % pages; renderGuess(); };
+  el.querySelectorAll('.guess-i').forEach(b => b.onclick = () => userPick(b.dataset.t));
+}
+function scrollEnd() { requestAnimationFrame(() => { chat().scrollTop = chat().scrollHeight; }); }
+function addUser(text) { const d = document.createElement('div'); d.className = 'msg u'; d.innerHTML = `<div class="bub">${esc(text)}</div>`; chat().append(d); scrollEnd(); }
+function addSys(text) { const d = document.createElement('div'); d.className = 'sys'; d.textContent = text; chat().append(d); scrollEnd(); }
+function addAI(reply, turnIdx, intro) {
+  const d = document.createElement('div'); d.className = 'msg';
+  const human = S.handoffAccepted;
+  d.innerHTML = `<div class="av ${human ? 'h' : ''}">${human ? '客' : 'AI'}</div><div class="bub">${esc(reply.text)}${reply.card ? renderCard(reply.card, turnIdx) : ''}</div>`;
+  chat().append(d);
+  if (!intro) bindCard(d);
+  scrollEnd(); return d;
+}
+
+function renderCard(c, ti) {
+  const nx = nextText();
+  switch (c.type) {
+    case 'summary': return `<div class="card"><div class="card-h"><span>交易汇总 · ${esc(c.merchant)}</span><span>${esc(c.date)}</span></div><div class="card-b"><div class="kpis">
+      <div class="kpi"><small>交易金额（元）</small><b class="big">${yuan(c.amount)}</b></div><div class="kpi"><small>交易笔数</small><b>${c.count}</b></div>
+      <div class="kpi"><small>手续费（元）</small><b>${yuan(c.fee)}</b></div><div class="kpi"><small>退款金额（元）</small><b>${yuan(c.refund)}</b></div></div></div>
+      <div class="card-f">数据来自交易系统，以交易明细为准</div></div>`;
+    case 'txn': return `<div class="card"><div class="card-h"><span>交易明细 · ${esc(c.merchant)}</span><span>昨天</span></div><div class="card-b">${c.rows.map((r, i) => `<div class="row"><span class="k">${c.choose ? `第${i + 1}笔 · ` : ''}${esc(r.time)}</span><span>${yuan(r.amount)} 元 <span class="tag ${r.status === '交易成功' ? 'ok' : 'bad'}">${esc(r.status)}</span></span></div>`).join('')}</div>${c.choose ? '<div class="card-f">匹配到多笔，请选择</div>' : ''}</div>`;
+    case 'settle': { const cls = { 完成: 'done', 当前: 'cur', 未开始: '', 无法核实: 'unk', 退回: 'bad' };
+      return `<div class="card"><div class="card-h"><span>结算进度 · ${esc(c.merchant)}</span><span>11-05 批次</span></div><div class="card-b"><div class="steps">${c.steps.map(([n, s]) => `<div class="step ${cls[s] || ''}"><i></i><span>${esc(n)}</span><em>${esc(s)}</em></div>`).join('')}</div></div><div class="card-f">状态来自结算系统</div></div>`; }
+    case 'breakdown': { const un = +(c.diff - c.explained).toFixed(2);
+      return `<div class="card"><div class="card-h"><span>到账差额构成</span><span>11-05</span></div><div class="card-b">
+        <div class="row"><span class="k">交易金额</span><span class="v">${yuan(c.txnAmount)}</span></div>
+        ${c.items.map(i => `<div class="row"><span class="k">− ${esc(i.name)}</span><span class="v">${yuan(i.amount)}</span></div>`).join('')}
+        ${un > 0 && !c.conflict ? `<div class="row warn"><span class="k">− 暂未核实</span><span class="v">${yuan(un)}</span></div>` : ''}
+        <div class="row em"><span class="k">实际到账</span><span class="v">${yuan(c.arrived)}</span></div></div>
+        ${c.conflict ? `<div class="card-f" style="color:var(--bad)">${esc(c.conflict)}</div>` : '<div class="card-f">各项金额来自结算系统记录</div>'}</div>`; }
+    case 'account': return `<div class="card"><div class="card-h"><span>账户状态</span><span class="tag ${c.status === '正常' ? 'ok' : 'warn'}">${esc(c.status)}</span></div><div class="card-b">
+        ${c.since ? `<div class="row"><span class="k">开始时间</span><span>${esc(c.since)}</span></div>` : ''}
+        ${c.reason ? `<div class="row"><span class="k">原因</span><span>${esc(c.reason)}</span></div>` : ''}
+        ${c.required ? `<div class="row"><span class="k">需要</span><span style="text-align:right">${esc(c.required.replace('补充经营材料：', ''))}</span></div>` : ''}
+        ${c.upload ? `<div class="btnline"><button class="btn p" disabled>去上传材料</button></div>` : ''}</div></div>`;
+    case 'guide': return `<div class="card"><div class="card-h"><span>办理指引 · ${esc(c.title)}</span></div><div class="card-b"><div class="row"><span class="k">入口</span><span>${esc(c.entry.replace(/ - /g, ' › '))}</span></div><div class="btnline"><button class="btn p" disabled>去办理</button></div></div></div>`;
+    case 'knowledge': return `<div class="card"><div class="card-f" style="border:0">依据：${esc(c.title)}（${esc(c.version)}，已发布）</div></div>`;
+    case 'confirm': return `<div class="card"><div class="card-h"><span>请确认修改</span><span>${esc(c.field)}</span></div><div class="card-b"><div class="row"><span class="k">原号码</span><span>${esc(c.from)}</span></div><div class="row em"><span class="k">新号码</span><span>${esc(c.to)}</span></div>
+        <div class="btnline"><button class="btn" data-say="取消">取消</button><button class="btn p ${nx === '确认' ? 'nx' : ''}" data-say="确认">确认</button></div></div></div>`;
+    case 'change': return `<div class="card"><div class="card-h"><span>修改申请 ${esc(c.id)}</span><span class="tag b">${esc(c.state)}</span></div><div class="card-b"><div class="steps">
+        <div class="step done"><i></i><span>已提交</span><em>完成</em></div><div class="step cur"><i></i><span>审核中</span><em>当前</em></div><div class="step"><i></i><span>已生效</span><em>未开始</em></div></div></div></div>`;
+    case 'handoff': return `<div class="card"><div class="card-h"><span>人工客服</span><span class="tag warn">排队中</span></div><div class="card-b"><div class="row"><span class="k">排队</span><span>第 ${c.queue} 位</span></div><div class="row"><span class="k">工单</span><span>${esc(c.ticket)}</span></div></div><div class="card-f">对话记录和已查信息已同步给客服</div></div>`;
+    case 'notice': return `<div class="card"><div class="card-h"><span>${esc(c.title)}</span><span class="tag warn">未成功</span></div><div class="card-b">${c.lines.map(l => `<div class="row"><span class="k">${esc(l)}</span></div>`).join('')}</div></div>`;
+    case 'choice': return '';
+  }
+  return '';
+}
+function bindCard(el) { el.querySelectorAll('[data-say]').forEach(b => b.onclick = () => userPick(b.dataset.say)); }
+
+let toastT;
+function toast(html) { const t = $('#toast'); t.innerHTML = html; t.style.display = 'block'; clearTimeout(toastT); toastT = setTimeout(() => t.style.display = 'none', 4200); t.querySelectorAll('[data-jump]').forEach(b => b.onclick = () => { t.style.display = 'none'; loadCell(b.dataset.jump); }); }
+function findCellFor(text) {
+  // 找一个以这句话开头（或在第二轮问到）的场景，便于跳转
+  return D.scenarios.find(c => c.turns[0] === text && c.persona === S.cell.persona) || D.scenarios.find(c => c.turns[0] === text) || D.scenarios.find(c => c.turns.includes(text));
+}
+function userPick(text) {
+  if (S.busy) return;
+  const nx = nextText();
+  if (text === nx) return playStep();
+  const alt = findCellFor(text);
+  if (S.step === 0 && alt && alt.q !== S.cell.q) { loadCell(alt.id); return setTimeout(() => userPick(text), 50); }
+  toast(`演示版只回放录制好的对话，当前场景的下一步是「${esc(nx || nextActionLabel() || '已结束')}」。${alt && alt.id !== S.cell.id ? `<button data-jump="${alt.id}">去看场景 ${alt.id}</button>` : ''}`);
+}
+function nextActionLabel() { const n = nextInput(); return n && typeof n === 'object' ? ({ unresolved: '点「未解决」', agent_accept: '模拟客服接入' })[n.action] : null; }
+
+async function playStep() {
+  const input = nextInput(); if (!input || S.busy) return;
+  const t = recCell(S.cell.id).turns[S.step]; const ti = S.step;
+  S.busy = true; clearNext();
+  if (typeof input === 'string') addUser(input);
+  if (input.action === 'unresolved') { const b = chat().querySelector('.fb button[data-fb="no"]'); if (b) b.classList.add('on'); }
+  if (input.action === 'agent_accept') { S.handoffAccepted = false; }
+  S.step++;
+  if (t.silent) { addSys('当前由人工客服接待，AI 不再自动回复'); }
+  else if (t.system) { addSys(t.system); S.handoffAccepted = true; }
+  else if (t.reply) {
+    const typing = document.createElement('div'); typing.className = 'msg'; typing.innerHTML = `<div class="av">AI</div><div class="bub"><span class="typing"><i></i><i></i><i></i>${t.trace.tools.length ? '正在查询' : '正在思考'}</span></div>`;
+    chat().append(typing); scrollEnd();
+    await new Promise(r => setTimeout(r, Math.min(2400, Math.max(650, t.trace.ms || 0))));
+    typing.remove();
+    addAI(t.reply, ti);
+    if (/^直答/.test(t.trace.outcome) && !t.reply.handoff) addFeedback(ti);
+  }
+  renderTrace(t, ti);
+  S.busy = false;
+  renderNext(t);
+  if (S.step === 0) renderGuess();
+}
+function clearNext() { chat().querySelectorAll('.chips').forEach(c => c.remove()); chat().querySelectorAll('.nx').forEach(b => b.classList.remove('nx')); }
+function addFeedback(ti) {
+  const d = document.createElement('div'); d.className = 'fb'; d.innerHTML = `这个回答解决你的问题了吗？<button data-fb="yes">已解决</button><button data-fb="no">未解决</button>`;
+  chat().append(d);
+  d.querySelector('[data-fb="yes"]').onclick = e => { if (nextInput()?.action === 'unresolved') return toast('当前场景要演示的是点「未解决」之后的处理。'); e.target.classList.add('on'); d.querySelector('[data-fb="no"]').disabled = true; addSys('已记录：已解决'); };
+  d.querySelector('[data-fb="no"]').onclick = () => { if (nextInput()?.action === 'unresolved') return playStep(); const alt = cellById('8b'); toast(`「未解决」之后的处理录在场景 8b。<button data-jump="8b">去看</button>`); };
+  scrollEnd();
+}
+function renderNext(t) {
+  const n = nextInput();
+  const chipsFromReply = (t?.reply?.chips || []);
+  const d = document.createElement('div'); d.className = 'chips';
+  let html = '';
+  if (n && typeof n === 'string') {
+    const inChips = chipsFromReply.some(c => c === n || c.replace('店', '') === n.replace('店', ''));
+    const inGuess = S.step === 0 && !!document.querySelector(`.guess-i[data-t="${CSS.escape(n)}"]`);
+    const onCard = n === '确认';
+    if (onCard) chat().querySelectorAll('[data-say="确认"]').forEach(b => b.classList.add('nx'));
+    html += chipsFromReply.map(c => `<button class="chip ${c === n ? 'nx' : ''}" data-t="${esc(c)}">${esc(c)}</button>`).join('');
+    if (!inChips && !inGuess && !onCard) html += `<button class="chip nx" data-t="${esc(n)}">${esc(n)}</button>`;
+  } else if (n?.action === 'unresolved') {
+    html += chipsFromReply.map(c => `<button class="chip" data-t="${esc(c)}">${esc(c)}</button>`).join('');
+    chat().querySelectorAll('.fb button[data-fb="no"]').forEach(b => b.classList.add('nx'));
+  } else if (n?.action === 'agent_accept') {
+    html += `<button class="chip sim nx" data-act="accept">（模拟客服端）客服 07 点击接入</button>`;
+  } else {
+    html += chipsFromReply.map(c => `<button class="chip" data-t="${esc(c)}">${esc(c)}</button>`).join('');
+  }
+  if (!html) return;
+  if (S.step === 0) html = `<div style="width:100%;font-size:11.5px;color:var(--ink3)">这个场景从这句话开始：</div>` + html;
+  d.innerHTML = html; chat().append(d);
+  d.querySelectorAll('[data-t]').forEach(b => b.onclick = () => userPick(b.dataset.t));
+  d.querySelectorAll('[data-act]').forEach(b => b.onclick = () => playStep());
+  scrollEnd();
+}
+$('#btn-human').onclick = () => userPick('我要找人工');
+
+// ---------- 决策轨迹 ----------
+const CK = r => r === '通过' || r === '是' || r === '已核对' ? ['y', '✓'] : r === '不通过' ? ['n', '✕'] : r === '部分' ? ['p', '◐'] : r === '未检查' ? ['n', '—'] : ['na', '–'];
+const STATUS_TAG = { ok: ['ok', 'ok · 结果明确'], empty: ['warn', 'empty · 无匹配'], multiple: ['b', 'multiple · 不唯一'], error: ['bad', 'error · 失败'] };
+function traceHTML(t, cell, ti) {
+  const tr = t.trace, u = tr.understand;
+  const checks = (recCell(cell.id).checks || []);
+  const sec = (label, body) => `<div class="tr-sec"><label>${label}</label>${body}</div>`;
+  let h = '';
+  h += sec('处理任务', `<div class="tr-big"><b>${esc(tr.task)}</b><span class="tag ${OUTCOME_TONE(tr.outcome)}">${esc(tr.outcome)}</span></div>`);
+  if (u) h += sec('诉求理解', `<dl class="kv"><dt>来源</dt><dd>${u.source === 'llm' ? '大模型 · ' + esc(tr.model) : esc(u.source === 'rules' ? '规则' : u.source)}${u.source === 'llm' ? (u.agreeWithRules ? ' <span class="tag ok">与规则一致</span>' : ' <span class="tag warn">与规则判断不同</span>') : ''}</dd>
+    <dt>判断</dt><dd><code style="font-family:var(--mono);font-size:12px">${esc(u.task)} / ${esc(u.domain)}${u.aspect ? ' / ' + esc(u.aspect) : ''}</code></dd>
+    ${u.reason ? `<dt>依据</dt><dd>${esc(u.reason)}</dd>` : ''}
+    ${Object.keys(u.slots || {}).length ? `<dt>参数</dt><dd>${Object.entries(u.slots).filter(([k]) => k !== 'resolvedMerchant').map(([k, v]) => `${k}=${esc(k === 'value' ? String(v).slice(0, 3) + '****' + String(v).slice(-4) : v)}`).join('，')}</dd>` : ''}
+    ${u.error ? `<dt>回退</dt><dd style="color:var(--bad)">${esc(u.error)}</dd>` : ''}</dl>`);
+  if (tr.preChecks.length) h += sec('前置检查', tr.preChecks.map(p => { const [c, i] = CK(p.result); return `<div class="chk"><i class="${c}">${i}</i><span>${esc(p.name)}</span><em>${esc(p.note || p.result)}</em></div>`; }).join(''));
+  h += sec('取证路径', `<span class="tag">${esc(tr.evidence)}</span>`);
+  if (tr.tools.length) h += sec('工具调用', tr.tools.map(x => { const [c, l] = STATUS_TAG[x.status] || ['', x.status]; return `<div class="tool"><div class="tool-h"><code>${esc(x.tool)}</code><span>${esc(x.title)}</span><span class="tag ${c}" style="margin-left:auto">${l}</span></div>
+    <dl><dt>参数</dt><dd><code>${esc(JSON.stringify(x.args))}</code></dd><dt>商户身份</dt><dd>${x.merchant ? esc(x.merchant) : x.tool === 'search_knowledge' ? '不需要' : '<b style="color:var(--bad)">未传入</b>'}</dd>${x.identitySource ? `<dt>身份来源</dt><dd>${esc(x.identitySource)}（服务端注入）</dd>` : ''}${x.error ? `<dt>错误</dt><dd style="color:var(--bad)">${esc(x.error)}</dd>` : ''}</dl></div>`; }).join(''));
+  if (tr.answerChecks.length) h += sec('答复前检查', tr.answerChecks.map(p => { const [c, i] = CK(p.result); return `<div class="chk"><i class="${c}">${i}</i><span>${esc(p.name)}</span><em>${esc(p.note)}</em></div>`; }).join(''));
+  if (tr.failureTag) h += sec('失效归因', `<div class="alert bad"><b>${esc(tr.failureTag)}</b><br>查询没有成功（身份参数缺失），却没有经过答复前检查，回退成了通用话术。商户看到的是"像答了"，诉求实际没有被处理，还被记成已答复。<br><br>对应规则：查询前必须确认身份已传入；工具失败时不能用知识库通用话术顶替，只能如实说明并给出下一步。</div>`);
+  if (tr.guard) h += sec('答复守卫', tr.guard.ok ? `<div class="alert ok">通过${t.reply?.polished ? '：大模型改写已采用' : ''}</div>` : `<div class="alert warn">${t.reply?.polished === undefined && tr.polishedRaw ? '大模型改写未通过，已退回模板：' : ''}${esc(tr.guard.reasons.join('；'))}</div>`);
+  if (tr.polishedRaw) h += sec('措辞：模板 → 大模型改写', `<div class="diff"><div><small>系统模板（事实与边界）</small>${esc(templateOf(t))}</div><div><small>大模型改写${tr.guard?.ok ? '（已采用）' : '（未通过守卫，未采用）'}</small>${esc(tr.polishedRaw)}</div></div>`);
+  if (tr.handoff) h += sec('交接摘要（给人工客服）', `<dl class="kv"><dt>转人工原因</dt><dd>${esc(tr.handoff.reason)}</dd><dt>商户诉求</dt><dd>${tr.handoff.demand.map(esc).join(' → ')}</dd><dt>已查事实</dt><dd>${tr.handoff.facts.length ? tr.handoff.facts.map(esc).join('<br>') : '无'}</dd><dt>待处理</dt><dd>${tr.handoff.open.map(esc).join('；')}</dd><dt>账号</dt><dd>${esc(tr.handoff.account)}${tr.handoff.merchant ? ' · ' + esc(tr.handoff.merchant) : ''}</dd></dl>`);
+  h += sec('会话与诉求状态', `<dl class="kv"><dt>会话</dt><dd>${esc(tr.state.session)}</dd><dt>诉求</dt><dd>${esc(tr.state.demand)}</dd></dl>`);
+  h += sec('场景判定', `<div class="point">${esc(cell.point)}</div><div style="margin-top:8px">${checks.length ? `<div class="alert bad">未通过：${checks.map(esc).join('；')}</div>` : `<div class="alert ok">符合预期${(recCell(cell.id).passes || []).length > 1 ? ` · ${recCell(cell.id).passes.length} 次运行 ${recCell(cell.id).passes.map(p => p ? '●' : '○').join('')}` : ''}</div>`}</div>`);
+  h += sec('录制信息', `<dl class="kv"><dt>运行</dt><dd>${esc(tr.model)}</dd><dt>耗时</dt><dd>${tr.ms} ms</dd><dt>录制时间</dt><dd>${esc(rec().meta.recordedAt.slice(0, 16).replace('T', ' '))}</dd><dt>场景</dt><dd>${cell.id} · 第 ${ti + 1} 轮</dd></dl>`);
+  return h;
+}
+function templateOf(t) { return t.trace.template || t.reply?.text || ''; }
+function renderTrace(t, ti) { $('#trace').innerHTML = traceHTML(t, S.cell, ti); }
+
+// ---------- 移动端抽屉 ----------
+function closeSheets() { $('#scen').classList.remove('sheet'); $('#tracecol').classList.remove('sheet'); $('#mask').classList.remove('on'); }
+$('#m-scen').onclick = () => { closeSheets(); $('#scen').classList.add('sheet'); $('#mask').classList.add('on'); };
+$('#m-trace').onclick = () => { closeSheets(); $('#tracecol').classList.add('sheet'); $('#mask').classList.add('on'); };
+$('#mask').onclick = closeSheets;
+
+// ---------- 运营后台 ----------
+const PAGES = [['sessions', '会话记录'], ['handoff', '人工接待'], ['badcase', 'Bad Case 归因'], ['knowledge', '知识管理'], ['tests', '场景测试'], ['metrics', '指标']];
+const sid = c => 'S-1106-' + String(D.scenarios.indexOf(c) + 1).padStart(4, '0');
+const finalTurn = c => { const ts = recCell(c.id).turns; return [...ts].reverse().find(t => !t.silent) || ts.at(-1); };
+function renderAdmin() {
+  const hcount = D.scenarios.filter(c => recCell(c.id).turns.some(t => t.trace.handoff)).length;
+  $('#side').innerHTML = `<small>客服运营</small>` + PAGES.map(([k, l]) => `<button class="${S.page === k ? 'on' : ''}" data-p="${k}">${l}${k === 'sessions' ? `<span>${D.scenarios.length}</span>` : k === 'handoff' ? `<span>${hcount}</span>` : ''}</button>`).join('');
+  document.querySelectorAll('#side button').forEach(b => b.onclick = () => { S.page = b.dataset.p; S.detail = null; renderAdmin(); });
+  const m = $('#main');
+  if (S.page === 'sessions') m.innerHTML = S.detail ? sessionDetail() : sessionList();
+  if (S.page === 'handoff') m.innerHTML = handoffPage();
+  if (S.page === 'badcase') m.innerHTML = badcasePage();
+  if (S.page === 'knowledge') m.innerHTML = knowledgePage();
+  if (S.page === 'tests') m.innerHTML = testsPage();
+  if (S.page === 'metrics') m.innerHTML = metricsPage();
+  m.querySelectorAll('[data-open]').forEach(r => r.onclick = () => { S.page = 'sessions'; S.detail = r.dataset.open; S.detailTurn = 0; renderAdmin(); window.scrollTo(0, 0); });
+  m.querySelectorAll('[data-f]').forEach(b => b.onclick = () => { S.filter = b.dataset.f; renderAdmin(); });
+  m.querySelectorAll('[data-turn]').forEach(b => b.onclick = () => { S.detailTurn = +b.dataset.turn; renderAdmin(); });
+  m.querySelectorAll('[data-play]').forEach(b => b.onclick = () => { switchView('app'); loadCell(b.dataset.play); });
+  m.querySelectorAll('[data-back]').forEach(b => b.onclick = () => { S.detail = null; renderAdmin(); });
+}
+function sessionList() {
+  const F = ['全部', '直答', '部分答复', '补问补查', '交人工', '拒绝', '有失效'];
+  const rows = D.scenarios.filter(c => { const o = recCell(c.id).turns.map(t => t.trace.outcome); return S.filter === '全部' || (S.filter === '有失效' ? recCell(c.id).turns.some(t => t.trace.failureTag) : o.some(x => x.startsWith(S.filter))); });
+  return `<h2>会话记录</h2><div class="sub">每条会话对应一个场景的完整录制。点开可以看到每一轮的前置检查、工具调用、答复前检查和出口。</div>
+  <div class="filters">${F.map(f => `<button class="${S.filter === f ? 'on' : ''}" data-f="${f}">${f}</button>`).join('')}</div>
+  <table><thead><tr><th>会话</th><th>账号</th><th>首问</th><th>任务类型</th><th>各轮出口</th><th>诉求状态</th><th>标记</th></tr></thead><tbody>
+  ${rows.map(c => { const r = recCell(c.id), a = D.accounts[c.persona], ft = finalTurn(c);
+    return `<tr class="click" data-open="${c.id}"><td><code>${sid(c)}</code></td><td>${esc(a.name)}<br><small style="color:var(--ink3)">${esc(a.role)}</small></td><td>${esc(typeof c.turns[0] === 'string' ? c.turns[0] : '')}${c.turns.length > 1 ? `<br><small style="color:var(--ink3)">共 ${c.turns.length} 轮</small>` : ''}</td><td>${esc(r.turns[0].trace.task)}</td>
+    <td>${r.turns.map(t => `<span class="tag ${OUTCOME_TONE(t.trace.outcome)}">${esc(t.trace.outcome)}</span>`).join(' ')}</td><td>${esc(ft.trace.state.demand)}</td>
+    <td>${r.turns.some(t => t.trace.failureTag) ? '<span class="tag bad">失效</span>' : ''}${r.turns.some(t => t.trace.handoff) ? '<span class="tag warn">转人工</span>' : ''}${(r.checks || []).length ? '<span class="tag bad">未通过判定</span>' : ''}</td></tr>`; }).join('')}
+  </tbody></table>`;
+}
+function sessionDetail() {
+  const c = cellById(S.detail), r = recCell(c.id), a = D.accounts[c.persona];
+  const t = r.turns[S.detailTurn];
+  let tx = '';
+  r.turns.forEach((x, i) => {
+    const inp = x.input;
+    if (inp.text) tx += `<div class="msg u turnsel ${i === S.detailTurn ? 'on' : ''}" data-turn="${i}"><div class="bub">${esc(inp.text)}</div></div>`;
+    if (inp.action) tx += `<div class="sys turnsel ${i === S.detailTurn ? 'on' : ''}" data-turn="${i}">${inp.action === 'unresolved' ? '商户点击「未解决」' : '客服 07 点击接入'}</div>`;
+    if (x.silent) tx += `<div class="sys">AI 未回复（人工接待中）</div>`;
+    else if (x.system) tx += `<div class="sys">${esc(x.system)}</div>`;
+    else if (x.reply) tx += `<div class="msg turnsel ${i === S.detailTurn ? 'on' : ''}" data-turn="${i}"><div class="av">AI</div><div class="bub">${esc(x.reply.text)}${x.reply.card ? renderCard(x.reply.card) : ''}</div></div>`;
+  });
+  S.detail = c.id;
+  return `<button class="backlink" data-back>‹ 返回会话记录</button><h2>${sid(c)} · ${esc(c.title)}</h2>
+  <div class="sub">${esc(a.name)}（${esc(a.role)}，${esc(a.desc)}）· 场景 ${c.id} · <button class="backlink" style="margin:0" data-play="${c.id}">在 App 中回放 ›</button></div>
+  <div class="detail"><div class="transcript">${tx}</div><div class="panel">${traceHTML(t, c, S.detailTurn)}</div></div>`;
+}
+function handoffPage() {
+  const list = D.scenarios.flatMap(c => recCell(c.id).turns.map((t, i) => ({ c, t, i })).filter(x => x.t.trace.handoff));
+  return `<h2>人工接待</h2><div class="sub">AI 转人工时生成交接摘要：诉求、已查事实、待处理事项一起交给客服，商户不用把问题再说一遍。</div>
+  <div class="grid2">${list.map(({ c, t }) => { const h = t.trace.handoff; const ts = recCell(c.id).turns; const accepted = ts.some(x => x.system); const failed = /未成功/.test(t.trace.outcome);
+    return `<div class="box"><h4>${esc(h.reason.split('：')[0])}<span class="tag ${failed ? 'bad' : accepted ? 'ok' : 'warn'}" style="margin-left:auto">${failed ? '转接失败' : accepted ? '已接入' : '待接入'}</span></h4>
+      <dl class="kv" style="margin:8px 0"><dt>原因</dt><dd>${esc(h.reason)}</dd><dt>商户</dt><dd>${esc(h.account)}${h.merchant ? ' · ' + esc(h.merchant) : ''}</dd><dt>诉求</dt><dd>${h.demand.map(esc).join(' → ')}</dd><dt>已查事实</dt><dd>${h.facts.length ? h.facts.map(esc).join('<br>') : '无'}</dd><dt>待处理</dt><dd>${h.open.map(esc).join('；')}</dd></dl>
+      <button class="backlink" style="margin:0" data-open="${c.id}">查看会话 ${sid(c)} ›</button></div>`; }).join('')}</div>
+  <p class="note">转人工的四类原因：商户明确要求；缺少业务依据；系统或证据异常；需要有权限的处置。接入以客服确认为准，接入后 AI 停止自动回复。</p>`;
+}
+function badcasePage() {
+  const fails = D.scenarios.flatMap(c => recCell(c.id).turns.map((t, i) => ({ c, t, i }))).filter(x => x.t.trace.failureTag);
+  const guardHits = D.scenarios.flatMap(c => recCell(c.id).turns.map((t, i) => ({ c, t, i }))).filter(x => x.t.trace.guard && !x.t.trace.guard.ok && x.t.trace.polishedRaw);
+  const disagree = D.scenarios.flatMap(c => recCell(c.id).turns.map((t, i) => ({ c, t, i }))).filter(x => x.t.trace.understand?.source === 'llm' && !x.t.trace.understand.agreeWithRules);
+  const failedChecks = D.scenarios.filter(c => (recCell(c.id).checks || []).length);
+  const TYPES = [
+    ['误答', '答了，但答错了', '把知识当事实、把"未找到"说成"没有"、用通用话术顶替失败的查询', ['1c', '2d', '2e', '2g', '3b']],
+    ['漏答', '该答的没答出来', '能查到的不去查、能解释的部分不讲', ['1b', '4b']],
+    ['错放', '不该放行的放行了', '越权查询、把引导说成已办理、承诺到账时间或赔付', ['2h', '7b', '7c', '5b', '3e']],
+    ['错拦', '该放行的被拦住了', '授权范围内的商户号、合法的多店查询被拒绝', ['7a', '2b']],
+  ];
+  return `<h2>Bad Case 归因</h2><div class="sub">错误先分到四类，再看是不是链路问题。每一类都有对应场景守住，改规则后全量回归。</div>
+  <div class="grid2" style="margin-bottom:18px">${TYPES.map(([n, d, e, ids]) => `<div class="box"><h4>${n}<small style="font-weight:400;color:var(--ink3)">${d}</small></h4><p>${e}</p><p style="margin-top:8px">守住它的场景：${ids.map(id => `<button class="tag b" data-open="${id}">${id}</button>`).join(' ')}</p></div>`).join('')}
+  <div class="box"><h4>链路问题<small style="font-weight:400;color:var(--ink3)">不是答案本身错，是链路没走通</small></h4><p>身份没有传到工具、工具超时、结果被丢弃。表现常常像误答，但修的地方不在知识库。</p><p style="margin-top:8px">守住它的场景：<button class="tag b" data-open="2g">2g</button> <button class="tag b" data-open="2e">2e</button> <button class="tag b" data-open="5d">5d</button></p></div></div>
+  <h2 style="font-size:15px">本次录制中的待归因记录</h2><div class="sub">模拟失效、守卫拦截、理解分歧和未通过判定的场景都会进到这里。</div>
+  <table><thead><tr><th>会话</th><th>类型</th><th>现象</th><th>归因</th><th>处理</th></tr></thead><tbody>
+  ${fails.map(({ c, t }) => `<tr class="click" data-open="${c.id}"><td><code>${sid(c)}</code></td><td><span class="tag bad">误答 · 链路问题</span></td><td>${esc(t.reply?.text)}</td><td>${esc(t.trace.failureTag)}（本场景为模拟失效模式）</td><td>查询前检查身份参数；工具失败不回退通用话术</td></tr>`).join('')}
+  ${guardHits.map(({ c, t }) => `<tr class="click" data-open="${c.id}"><td><code>${sid(c)}</code></td><td><span class="tag warn">守卫拦截</span></td><td>${esc(t.trace.polishedRaw)}</td><td>${esc(t.trace.guard.reasons.join('；'))}</td><td>已退回模板，商户未看到</td></tr>`).join('')}
+  ${disagree.map(({ c, t }) => `<tr class="click" data-open="${c.id}"><td><code>${sid(c)}</code></td><td><span class="tag b">理解分歧</span></td><td>${esc(t.input.text || '')}</td><td>大模型：${esc(t.trace.understand.task)}/${esc(t.trace.understand.domain)}</td><td>人工复核，确认后补充到测试集</td></tr>`).join('')}
+  ${failedChecks.map(c => `<tr class="click" data-open="${c.id}"><td><code>${sid(c)}</code></td><td><span class="tag bad">未通过判定</span></td><td>${esc(c.title)}</td><td>${esc(recCell(c.id).checks.join('；'))}</td><td>待修复</td></tr>`).join('')}
+  </tbody></table>`;
+}
+function knowledgePage() {
+  const ref = k => D.scenarios.filter(c => recCell(c.id).turns.some(t => (t.trace.tools || []).some(x => x.tool === 'search_knowledge' && x.status !== 'empty') && (t.reply?.card?.title === k.title || (t.reply?.text || '').includes(k.answer.slice(0, 10))))).map(c => c.id);
+  return `<h2>知识管理</h2><div class="sub">知识只有"已发布"才进入正式服务。草稿不会被检索；旧版本要及时下线，否则会出现两个版本同时生效。</div>
+  <div class="flow">${[['编辑', '写规则与适用条件'], ['预览', '看商户实际看到的样子'], ['测试', '跑相关场景，不能变差'], ['审核发布', '发布后才进入服务']].map(([a, b]) => `<div><b>${a}</b><small>${b}</small></div>`).join('')}</div>
+  <table><thead><tr><th>编号</th><th>标题</th><th>版本</th><th>状态</th><th>内容</th><th>被哪些场景用到</th></tr></thead><tbody>
+  ${D.knowledge.map(k => `<tr><td><code>${k.id}</code></td><td>${esc(k.title)}</td><td>${k.version}</td><td>${k.status === '已发布' ? (k.legacy ? '<span class="tag warn">已发布 · 旧版未下线</span>' : '<span class="tag ok">已发布</span>') : '<span class="tag">草稿 · 不进入服务</span>'}</td><td style="max-width:420px">${esc(k.answer)}</td><td>${k.legacy ? '<button class="tag b" data-open="1c">1c 冲突</button>' : ref(k).map(id => `<button class="tag b" data-open="${id}">${id}</button>`).join(' ')}</td></tr>`).join('')}
+  </tbody></table><p class="note">知识库只放规则，不放任何商户的个人数据。"某一笔为什么没到"这类问题由业务工具查询，不由知识回答。</p>`;
+}
+function testsPage() {
+  const m = rec().meta;
+  return `<h2>场景测试</h2><div class="sub">8 个问题 × 36 种情况。每一格写明"应当怎样处理"，改规则或换模型后全量重跑。${m.mode === 'llm' ? `当前为大模型录制，每格运行 ${m.runs} 次，全部通过才算通过（pass^${m.runs}）。` : ''}</div>
+  <div class="stats"><div class="stat"><small>${m.mode === 'llm' ? `pass^${m.runs}` : '规则模式通过'}</small><b>${m.passK}/${m.total}</b><em>${m.mode === 'llm' ? esc(m.model) : '确定性基线；大模型录制后显示 pass^k'}</em></div>
+  ${m.mode === 'llm' ? `<div class="stat"><small>规则模式</small><b>${D.recordings.rules.meta.passK}/${D.recordings.rules.meta.total}</b><em>确定性基线</em></div>` : `<div class="stat"><small>问题 × 场景</small><b>8 × 36</b><em>同一问题，不同情况</em></div>`}
+  <div class="stat"><small>覆盖任务类型</small><b>6</b><em>知识 / 查询 / 诊断 / 引导 / 执行 / 裁定</em></div>
+  <div class="stat"><small>覆盖账号</small><b>${Object.keys(D.accounts).length}</b><em>店主、财务、收银员、服务商等</em></div></div>
+  <div class="matrix">${D.questions.map(q => { const cs = D.scenarios.filter(c => c.q === q.id); return `<div class="qh"><b>${q.id}</b> ${esc(q.text)}<small>${esc(q.type)}</small></div>` + cs.map(c => { const r = recCell(c.id), ok = !(r.checks || []).length, sim = c.variant.identityBug;
+    return `<button class="mc ${ok ? (sim ? 'sim' : '') : 'f'}" data-open="${c.id}" title="${esc(c.point)}"><code>${c.id}</code>${esc(c.title)}${(r.passes || []).length > 1 ? `<div class="pk">${r.passes.map(p => p ? '●' : '○').join('')}</div>` : ''}</button>`; }).join('') + '<div></div>'.repeat(8 - cs.length); }).join('')}</div>
+  <p class="note">橙色格（2g）是故意保留的失效模式：判定标准是"能被识别并归因"，而不是"答对"。</p>`;
+}
+function metricsPage() {
+  const all = D.scenarios.flatMap(c => recCell(c.id).turns.filter(t => !t.silent && t.trace.outcome !== '人工已接入'));
+  const cnt = f => { const o = {}; all.forEach(t => { const k = f(t); if (k) o[k] = (o[k] || 0) + 1; }); return Object.entries(o).sort((a, b) => b[1] - a[1]); };
+  const bars = arr => { const mx = Math.max(...arr.map(x => x[1])); return `<div class="bars">${arr.map(([k, v]) => `<div class="bar"><span>${esc(k)}</span><div><i style="width:${v / mx * 100}%"></i></div><b>${v}</b></div>`).join('')}</div>`; };
+  const m = rec().meta;
+  const llmTurns = all.filter(t => t.trace.understand?.source === 'llm');
+  const agree = llmTurns.filter(t => t.trace.understand.agreeWithRules).length;
+  const polished = all.filter(t => t.trace.polishedRaw); const guardOk = polished.filter(t => t.trace.guard?.ok).length;
+  const ms = llmTurns.map(t => t.trace.ms).sort((a, b) => a - b);
+  return `<h2>指标</h2><div class="sub">以下全部是本演示 36 个场景、${all.length} 轮对话的统计，用来说明指标怎么拆，不是任何线上业务数据。</div>
+  <div class="stats">
+    <div class="stat"><small>场景判定通过</small><b>${m.passK}/${m.total}</b><em>${m.mode === 'llm' ? `pass^${m.runs}` : '规则模式'}</em></div>
+    <div class="stat"><small>诉求理解与规则一致</small><b>${llmTurns.length ? Math.round(agree / llmTurns.length * 100) + '%' : '—'}</b><em>${llmTurns.length ? `${agree}/${llmTurns.length} 轮` : '大模型录制后可见'}</em></div>
+    <div class="stat"><small>大模型改写通过守卫</small><b>${polished.length ? Math.round(guardOk / polished.length * 100) + '%' : '—'}</b><em>${polished.length ? `${guardOk}/${polished.length} 条，其余退回模板` : '大模型录制后可见'}</em></div>
+    <div class="stat"><small>单轮耗时中位数</small><b>${ms.length ? (ms[Math.floor(ms.length / 2)] / 1000).toFixed(1) + 's' : '—'}</b><em>${ms.length ? '含理解与改写两次调用' : '大模型录制后可见'}</em></div></div>
+  <div class="grid2"><div class="box"><h4>本轮处理出口</h4>${bars(cnt(t => t.trace.outcome))}<p class="note">"答复率"只看有没有回话；拆开出口才能看到多少是真的答了、多少是部分答复、多少交给了人工。</p></div>
+  <div class="box"><h4>任务类型</h4>${bars(cnt(t => t.trace.task))}</div>
+  <div class="box"><h4>取证路径</h4>${bars(cnt(t => t.trace.evidence))}</div>
+  <div class="box"><h4>工具返回</h4>${bars((() => { const o = {}; all.forEach(t => t.trace.tools.forEach(x => o[x.status] = (o[x.status] || 0) + 1)); return Object.entries(o); })())}<p class="note">empty / multiple / error 都需要单独的处理方式，不能都当"没查到"。</p></div></div>`;
+}
+
+// ---------- 视图切换 ----------
+function switchView(v) { S.view = v; document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.v === v)); document.querySelectorAll('.view').forEach(x => x.classList.toggle('on', x.id === 'v-' + v)); if (v === 'admin') renderAdmin(); }
+document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => switchView(b.dataset.v));
+
+$('#disclose').onclick = e => e.currentTarget.classList.toggle('open');
+$('#brand').textContent = D.brand + ' · 商户服务助手';
+initMode();
+const hash = location.hash.slice(1);
+loadCell(cellById(hash) ? hash : '2a');
+if (hash === 'admin') switchView('admin');
+</script>
+</body>
+</html>

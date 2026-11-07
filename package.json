@@ -1,1 +1,4 @@
-{"name":"paydesk-agent-lab","version":"0.1.0","type":"module","private":true,"scripts":{"cases":"node eval/build_cases.mjs","eval":"node eval/run.mjs","build":"node scripts/build_web.mjs"}}
+{ "name": "merchant-agent-demo", "version": "1.0.0", "private": true, "type": "module",
+  "description": "支付商户服务 AI 客服：真实 Agent 跑在模拟业务系统上，36 个场景可回放",
+  "scripts": { "test": "node scripts/test.mjs", "record": "node scripts/record.mjs", "build": "node scripts/build.mjs", "mcp": "node mcp-server.mjs" },
+  "license": "MIT" }
