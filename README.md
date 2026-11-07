@@ -8,7 +8,9 @@
 
 > 对话为预设脚本，用于演示处理逻辑。正常场景的 AI 回复由 `engine/` 里一套可运行的处理规则生成（保证同样的情况说法一致），反例为人为构造。品牌「演示支付」、商户与数据均为虚构，不代表任何线上系统。
 
-打开 `docs/index.html` 即可查看，不需要联网，不需要任何 API。
+在线体验：https://sanqiaojun.github.io/merchant-service-ai-demo/ （也可以直接打开 `docs/index.html`，不需要联网，不需要任何 API）
+
+直达对照场景：[查昨天的交易](https://sanqiaojun.github.io/merchant-service-ai-demo/#N1) ↔ [反例：查交易，回了一句套话](https://sanqiaojun.github.io/merchant-service-ai-demo/#B1)
 
 修改场景：编辑 `engine/stories.js`（场景、预设问题、逐轮说明、反例回复），然后运行 `node scripts/build.mjs`。
 
