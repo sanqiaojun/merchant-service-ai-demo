@@ -61,16 +61,16 @@ node scripts/test.mjs      # 规则模式全量回归，36 个场景
 node scripts/build.mjs     # 生成会话场景演示 docs/index.html
 ```
 
-可选：用真实大模型录制（当前演示不需要）：
+接入真实大模型做评测（[评测报告](https://sanqiaojun.github.io/merchant-service-ai-demo/eval.html)）：
 
 ```bash
-DASHSCOPE_API_KEY=你的key node scripts/record.mjs     # 通义千问 qwen-plus
-DEEPSEEK_API_KEY=你的key  node scripts/record.mjs     # DeepSeek
-RUNS=3 ONLY=2b,3e LLM_MODEL=qwen-max ...              # 可选参数
-node scripts/build.mjs
+DASHSCOPE_API_KEY=你的key node scripts/eval.mjs     # 通义千问 qwen-plus
+DEEPSEEK_API_KEY=你的key  node scripts/eval.mjs     # DeepSeek
+RUNS=3 ONLY=2b,3e TAG=v5 LLM_MODEL=qwen-max ...     # 可选参数
+node scripts/report.mjs                             # 从 recordings/ 生成 docs/eval.html
 ```
 
-录制回放的是第一次运行的原样结果，不挑最好的一次。API Key 只在本机使用，不写入任何文件。
+每个场景跑 RUNS 次，记录是否通过、失败归因和答复校验的拦截情况，结果存到 `recordings/`。四轮评测的原始结果都在该目录里。API Key 只从环境变量读取，不写入任何文件。
 
 ## MCP
 
@@ -91,13 +91,15 @@ engine/
   understand.js  规则版诉求理解
   llm.js         大模型：诉求理解 + 答复改写（OpenAI 兼容接口）
   guard.js       答复守卫
+  phrases.js     边界表述的同义说法，答复守卫与评测判定共用
   agent.js       每一轮的策略：前置检查 → 取证 → 答复前检查 → 出口
   scenarios.js   8 个问题 × 36 种情况及预期
   runner.js      多轮运行与判定
-scripts/         test / record / build
-web/index.html   App + 运营后台（回放录制）
+scripts/         test / build / eval / report
+recordings/      四轮大模型评测的原始结果
+web/index.html   会话场景演示页
 mcp-server.mjs   MCP 服务
-docs/            构建产物（GitHub Pages）
+docs/            构建产物（GitHub Pages）：index.html 演示页，eval.html 评测报告
 ```
 
 ## License

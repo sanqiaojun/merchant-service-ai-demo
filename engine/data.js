@@ -68,13 +68,13 @@ export const ACCOUNT_STATUS = {
 
 // 知识库：只有"已发布"的条目进入正式服务
 export const KNOWLEDGE = [
-  { id: 'K-T1-v2', title: 'T+1 结算的含义', status: '已发布', version: 'v2', keys: ['T+1', 'T＋1'],
+  { id: 'K-T1-v2', title: 'T+1 结算的含义', status: '已发布', version: 'v2', keys: ['T+1', 'T＋1'], must: ['下一个工作日', '顺延', '结算记录'],
     answer: 'T+1 指交易日（T）的下一个工作日完成结算；遇法定节假日顺延到下一个工作日。具体某一笔何时到账，以结算记录为准。' },
   { id: 'K-T1-v1', title: 'T+1 结算的含义（旧版）', status: '已发布', version: 'v1', keys: ['T+1', 'T＋1'], legacy: true,
     answer: 'T+1 指交易日的下一个自然日结算，节假日不顺延。' },
   { id: 'K-CARD', title: '更换结算卡', status: '已发布', version: 'v3', keys: ['结算卡', '换卡', '更换'],
     answer: '更换结算卡需要：①新卡户名与商户开户名一致；②准备新卡照片和法人身份证；③在 App「我的 - 结算信息 - 更换结算卡」提交，完成人脸验证。审核通过后生效，以页面显示的状态为准。', entry: '我的 - 结算信息 - 更换结算卡' },
-  { id: 'K-FREEZE', title: '账户冻结是什么意思', status: '已发布', version: 'v2', keys: ['冻结'],
+  { id: 'K-FREEZE', title: '账户冻结是什么意思', status: '已发布', version: 'v2', keys: ['冻结'], must: ['风险审核', '资料待补充', '账户页面通知'],
     answer: '账户冻结是指因风险审核、资料待补充等原因，暂停结算或部分功能。冻结期间交易资金会保留，审核结束后按结论处理。具体原因以账户页面通知为准。' },
   { id: 'K-REVIEW', title: '风险审核时长', status: '已发布', version: 'v1', keys: ['审核', '多久'],
     answer: '材料齐全后，风险审核一般在 3-5 个工作日内完成，以审核结论为准。' },

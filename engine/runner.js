@@ -1,5 +1,6 @@
 // 按场景跑完多轮对话，并按 expect 判定。
 import { newSession, runTurn } from './agent.js';
+import { hasPhrase } from './phrases.js';
 
 export async function runCell(cell, { llm = null } = {}) {
   const s = newSession(cell.persona, cell.variant);
@@ -19,7 +20,7 @@ export function check(cell, turns) {
     const tr = t.trace, text = t.reply?.text || '';
     if (e.outcome && tr.outcome !== e.outcome) fails.push(`第${i + 1}轮出口应为「${e.outcome}」，实际「${tr.outcome}」`);
     if (e.task && tr.task !== e.task) fails.push(`第${i + 1}轮任务应为「${e.task}」，实际「${tr.task}」`);
-    for (const k of e.includes || []) if (!text.includes(k)) fails.push(`第${i + 1}轮答复缺少「${k}」`);
+    for (const k of e.includes || []) if (!hasPhrase(text, k)) fails.push(`第${i + 1}轮答复缺少「${k}」`);
     for (const k of e.excludes || []) if (text.includes(k)) fails.push(`第${i + 1}轮答复不应出现「${k}」`);
     if (e.card && t.reply?.card?.type !== e.card) fails.push(`第${i + 1}轮应出卡片 ${e.card}，实际 ${t.reply?.card?.type || '无'}`);
     if (e.tool && !tr.tools.some(x => x.tool === e.tool)) fails.push(`第${i + 1}轮应调用 ${e.tool}`);

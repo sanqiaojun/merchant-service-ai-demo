@@ -1,0 +1,173 @@
+// 读取 recordings/ 里四轮评测结果，生成 docs/eval.html。页面上的数字全部来自录制文件，不手填。
+import { readFileSync, writeFileSync } from 'node:fs';
+
+const load = v => JSON.parse(readFileSync(`recordings/eval-qwen-plus-${v}.json`, 'utf8'));
+const V = { v1: load('v1'), v2: load('v2'), v3: load('v3'), v4: load('v4') };
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const tone = d => d.cells.reduce((n, c) => n + c.runs.reduce((m, r) => m + r.turns.filter(t => t.polishedRaw && /[～~]|[哦哈啦]/.test(t.polishedRaw)).length, 0), 0);
+const same = d => d.cells.filter(c => new Set(c.runs.map(r => JSON.stringify(r.turns.map(t => t.text)))).size === 1).length;
+const avgMs = d => { const a = d.cells.flatMap(c => c.runs.map(r => r.ms)); return Math.round(a.reduce((x, y) => x + y, 0) / a.length / 100) / 10; };
+const turn = (d, id, i = 0, k = 0) => d.cells.find(c => c.id === id).runs[k].turns[i];
+const S = v => V[v].summary, N = V.v4.cells.length, R = V.v4.meta.runs;
+const model = V.v4.meta.model;
+
+const ROUNDS = [
+  ['v1', '第 1 轮', '初始版本', '—'],
+  ['v2', '第 2 轮', '路由按"任务 + 领域"兜底；答复校验改为"事实 + 边界"，允许同义说法；改写提示词加约束', '系统'],
+  ['v3', '第 3 轮', '评测判定与答复校验共用一份同义说法清单。本轮答复校验的修改没有生效（文件未同步），实际验证的是"第 2 轮的系统 + 修正后的判定"', '判定'],
+  ['v4', '第 4 轮', '第 3 轮的修改全部生效，补全同义说法清单', '系统'],
+];
+const row = ([v, name, what, kind]) => {
+  const s = S(v);
+  return `<tr><td><b>${name}</b></td><td class="what">${kind === '—' ? '' : `<i class="tag ${kind === '系统' ? 't-info' : 't-warn'}">改${kind}</i> `}${what}</td>
+<td class="n">${s.runPass}/${s.runTotal}</td><td class="n">${s.passK}/${N}</td><td class="n">${s.polishKept}/${s.polishTried}</td><td class="n">${s.polishBlocked}</td><td class="n">${tone(V[v])}</td></tr>`;
+};
+const pair = (label1, t1, label2, t2, cls = '') => `<div class="pair ${cls}"><div><span>${label1}</span>${esc(t1)}</div><div><span>${label2}</span>${esc(t2)}</div></div>`;
+
+const c6 = turn(V.v1, '6c'), c6b = turn(V.v4, '6c');
+const c5 = turn(V.v4, '5c', 0);
+const g1 = turn(V.v1, '6b'), g2 = turn(V.v1, '5b');
+const s1 = S('v1'), s4 = S('v4');
+
+const html = `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 客服评测报告 · ${N} 个场景 × ${R} 次 × 4 轮</title>
+<style>
+:root{--brand:#3d63f5;--brand-ink:#2340b8;--brand-soft:#e9eeff;--ink:#1b2130;--ink2:#535c70;--ink3:#9098a9;--line:#e8eaf0;--page:#f2f3f7;
+--ok:#11905f;--ok-soft:#e5f5ee;--info:#2f63d8;--info-soft:#e8efff;--warn:#b86e00;--warn-soft:#fff3df;--bad:#cf3434;--bad-soft:#fdeceb}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;color:var(--ink);background:var(--page);-webkit-font-smoothing:antialiased}
+a{color:var(--brand-ink);text-decoration:none}a:hover{text-decoration:underline}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.tag{font-style:normal;display:inline-block;font-size:11px;line-height:18px;padding:0 7px;border-radius:5px;white-space:nowrap;vertical-align:1px}
+.t-ok{background:var(--ok-soft);color:var(--ok)}.t-info{background:var(--info-soft);color:var(--info)}.t-warn{background:var(--warn-soft);color:var(--warn)}.t-bad{background:var(--bad-soft);color:var(--bad)}
+.top{position:sticky;top:0;z-index:40;background:rgba(242,243,247,.86);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid rgba(20,30,60,.06)}
+.top-in{max-width:860px;margin:0 auto;height:56px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.me-name{font-size:16px;font-weight:700;letter-spacing:.5px;color:var(--ink);display:flex;align-items:baseline;gap:10px}
+.me-name span{font-size:12.5px;font-weight:400;color:var(--ink3);letter-spacing:0}
+.top-r{font-size:13px;color:var(--ink2);display:flex;align-items:center;gap:14px}
+.mail{color:var(--ink);cursor:pointer;user-select:all}
+.cp{font-size:12px;border:1px solid var(--line);border-radius:14px;padding:2px 10px;background:#fff;color:var(--ink2);margin-left:6px}
+main{max-width:860px;margin:0 auto;padding:0 20px 40px}
+.hero{padding:52px 0 8px}
+.hero h1{font-size:34px;line-height:1.3;font-weight:700;letter-spacing:.5px}
+.hero p{font-size:16px;color:var(--ink2);margin-top:14px}
+.stats{display:flex;flex-wrap:wrap;gap:12px;margin:26px 0 6px}
+.stat{flex:1 1 180px;background:#fff;border-radius:14px;padding:16px 18px}
+.stat b{display:block;font-size:28px;line-height:1.2;font-weight:650;font-variant-numeric:tabular-nums}
+.stat span{font-size:12.5px;color:var(--ink2)}
+.stat.warn b{color:var(--warn)}
+h2{font-size:21px;font-weight:650;margin:44px 0 12px}
+h3{font-size:16px;font-weight:650;margin:26px 0 8px}
+p{margin:10px 0}ul{margin:10px 0 10px 22px}li{margin:5px 0}
+.card{background:#fff;border-radius:14px;padding:6px 18px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:640px}
+th{font-weight:500;color:var(--ink3);font-size:12px;text-align:left;padding:12px 8px 8px;white-space:nowrap}
+td{padding:11px 8px;border-top:1px solid var(--line);vertical-align:top}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+td.what{color:var(--ink2);line-height:1.6}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.pair>div{background:#fff;border-radius:12px;padding:12px 14px;font-size:13.5px;line-height:1.65;white-space:pre-wrap;border-left:3px solid var(--line)}
+.pair>div span{display:block;font-size:11.5px;color:var(--ink3);margin-bottom:4px}
+.pair.bad>div:last-child{border-left-color:var(--bad)}.pair.good>div:last-child{border-left-color:var(--ok)}.pair.warn>div:last-child{border-left-color:var(--warn)}
+.q{font-size:13.5px;color:var(--ink2);margin:14px 0 -4px}
+.note{background:var(--warn-soft);border-radius:12px;padding:12px 16px;font-size:14px;margin:14px 0}
+.ft{max-width:860px;margin:0 auto;padding:14px 20px 40px;font-size:12px;color:var(--ink3);border-top:1px solid rgba(20,30,60,.06)}
+@media(max-width:640px){.hero h1{font-size:26px}.pair{grid-template-columns:1fr}.me-name span{display:none}}
+</style>
+</head>
+<body>
+<nav class="top"><div class="top-in"><a class="me-name" href="./">三桥君<span>AI 产品经理 · 作品</span></a><div class="top-r"><a href="./">← 对话演示</a><span class="mailbox"></span></div></div></nav>
+<main>
+<header class="hero">
+<h1>接上真实大模型后，AI 客服还守得住边界吗？</h1>
+<p>把<a href="./">对话演示</a>背后的处理引擎接入真实大模型（${esc(model)}），同一批 ${N} 个场景每个跑 ${R} 次，共评测 4 轮。这里记录每一轮的结果、失败原因和修法，包括评测本身出的错。</p>
+<div class="stats">
+<div class="stat"><b>${s1.runPass}/${s1.runTotal} → ${s4.runPass}/${s4.runTotal}</b><span>单次运行通过数，第 1 轮到第 4 轮</span></div>
+<div class="stat"><b>${s1.polishBlocked} → ${s4.polishBlocked}</b><span>模型改写被答复校验拦下的次数（共 ${s4.polishTried} 次改写）</span></div>
+<div class="stat warn"><b>1 处</b><span>全部通过后，人工复核仍发现的意思跑偏</span></div>
+</div>
+</header>
+
+<h2>结论</h2>
+<ul>
+<li><b>第 1 轮暴露了一个严重问题：答非所问。</b>商户问"账户为什么被冻结"，AI 回答了到账差额，${R} 次都错，而且是当作正常答复发出的。根因在路由，不在模型。</li>
+<li><b>四轮之后 ${s4.runPass}/${s4.runTotal} 通过，但这个数字高估了效果。</b>判定靠关键词，我逐条读了第 4 轮被采用的改写，发现 1 处关键词检查拦不住的意思跑偏（"请确认"被改写成"已收到申请"）。</li>
+<li><b>四轮里有一轮改的是判定标准，不是系统。</b>第 2 轮通过数从 ${S('v1').runPass} 降到 ${S('v2').runPass}，原因是答复校验和评测判定用了两份口径。修正口径带来的通过数上升，不算效果提升。</li>
+</ul>
+
+<h2>怎么测的</h2>
+<ul>
+<li><b>被测系统：</b>规则决定策略（身份、权限、查不查、转不转人工、金额和状态），大模型只做两件事：理解商户诉求、把模板答复改写得更自然。模型改写后要过一道答复校验，不通过就退回模板原文。</li>
+<li><b>场景：</b>${N} 个，覆盖知识解释、事实查询、诊断解释、办理引导、受控执行、越权拦截、转人工，包含系统超时、查询为空、知识冲突等异常。商户与数据均为虚构。</li>
+<li><b>判定：</b>每个场景写明预期（出口、是否调用工具、答复必须包含或不得出现的内容），由脚本自动判定。规则模式作基线，${V.v4.rules.pass}/${V.v4.rules.total} 通过。</li>
+<li><b>运行：</b>每轮 ${N} × ${R} = ${s4.runTotal} 次，平均每次约 ${avgMs(V.v4)} 秒，每轮约 ${Math.round(V.v4.meta.tokens / 1000)}K tokens。</li>
+</ul>
+
+<h2>四轮结果</h2>
+<div class="card"><table>
+<tr><th>轮次</th><th>这一轮改了什么</th><th class="n">单次通过</th><th class="n">${R} 次都通过的场景</th><th class="n">改写被采用</th><th class="n">被校验拦下</th><th class="n">出现语气词</th></tr>
+${ROUNDS.map(row).join('\n')}
+</table></div>
+<p class="q">"改系统"指改了被测的引擎或提示词；"改判定"指只改了评测怎么算通过。</p>
+
+<h2>三个发现</h2>
+
+<h3>1. 答非所问：模型分类说得通，流程却走错了</h3>
+<p>商户问"我的账户为什么被冻结？"。模型把它归为"想知道一个结果为什么是这样"，这个理解不算错。但引擎里这一类只接了到账差额的解释流程，于是：</p>
+${pair('第 1 轮：AI 的答复', c6.text, '第 4 轮：AI 的答复', c6b.text, 'good')}
+<p><b>修法：</b>没有去改提示词让模型"分对类"。模型的分类会随措辞和版本变化，靠不住。改的是路由：按"任务 + 领域"的组合决定走哪个流程，账户类的"为什么"一律走账户原因查询。同一个问题，模型怎么归类都能落到对的流程上。</p>
+
+<h3>2. 校验太死板，口径还不一致</h3>
+<p>第 1 轮 ${s1.polishTried} 次改写里有 ${s1.polishBlocked} 次被拦下，大部分是误拦。被拦后退回模板，答复是对的，只是生硬。</p>
+${pair('模板', g1.template, '被拦下的改写（理由：' + g1.guardReasons.join('；') + '）', g1.polishedRaw, 'warn')}
+${pair('模板', g2.template.split('\n')[0], '被拦下的改写（理由：' + g2.guardReasons.join('；') + '）', g2.polishedRaw.split('\n')[0], 'warn')}
+<p><b>修法：</b>必须保留的内容从"原话"改为"事实 + 边界"。金额、状态、原因、办理路径逐字保留；"不能 / 无法"这类边界表述允许同义说法；数字按数值比较。同时在改写提示词里禁用语气词，出现次数从 ${tone(V.v1)} 降到 ${tone(V.v4)}。</p>
+<div class="note"><b>这里出过一个错。</b>第 2 轮只放宽了答复校验，评测判定还在逐字找"不能"，结果校验放行的答复被判定为失败，通过数不升反降。第 3 轮把两处改成共用一份同义说法清单。教训是：线上校验和离线评测必须是同一份标准，否则看到的指标变化可能只是口径变化。</div>
+
+<h3>3. 全部通过之后，人工复核还是找到了问题</h3>
+<p>第 4 轮 ${s4.runPass}/${s4.runTotal} 通过。我把被采用的改写按模板逐条读了一遍（33 个模板），发现 1 处实质性跑偏：</p>
+${pair('模板', c5.template, '被采用的改写', c5.text, 'bad')}
+<p>模板是请商户确认，改写读起来像申请已受理。必须保留的关键词"确认"还在句子里，所以校验和判定都放行了。另有 3 处轻微变化，例如"会一起交给客服"被写成"已同步至客服"。</p>
+<p><b>修法：</b>请商户确认变更的话术不再交给模型改写，直接用模板。这类答复改写的收益很小，出错的代价很大。这项修改在第 4 轮之后加入，该答复此后不经过模型，输出即模板原文。</p>
+
+<h2>局限</h2>
+<ul>
+<li><b>判定靠关键词。</b>同义说法补不完，意思跑偏也拦不住。${s4.runPass}/${s4.runTotal} 只说明"没有触发已知的检查"，不等于每句话都对。</li>
+<li><b>场景是我自己写的。</b>${N} 个场景和引擎出自同一人，商户的问法固定。真实商户会用方言、错别字、一句话问两件事，这些都没有覆盖。</li>
+<li><b>跑 ${R} 次的信息量有限。</b>低温度下模型输出很稳定，第 4 轮有 ${same(V.v4)}/${N} 个场景 ${R} 次答复逐字相同。稳定性要靠变换问法来测，不是重复同一句。</li>
+<li><b>只测了一个模型。</b>换模型后理解分类和改写习惯都会变，结论不能直接外推。</li>
+<li><b>数据是虚构的。</b>没有真实流量，测不出延迟、并发和工具真实失败率下的表现。</li>
+</ul>
+
+<h2>下一步</h2>
+<ul>
+<li>加一层语义判定：用第二个模型或人工抽检判断"改写是否改变了原意"，与关键词检查并用。</li>
+<li>每个场景补 5 到 10 种问法，测诉求理解的稳定性。</li>
+<li>换一个模型重跑，对比理解偏差和改写习惯。</li>
+</ul>
+
+<h2>可复现</h2>
+<p>评测脚本、四轮的完整录制结果和引擎代码都在<a href="https://github.com/sanqiaojun/merchant-service-ai-demo">代码仓库</a>里。自备任意兼容 OpenAI 接口的模型密钥，运行 <code>node scripts/eval.mjs</code> 即可重跑；<code>node scripts/report.mjs</code> 从录制结果生成本页，页面上的数字不手填。</p>
+</main>
+<footer class="ft">评测时间 ${V.v1.meta.startedAt.slice(0, 10)}，模型 ${esc(model)}。品牌、商户与数据均为虚构，不代表任何线上系统。　© 2026 三桥君</footer>
+<script>
+const ML = ['conforest616', 'gmail.com'].join('@');
+function copyText(t) {
+  if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(t);
+  return new Promise((ok, no) => { const a = document.createElement('textarea'); a.value = t; a.style.cssText = 'position:fixed;opacity:0'; document.body.append(a); a.select(); try { document.execCommand('copy') ? ok() : no(); } catch (e) { no(e); } a.remove(); });
+}
+document.querySelectorAll('.mailbox').forEach(el => {
+  el.innerHTML = '<span class="mail" title="点击复制">' + ML + '</span><button class="cp">复制</button>';
+  const go = () => { const b = el.querySelector('.cp'); copyText(ML).then(() => { b.textContent = '已复制'; }, () => { b.textContent = '请手动复制'; }); setTimeout(() => b.textContent = '复制', 2000); };
+  el.querySelector('.mail').onclick = go; el.querySelector('.cp').onclick = go;
+});
+</script>
+</body>
+</html>
+`;
+writeFileSync('docs/eval.html', html);
+console.log(`已生成 docs/eval.html（${Math.round(html.length / 1024)} KB）`);

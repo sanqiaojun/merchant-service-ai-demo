@@ -34,15 +34,15 @@ function handoffSummary(s, reason, facts, open) {
     merchant: s.lastMerchant ? MERCHANTS[s.lastMerchant].name : null, account: `${s.account.name}（${s.account.role}）` };
 }
 
-function requestHandoff(s, reason, facts, open, lead) {
+function requestHandoff(s, reason, facts, open, lead, must = []) {
   if (s.variant.agentsOnline === false) {
     s.demand = '待处理';
-    return { text: `${lead ? lead + '\n' : ''}现在没有客服在线，转接没有成功。你的问题和对话已经保留，可以稍后再试，或在工作时间拨打服务热线。`, keep: ['没有成功'],
+    return { text: `${lead ? lead + '\n' : ''}现在没有客服在线，转接没有成功。你的问题和对话已经保留，可以稍后再试，或在工作时间拨打服务热线。`, keep: ['没有成功', ...must],
       card: { type: 'notice', tone: 'warn', title: '转接未成功', lines: ['会话已保留', '未分配客服，未生成工单'] }, handoff: { status: '转接失败', summary: handoffSummary(s, reason, facts, open) } };
   }
   s.handoff = { status: '待接入', ticket: 'GD-20261106-0031', summary: handoffSummary(s, reason, facts, open) };
   s.demand = '人工处理中';
-  return { text: `${lead ? lead + '\n' : ''}已为你转接人工客服，当前排队第 ${HANDOFF.queuePosition} 位。之前的对话和查到的信息会一起交给客服，不用再说一遍。`, keep: ['人工'],
+  return { text: `${lead ? lead + '\n' : ''}已为你转接人工客服，当前排队第 ${HANDOFF.queuePosition} 位。之前的对话和查到的信息会一起交给客服，不用再说一遍。`, keep: ['人工', ...must],
     card: { type: 'handoff', ticket: s.handoff.ticket, queue: HANDOFF.queuePosition }, handoff: s.handoff };
 }
 
@@ -68,7 +68,10 @@ export async function runTurn(s, input, { llm = null } = {}) {
   s.history.push({ role: 'user', text });
   if (s.aiStopped) return finish(s, trace, t0, { taskLabel: '人工处理中', outcome: 'AI 已停止自动回复', evidence: '—', silent: true });
 
-  const u = llm ? await llmUnderstand(llm, text, rulesUnderstand, s.history.slice(0, -1)) : rulesUnderstand(text);
+  let u = llm ? await llmUnderstand(llm, text, rulesUnderstand, s.history.slice(0, -1)) : rulesUnderstand(text);
+  // 归一：模型把"为什么被冻结"判成诊断类也说得通，但诊断流程只处理到账差额。
+  // 路由按（任务, 领域）组合决定，账户域的"为什么"一律走账户原因查询，不让错的流程去答对的问题。
+  if (u.task === 'diagnosis' && u.domain === 'account') u = { ...u, task: 'fact', aspect: u.aspect || 'reason', normalized: '诊断类 + 账户域 → 账户原因查询' };
   trace.understand = u;
   let task = u.task;
 
@@ -110,24 +113,24 @@ async function route(s, u, trace, t0, llm) {
     if (r.status === 'multiple') {
       ac('知识有效且口径一致', '不通过', `命中 ${r.data.length} 个版本：${r.data.map(k => k.version).join('、')}，说法冲突`);
       return out({ outcome: '交人工', evidence: '知识库', failureTag: '误答风险：知识冲突',
-        reply: requestHandoff(s, '缺少业务依据：知识口径冲突', ['知识库存在两个版本的 T+1 说明'], ['确认现行口径并下线旧版'], '关于这个规则，系统里有两个版本的说法不一致，我先不给你确定结论，以免误导你。') });
+        reply: requestHandoff(s, '缺少业务依据：知识口径冲突', ['知识库存在两个版本的 T+1 说明'], ['确认现行口径并下线旧版'], '关于这个规则，系统里有两个版本的说法不一致，我先不给你确定结论，以免误导你。', ['不一致']) });
     }
     if (r.status !== 'ok') return out({ outcome: '交人工', evidence: '知识库', reply: requestHandoff(s, '缺少业务依据：没有对应知识', [], ['补充知识'], '这个问题我暂时没有找到已发布的规则说明。') });
     const k = r.data[0];
     ac('知识已发布且适用', '通过', `${k.title} ${k.version}`); ac('不对个案做承诺', '通过', '只讲一般规则');
     const tail = u.domain === 'account' ? '如果想查你自己的账户状态，可以直接问我。' : '如果想知道你某一笔什么时候到，我可以帮你查结算记录。';
-    return out({ outcome: '直答', evidence: '知识库', reply: { text: `${k.answer}\n${tail}`, keep: [k.answer.slice(0, 8)], card: { type: 'knowledge', title: k.title, version: k.version }, chips: u.domain === 'account' ? ['我的账户是不是冻结了？'] : ['那我昨天的钱今天能到吗'] } });
+    return out({ outcome: '直答', evidence: '知识库', reply: { text: `${k.answer}\n${tail}`, keep: k.must || [], card: { type: 'knowledge', title: k.title, version: k.version }, chips: u.domain === 'account' ? ['我的账户是不是冻结了？'] : ['那我昨天的钱今天能到吗'] } });
   }
 
   // ④ 办理引导 / ⑤ 受控执行中没有获准工具的部分
   if (task === 'guide' || (task === 'execute' && u.domain !== 'info')) {
     if (task === 'execute') pc('是否具备获准的执行能力', '不通过', u.domain === 'card' ? '没有对话内换卡工具' : '没有对话内解冻工具，需审核结论');
     if (u.domain === 'account') {
-      return out({ outcome: '部分答复', evidence: '—', reply: { text: '解除冻结需要以审核结论为准，我不能在对话里直接解冻。你可以先按要求提交材料，或者转人工跟进进度。', keep: ['不能'], chips: ['去上传材料', '我要找人工'] } });
+      return out({ outcome: '部分答复', evidence: '—', reply: { text: '解除冻结需要以审核结论为准，我不能在对话里直接解冻。你可以先按要求提交材料，或者转人工跟进进度。', keep: [['不能', '无法', '没法']], chips: ['去上传材料', '我要找人工'] } });
     }
     const r = tb.call('search_knowledge', { query: '结算卡' }); const k = r.data[0];
     ac('引导不等于已办理', '通过', '结果以正式办理页面为准');
-    if (task === 'execute') return out({ outcome: '部分答复', evidence: '知识库', reply: { text: `换卡需要在正式办理页面完成，我不能在对话里替你更换。请在「${k.entry}」提交，完成人脸验证后等待审核。\n办理时不要在对话里发送完整卡号、密码或验证码。`, keep: ['不能', '不要'], card: { type: 'guide', title: k.title, entry: k.entry }, chips: ['我要找人工'] } });
+    if (task === 'execute') return out({ outcome: '部分答复', evidence: '知识库', reply: { text: `换卡需要在正式办理页面完成，我不能在对话里替你更换。请在「${k.entry}」提交，完成人脸验证后等待审核。\n办理时不要在对话里发送完整卡号、密码或验证码。`, keep: [['不能', '无法', '没法'], '不要'], card: { type: 'guide', title: k.title, entry: k.entry }, chips: ['我要找人工'] } });
     return out({ outcome: '直答', evidence: '知识库', reply: { text: `${k.answer}\n办理时不要在对话里发送完整卡号、密码或验证码。`, keep: ['不要'], card: { type: 'guide', title: k.title, entry: k.entry } } });
   }
 
@@ -174,7 +177,7 @@ async function route(s, u, trace, t0, llm) {
     if (!acc.perms.info_edit) return out({ outcome: '拒绝', evidence: '—', reply: { text: '当前账号没有修改商户信息的权限，请用店主账号操作。', keep: ['权限'] } });
     pc('是否具备获准的执行能力', '通过', '联系电话修改：确认后提交，审核后生效');
     s.pending = { kind: 'confirm', change: { field: u.slots.field, value: u.slots.value, mid } };
-    return out({ outcome: '待确认', evidence: '—', reply: { text: `请确认：把${M.name}的联系电话改为 ${u.slots.value.slice(0, 3)}****${u.slots.value.slice(-4)}。确认后提交，审核通过才算修改成功。`, keep: ['确认'], card: { type: 'confirm', field: '联系电话', from: '138****0000', to: `${u.slots.value.slice(0, 3)}****${u.slots.value.slice(-4)}` }, chips: ['确认', '取消'] } });
+    return out({ outcome: '待确认', evidence: '—', reply: { noPolish: true, text: `请确认：把${M.name}的联系电话改为 ${u.slots.value.slice(0, 3)}****${u.slots.value.slice(-4)}。确认后提交，审核通过才算修改成功。`, keep: ['确认'], card: { type: 'confirm', field: '联系电话', from: '138****0000', to: `${u.slots.value.slice(0, 3)}****${u.slots.value.slice(-4)}` }, chips: ['确认', '取消'] } });
   }
 
   // ②③ 查询与诊断
@@ -226,7 +229,7 @@ async function route(s, u, trace, t0, llm) {
     if (d.status === 'processing') { ac('结论不越过依据', '通过', '不承诺具体到账时刻');
       return out({ outcome: '直答', evidence: '业务工具 + 知识库', reply: { text: `${M.name} ${date.slice(5)} 的交易（${yuan(d.txnAmount)} 元）目前在结算处理中：清算已完成，等待出款。这笔没有失败。具体到账时间以结算记录为准，我没法给你一个确定的时刻。`, keep: ['结算处理中', yuan(d.txnAmount)], card: { type: 'settle', merchant: M.name, steps: [['交易成功', '完成'], ['清算完成', '完成'], ['等待出款', '当前'], ['银行入账', '未开始']] } } }); }
     if (d.status === 'paid_out') { ac('结论不越过依据', '通过', '只确认平台出款，不确认银行入账');
-      return out({ outcome: '部分答复', evidence: '业务工具', reply: { text: `平台已于 ${d.paidAt.slice(5)} 出款。银行那边是否已经入账，我这边无法核实，以你的银行到账通知为准。`, keep: ['已于', '无法核实'], card: { type: 'settle', merchant: M.name, steps: [['交易成功', '完成'], ['清算完成', '完成'], ['平台出款', '完成'], ['银行入账', '无法核实']] } } }); }
+      return out({ outcome: '部分答复', evidence: '业务工具', reply: { text: `平台已于 ${d.paidAt.slice(5)} 出款。银行那边是否已经入账，我这边无法核实，以你的银行到账通知为准。`, keep: [d.paidAt.slice(5), ['无法核实', '没法核实', '不能核实']], card: { type: 'settle', merchant: M.name, steps: [['交易成功', '完成'], ['清算完成', '完成'], ['平台出款', '完成'], ['银行入账', '无法核实']] } } }); }
     if (d.status === 'returned') { ac('展示范围符合权限', '通过', '退回原因允许展示');
       return out({ outcome: '直答', evidence: '业务工具 + 知识库', reply: { text: `这批结算被退回了，原因是：${d.reason}。更换为户名一致的结算卡后，系统会重新结算。`, keep: [d.reason], card: { type: 'settle', merchant: M.name, steps: [['交易成功', '完成'], ['清算完成', '完成'], ['结算出款', '退回']] }, chips: ['怎么更换结算卡？'] } }); }
   }
@@ -241,7 +244,7 @@ async function route(s, u, trace, t0, llm) {
     }
     if (d.explained < diff) {
       ac('证据闭合', '部分', `已核实 ${yuan(d.explained)} 元，未核实 ${yuan(diff - d.explained)} 元`);
-      return out({ outcome: '部分答复', evidence: '业务工具 + 知识库', reply: { text: `差额 ${yuan(diff)} 元里，已核实 ${yuan(d.explained)} 元；剩下的 ${yuan(+(diff - d.explained).toFixed(2))} 元暂时没有找到对应记录，我不推测原因，可以转人工帮你核查。`, keep: [yuan(d.explained)], card: { type: 'breakdown', ...d, diff }, chips: ['我要找人工'] } });
+      return out({ outcome: '部分答复', evidence: '业务工具 + 知识库', reply: { text: `差额 ${yuan(diff)} 元里，已核实 ${yuan(d.explained)} 元；剩下的 ${yuan(+(diff - d.explained).toFixed(2))} 元暂时没有找到对应记录，我不推测原因，可以转人工帮你核查。`, keep: [yuan(d.explained), '不推测'], card: { type: 'breakdown', ...d, diff }, chips: ['我要找人工'] } });
     }
     ac('证据闭合', '通过', '差额由系统记录完全解释');
     return out({ outcome: '直答', evidence: '业务工具 + 知识库', reply: { text: `差额 ${yuan(diff)} 元已经核实清楚，构成如下：`, keep: [yuan(diff)], card: { type: 'breakdown', ...d, diff } } });
@@ -263,7 +266,7 @@ async function route(s, u, trace, t0, llm) {
     }
     if (asp === 'schedule') { ac('结论不越过依据', '通过', '系统无正式解冻安排，不做承诺');
       const kb = tb.call('search_knowledge', { query: '审核多久' });
-      return out({ outcome: '部分答复', evidence: '业务工具 + 知识库', reply: { text: `系统里目前没有正式的解冻安排，所以我没法承诺解冻时间。一般规则是：${kb.data[0].answer}需要的话，我帮你转人工确认进度。`, keep: ['没法承诺'], chips: ['去上传材料', '我要找人工'] } }); }
+      return out({ outcome: '部分答复', evidence: '业务工具 + 知识库', reply: { text: `系统里目前没有正式的解冻安排，所以我没法承诺解冻时间。一般规则是：${kb.data[0].answer}需要的话，我帮你转人工确认进度。`, keep: [['没法承诺', '无法承诺', '不能承诺']], chips: ['去上传材料', '我要找人工'] } }); }
   }
   return out({ outcome: '交人工', evidence: '—', reply: requestHandoff(s, '理解或服务未完成', [], ['未识别的诉求']) });
 }
@@ -288,7 +291,8 @@ async function execInfo(s, change, trace, t0, llm) {
 
 async function finish(s, trace, t0, o, llm) {
   let reply = o.reply || null;
-  if (reply && llm) {
+  // 请商户确认变更的话术不交给模型改写：改写可能把"请确认"写成"已收到申请"，关键词检查拦不住
+  if (reply && llm && !reply.noPolish) {
     try {
       const polished = await llmPolish(llm, reply.text);
       const g = guard(polished, reply.keep, reply.text);
