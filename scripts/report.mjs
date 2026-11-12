@@ -34,7 +34,7 @@ const html = `<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI 客服评测报告 · ${N} 个场景 × ${R} 次 × 4 轮</title>
+<title>AI 客服评测：让真的大模型来答，它答得对吗？</title>
 <style>
 :root{--brand:#3d63f5;--brand-ink:#2340b8;--brand-soft:#e9eeff;--ink:#1b2130;--ink2:#535c70;--ink3:#9098a9;--line:#e8eaf0;--page:#f2f3f7;
 --ok:#11905f;--ok-soft:#e5f5ee;--info:#2f63d8;--info-soft:#e8efff;--warn:#b86e00;--warn-soft:#fff3df;--bad:#cf3434;--bad-soft:#fdeceb}
@@ -52,10 +52,10 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .mail{color:var(--ink);cursor:pointer;user-select:all}
 .cp{font-size:12px;border:1px solid var(--line);border-radius:14px;padding:2px 10px;background:#fff;color:var(--ink2);margin-left:6px}
 main{max-width:860px;margin:0 auto;padding:0 20px 40px}
-.hero{padding:52px 0 8px}
+.hero{padding:52px 0 0}
 .hero h1{font-size:34px;line-height:1.3;font-weight:700;letter-spacing:.5px}
 .hero p{font-size:16px;color:var(--ink2);margin-top:14px}
-.stats{display:flex;flex-wrap:wrap;gap:12px;margin:26px 0 6px}
+.stats{display:flex;flex-wrap:wrap;gap:12px;margin:12px 0 6px}
 .stat{flex:1 1 180px;background:#fff;border-radius:14px;padding:16px 18px}
 .stat b{display:block;white-space:nowrap;font-size:23px;line-height:1.2;font-weight:650;font-variant-numeric:tabular-nums}
 .stat span{font-size:12.5px;color:var(--ink2)}
@@ -76,82 +76,100 @@ td.what{color:var(--ink2);line-height:1.6}
 .q{font-size:13.5px;color:var(--ink2);margin:14px 0 -4px}
 .note{background:var(--warn-soft);border-radius:12px;padding:12px 16px;font-size:14px;margin:14px 0}
 .ft{max-width:860px;margin:0 auto;padding:14px 20px 40px;font-size:12px;color:var(--ink3);border-top:1px solid rgba(20,30,60,.06)}
-@media(max-width:640px){.hero h1{font-size:26px}.pair{grid-template-columns:1fr}.me-name span{display:none}}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0 4px}
+.steps>div{background:#fff;border-radius:14px;padding:16px 18px}
+.steps i{font-style:normal;display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--brand-soft);color:var(--brand-ink);font-size:13px;font-weight:600;margin-bottom:8px}
+.steps b{display:block;font-size:15.5px;margin-bottom:4px}
+.steps span{font-size:13.5px;color:var(--ink2);line-height:1.65;display:block}
+details{margin-top:44px;background:rgba(255,255,255,.55);border-radius:14px;padding:4px 20px 8px}
+summary{cursor:pointer;font-weight:600;font-size:15px;padding:14px 0;color:var(--brand-ink)}
+details[open] summary{border-bottom:1px solid var(--line);margin-bottom:4px}
+details .card,details .pair>div{background:#fff}
+.q b{color:var(--ink);font-size:16px}
+@media(max-width:640px){.steps{grid-template-columns:1fr}.hero h1{font-size:26px}.pair{grid-template-columns:1fr}.me-name span{display:none}}
 </style>
 </head>
 <body>
 <nav class="top"><div class="top-in"><a class="me-name" href="./">三桥君<span>AI 产品经理 · 作品</span></a><div class="top-r"><a href="./">← 对话演示</a><span class="mailbox"></span></div></div></nav>
 <main>
 <header class="hero">
-<h1>接上真实大模型后，AI 客服还守得住边界吗？</h1>
-<p>把<a href="./">对话演示</a>背后的处理引擎接入真实大模型（${esc(model)}），同一批 ${N} 个场景每个跑 ${R} 次，共评测 4 轮。这里记录每一轮的结果、失败原因和修法，包括评测本身出的错。</p>
-<div class="stats">
-<div class="stat"><b>${s1.runPass}/${s1.runTotal} → ${s4.runPass}/${s4.runTotal}</b><span>单次运行通过数，第 1 轮到第 4 轮</span></div>
-<div class="stat"><b>${s1.polishBlocked} → ${s4.polishBlocked}</b><span>模型改写被答复校验拦下的次数（共 ${s4.polishTried} 次改写）</span></div>
-<div class="stat warn"><b>1 处</b><span>全部通过后，人工复核仍发现的意思跑偏</span></div>
-</div>
+<h1>把剧本拿掉，让真的 AI 来答，它答得对吗？</h1>
+<p><a href="./">对话演示</a>里 AI 客服的每句回答都是提前写好的。这一页记录的是另一件事：我接上真实的大模型（${esc(model)}），让它自己回答，再检查它答得对不对。</p>
 </header>
 
-<h2>结论</h2>
+<div class="steps">
+<div><i>1</i><b>出 ${N} 道题</b><span>每道题是一种商户情况：问冻结原因、收银员想查老板才能看的数据、系统超时、知识库说法打架……每道题事先写好"正确做法"。</span></div>
+<div><i>2</i><b>每道题让 AI 答 ${R} 遍</b><span>一共 ${s4.runTotal} 次。同一道题答 ${R} 遍，是为了看它会不会时对时错。</span></div>
+<div><i>3</i><b>程序判卷，错了就改，改完再考</b><span>这样考了 4 轮。全对之后，我又把 AI 的回答人工读了一遍。</span></div>
+</div>
+
+<h2>先看一个例子</h2>
+<p class="q">商户问：<b>"我的账户为什么被冻结？"</b></p>
+${pair('第 1 轮，AI 的回答（答非所问）', c6.text, '改完之后，AI 的回答', c6b.text, 'good')}
+<p>商户问的是冻结，AI 答的是到账差额，${R} 遍都错，而且是当作正常回答发出去的。这种错在照剧本演的演示里永远发现不了，只有接上真的 AI 才会暴露。</p>
+<p><b>为什么会错：</b>AI 把这句话理解成"想知道一件事的原因"，这个理解本身没毛病。但系统里"问原因"这一类只接了"解释到账差额"一条流程，于是把冻结的问题送进了差额的流程。</p>
+<p><b>怎么改的：</b>没有去教 AI "这句话应该归到哪一类"，因为它的归类会随问法变化，靠不住。改的是系统的分流规则：同时看"想做什么"和"问的是哪块业务"，凡是账户方面的"为什么"，一律去查账户原因。AI 怎么归类，都会走到对的流程上。</p>
+
+<h2>结果</h2>
+<div class="stats">
+<div class="stat"><b>${s1.runPass} → ${s4.runPass}</b><span>${s4.runTotal} 次回答里答对的次数，第 1 轮到第 4 轮</span></div>
+<div class="stat"><b>${s1.polishBlocked} → ${s4.polishBlocked}</b><span>AI 把话说得更自然时，被安全检查误拦的次数（共 ${s4.polishTried} 次）</span></div>
+<div class="stat warn"><b>1 处</b><span>程序判卷全对之后，人工读一遍仍然发现的问题</span></div>
+</div>
+
+<h2>我从这次评测里得到的三点</h2>
+<h3>1. 真问题要接上真的 AI 才测得出来</h3>
+<p>上面"答非所问"的例子就是。规则写得再细，也要让真模型跑一遍，才知道它会把什么问题送到哪里去。</p>
+
+<h3>2. 程序判卷全对，不等于没有问题</h3>
+<p>第 4 轮 ${s4.runPass}/${s4.runTotal} 全对。我没有就此打住，把 AI 的回答逐条读了一遍，发现有一句意思变了：</p>
+${pair('系统原本要说的话', c5.template, 'AI 改写后的话', c5.text, 'bad')}
+<p>原话是请商户确认，改写后读起来像申请已经受理了。程序只检查"确认"这个词在不在，词还在，就放行了。<b>改法：</b>请商户确认的话不再让 AI 改写，直接用原话。这类话改写的好处很小，出错的代价很大。</p>
+
+<h3>3. 判卷标准自己也会出错</h3>
+<p>第 2 轮答对的次数从 ${S('v1').runPass} 掉到 ${S('v2').runPass}，看起来像越改越差。实际是 AI 把"我不能直接解冻"说成了"我无法直接解冻"，意思一样，安全检查放行了，判卷程序却还在逐字找"不能"两个字。我把两处改成共用一份标准后，这 ${S('v2').runTotal - S('v2').runPass} 次都判回了正确。所以这部分答对次数的回升，不能算 AI 变好了，只是判卷变准了。</p>
+
+<details>
+<summary>展开看细节：四轮各改了什么、误拦的例子、这次评测的局限</summary>
+
+<h3>系统是怎么分工的</h3>
 <ul>
-<li><b>第 1 轮暴露了一个严重问题：答非所问。</b>商户问"账户为什么被冻结"，AI 回答了到账差额，${R} 次都错，而且是当作正常答复发出的。根因在路由，不在模型。</li>
-<li><b>四轮之后 ${s4.runPass}/${s4.runTotal} 通过，但这个数字高估了效果。</b>判定靠关键词，我逐条读了第 4 轮被采用的改写，发现 1 处关键词检查拦不住的意思跑偏（"请确认"被改写成"已收到申请"）。</li>
-<li><b>四轮里有一轮改的是判定标准，不是系统。</b>第 2 轮通过数从 ${S('v1').runPass} 降到 ${S('v2').runPass}，原因是答复校验和评测判定用了两份口径。修正口径带来的通过数上升，不算效果提升。</li>
+<li><b>规则说了算的：</b>身份、权限、查不查数据、转不转人工、金额和状态。</li>
+<li><b>大模型只做两件事：</b>理解商户想要什么；把系统生成的回答改写得更自然。</li>
+<li><b>安全检查：</b>改写后的话发出前要检查一遍（金额和状态没被改、没有擅自承诺、没有索要密码），不通过就退回系统原话。</li>
 </ul>
 
-<h2>怎么测的</h2>
-<ul>
-<li><b>被测系统：</b>规则决定策略（身份、权限、查不查、转不转人工、金额和状态），大模型只做两件事：理解商户诉求、把模板答复改写得更自然。模型改写后要过一道答复校验，不通过就退回模板原文。</li>
-<li><b>场景：</b>${N} 个，覆盖知识解释、事实查询、诊断解释、办理引导、受控执行、越权拦截、转人工，包含系统超时、查询为空、知识冲突等异常。商户与数据均为虚构。</li>
-<li><b>判定：</b>每个场景写明预期（出口、是否调用工具、答复必须包含或不得出现的内容），由脚本自动判定。规则模式作基线，${V.v4.rules.pass}/${V.v4.rules.total} 通过。</li>
-<li><b>运行：</b>每轮 ${N} × ${R} = ${s4.runTotal} 次，平均每次约 ${avgMs(V.v4)} 秒，每轮约 ${Math.round(V.v4.meta.tokens / 1000)}K tokens。</li>
-</ul>
-
-<h2>四轮结果</h2>
+<h3>四轮结果</h3>
 <div class="card"><table>
-<tr><th>轮次</th><th>这一轮改了什么</th><th class="n">单次通过</th><th class="n">${R} 次都通过的场景</th><th class="n">改写被采用</th><th class="n">被校验拦下</th><th class="n">出现语气词</th></tr>
+<tr><th>轮次</th><th>这一轮改了什么</th><th class="n">答对次数</th><th class="n">${R} 遍都对的题</th><th class="n">改写被采用</th><th class="n">被安全检查拦下</th><th class="n">出现"哦、哈、～"</th></tr>
 ${ROUNDS.map(row).join('\n')}
 </table></div>
-<p class="q">"改系统"指改了被测的引擎或提示词；"改判定"指只改了评测怎么算通过。</p>
+<p class="q">"改系统"指改了被测的系统或给模型的指令；"改判定"指只改了判卷程序。规则模式（不接模型）作为基线，${V.v4.rules.pass}/${V.v4.rules.total} 通过。每轮约 ${Math.round(V.v4.meta.tokens / 1000)}K tokens，平均每次约 ${avgMs(V.v4)} 秒。</p>
 
-<h2>三个发现</h2>
+<h3>安全检查误拦的例子</h3>
+<p>第 1 轮 ${s1.polishTried} 次改写里有 ${s1.polishBlocked} 次被拦，大部分其实没问题。被拦后退回原话，回答是对的，只是生硬。</p>
+${pair('系统原话', g1.template, '被拦下的改写（理由：' + g1.guardReasons.join('；') + '）', g1.polishedRaw, 'warn')}
+${pair('系统原话', g2.template.split('\n')[0], '被拦下的改写（理由：' + g2.guardReasons.join('；') + '）', g2.polishedRaw.split('\n')[0], 'warn')}
+<p><b>改法：</b>必须保留的内容从"原话"改为"事实和底线"。金额、状态、原因、办理路径一个字不能改；"不能 / 无法"这类表达底线的说法允许换同义词；日期按数值比较。同时要求模型不用"哦、哈、啦、～"，出现次数从 ${tone(V.v1)} 降到 ${tone(V.v4)}。</p>
 
-<h3>1. 答非所问：模型分类说得通，流程却走错了</h3>
-<p>商户问"我的账户为什么被冻结？"。模型把它归为"想知道一个结果为什么是这样"，这个理解不算错。但引擎里这一类只接了到账差额的解释流程，于是：</p>
-${pair('第 1 轮：AI 的答复', c6.text, '第 4 轮：AI 的答复', c6b.text, 'good')}
-<p><b>修法：</b>没有去改提示词让模型"分对类"。模型的分类会随措辞和版本变化，靠不住。改的是路由：按"任务 + 领域"的组合决定走哪个流程，账户类的"为什么"一律走账户原因查询。同一个问题，模型怎么归类都能落到对的流程上。</p>
-
-<h3>2. 校验太死板，口径还不一致</h3>
-<p>第 1 轮 ${s1.polishTried} 次改写里有 ${s1.polishBlocked} 次被拦下，大部分是误拦。被拦后退回模板，答复是对的，只是生硬。</p>
-${pair('模板', g1.template, '被拦下的改写（理由：' + g1.guardReasons.join('；') + '）', g1.polishedRaw, 'warn')}
-${pair('模板', g2.template.split('\n')[0], '被拦下的改写（理由：' + g2.guardReasons.join('；') + '）', g2.polishedRaw.split('\n')[0], 'warn')}
-<p><b>修法：</b>必须保留的内容从"原话"改为"事实 + 边界"。金额、状态、原因、办理路径逐字保留；"不能 / 无法"这类边界表述允许同义说法；数字按数值比较。同时在改写提示词里禁用语气词，出现次数从 ${tone(V.v1)} 降到 ${tone(V.v4)}。</p>
-<div class="note"><b>这里出过一个错。</b>第 2 轮只放宽了答复校验，评测判定还在逐字找"不能"，结果校验放行的答复被判定为失败，通过数不升反降。第 3 轮把两处改成共用一份同义说法清单。教训是：线上校验和离线评测必须是同一份标准，否则看到的指标变化可能只是口径变化。</div>
-
-<h3>3. 全部通过之后，人工复核还是找到了问题</h3>
-<p>第 4 轮 ${s4.runPass}/${s4.runTotal} 通过。我把被采用的改写按模板逐条读了一遍（33 个模板），发现 1 处实质性跑偏：</p>
-${pair('模板', c5.template, '被采用的改写', c5.text, 'bad')}
-<p>模板是请商户确认，改写读起来像申请已受理。必须保留的关键词"确认"还在句子里，所以校验和判定都放行了。另有 3 处轻微变化，例如"会一起交给客服"被写成"已同步至客服"。</p>
-<p><b>修法：</b>请商户确认变更的话术不再交给模型改写，直接用模板。这类答复改写的收益很小，出错的代价很大。这项修改在第 4 轮之后加入，该答复此后不经过模型，输出即模板原文。</p>
-
-<h2>局限</h2>
+<h3>这次评测的局限</h3>
 <ul>
-<li><b>判定靠关键词。</b>同义说法补不完，意思跑偏也拦不住。${s4.runPass}/${s4.runTotal} 只说明"没有触发已知的检查"，不等于每句话都对。</li>
-<li><b>场景是我自己写的。</b>${N} 个场景和引擎出自同一人，商户的问法固定。真实商户会用方言、错别字、一句话问两件事，这些都没有覆盖。</li>
-<li><b>跑 ${R} 次的信息量有限。</b>低温度下模型输出很稳定，第 4 轮有 ${same(V.v4)}/${N} 个场景 ${R} 次答复逐字相同。稳定性要靠变换问法来测，不是重复同一句。</li>
-<li><b>只测了一个模型。</b>换模型后理解分类和改写习惯都会变，结论不能直接外推。</li>
-<li><b>数据是虚构的。</b>没有真实流量，测不出延迟、并发和工具真实失败率下的表现。</li>
+<li><b>判卷靠找关键词。</b>同义词补不完，意思变了也未必拦得住。全对只说明"没有触发已知的检查"。</li>
+<li><b>题是我自己出的。</b>${N} 道题和系统出自同一人，问法固定。真实商户会用方言、错别字、一句话问两件事，这些没有覆盖。</li>
+<li><b>答 ${R} 遍的信息量有限。</b>模型很稳定，第 4 轮有 ${same(V.v4)}/${N} 道题 ${R} 遍回答一字不差。要测稳定性，应该换着问法问。</li>
+<li><b>只测了一个模型，数据是虚构的。</b>换模型结论可能不同；没有真实流量，测不出延迟和并发。</li>
 </ul>
 
-<h2>下一步</h2>
+<h3>下一步</h3>
 <ul>
-<li>加一层语义判定：用第二个模型或人工抽检判断"改写是否改变了原意"，与关键词检查并用。</li>
-<li>每个场景补 5 到 10 种问法，测诉求理解的稳定性。</li>
-<li>换一个模型重跑，对比理解偏差和改写习惯。</li>
+<li>加一层"意思有没有变"的判断，用第二个模型或人工抽检，和关键词检查一起用。</li>
+<li>每道题补 5 到 10 种问法。</li>
+<li>换一个模型重跑。</li>
 </ul>
 
-<h2>可复现</h2>
-<p>评测脚本、四轮的完整录制结果和引擎代码都在<a href="https://github.com/sanqiaojun/merchant-service-ai-demo">代码仓库</a>里。自备任意兼容 OpenAI 接口的模型密钥，运行 <code>node scripts/eval.mjs</code> 即可重跑；<code>node scripts/report.mjs</code> 从录制结果生成本页，页面上的数字不手填。</p>
+<h3>可复现</h3>
+<p>评测脚本、四轮的原始结果和系统代码都在<a href="https://github.com/sanqiaojun/merchant-service-ai-demo">代码仓库</a>里。本页的数字由脚本从原始结果生成，不手填。</p>
+</details>
 </main>
 <footer class="ft">评测时间 ${V.v1.meta.startedAt.slice(0, 10)}，模型 ${esc(model)}。品牌、商户与数据均为虚构，不代表任何线上系统。　© 2026 三桥君</footer>
 <script>
