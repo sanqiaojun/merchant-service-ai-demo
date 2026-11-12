@@ -19,7 +19,7 @@ const ROUNDS = [
 ];
 const row = ([v, name, what, kind]) => {
   const s = S(v);
-  return `<tr><td><b>${name}</b></td><td class="what">${kind === '—' ? '' : `<i class="tag ${kind === '系统' ? 't-info' : 't-warn'}">改${kind}</i> `}${what}</td>
+  return `<tr><td style="white-space:nowrap"><b>${name}</b></td><td class="what">${kind === '—' ? '' : `<i class="tag ${kind === '系统' ? 't-info' : 't-warn'}">改${kind}</i> `}${what}</td>
 <td class="n">${s.runPass}/${s.runTotal}</td><td class="n">${s.passK}/${N}</td><td class="n">${s.polishKept}/${s.polishTried}</td><td class="n">${s.polishBlocked}</td><td class="n">${tone(V[v])}</td></tr>`;
 };
 const pair = (label1, t1, label2, t2, cls = '') => `<div class="pair ${cls}"><div><span>${label1}</span>${esc(t1)}</div><div><span>${label2}</span>${esc(t2)}</div></div>`;
@@ -57,7 +57,7 @@ main{max-width:860px;margin:0 auto;padding:0 20px 40px}
 .hero p{font-size:16px;color:var(--ink2);margin-top:14px}
 .stats{display:flex;flex-wrap:wrap;gap:12px;margin:26px 0 6px}
 .stat{flex:1 1 180px;background:#fff;border-radius:14px;padding:16px 18px}
-.stat b{display:block;font-size:28px;line-height:1.2;font-weight:650;font-variant-numeric:tabular-nums}
+.stat b{display:block;white-space:nowrap;font-size:23px;line-height:1.2;font-weight:650;font-variant-numeric:tabular-nums}
 .stat span{font-size:12.5px;color:var(--ink2)}
 .stat.warn b{color:var(--warn)}
 h2{font-size:21px;font-weight:650;margin:44px 0 12px}
@@ -72,7 +72,7 @@ td.what{color:var(--ink2);line-height:1.6}
 .pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
 .pair>div{background:#fff;border-radius:12px;padding:12px 14px;font-size:13.5px;line-height:1.65;white-space:pre-wrap;border-left:3px solid var(--line)}
 .pair>div span{display:block;font-size:11.5px;color:var(--ink3);margin-bottom:4px}
-.pair.bad>div:last-child{border-left-color:var(--bad)}.pair.good>div:last-child{border-left-color:var(--ok)}.pair.warn>div:last-child{border-left-color:var(--warn)}
+.pair.bad>div:last-child,.pair.good>div:first-child{border-left-color:var(--bad)}.pair.good>div:last-child{border-left-color:var(--ok)}.pair.warn>div:last-child{border-left-color:var(--warn)}
 .q{font-size:13.5px;color:var(--ink2);margin:14px 0 -4px}
 .note{background:var(--warn-soft);border-radius:12px;padding:12px 16px;font-size:14px;margin:14px 0}
 .ft{max-width:860px;margin:0 auto;padding:14px 20px 40px;font-size:12px;color:var(--ink3);border-top:1px solid rgba(20,30,60,.06)}
